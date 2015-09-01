@@ -143,7 +143,7 @@ public class MailController {
 
 // *********************************************************
 //
-// O365-Android-Connect, https://github.com/OfficeDev/O365-Android-Connect
+// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

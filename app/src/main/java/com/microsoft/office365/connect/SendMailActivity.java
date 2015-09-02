@@ -20,6 +20,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static android.content.Intent.getIntent;
+
 /**
  * This activity handles the send mail operation of the app.
  * The app must be connected to Office 365 before this activity can send an email.
@@ -163,13 +165,24 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
 
     @Override
     public void success(MailVO result, Response response) {
-        Log.i(TAG, "sendMailToRecipient - Mail sent");
+
         UnifiedAPIController
                 .getInstance()
-                .sendDraftMail(response, this);
+                .sendDraftMail(response,
+                        new Callback<MailVO>() {
+                            @Override
+                            public void success(MailVO mailVO, Response response) {
+                                Log.i(TAG, "sendMailToRecipient - Mail sent");
+                                showSendMailSuccessUI();
+                            }
 
-        showSendMailSuccessUI();
-
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e(TAG, "onSendMailButtonClick - " + error.getMessage());
+                                showSendMailErrorUI();
+                            }
+                        }
+                );
     }
 
     @Override

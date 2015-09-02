@@ -3,10 +3,19 @@
 */
 package com.microsoft.office365.connect;
 
-/**
- * Created by johnaustin on 9/2/15.
- */
-public class DateTimeSerializer {
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import org.joda.time.DateTime;
+
+import java.lang.reflect.Type;
+
+public class DateTimeSerializer implements JsonSerializer<DateTime> {
+    public JsonElement serialize(DateTime src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(src.toString());
+    }
 }
 // *********************************************************
 //

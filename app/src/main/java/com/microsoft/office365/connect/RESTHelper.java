@@ -32,7 +32,7 @@ public  class RESTHelper {
         };
 
         return new RestAdapter.Builder()
-                .setEndpoint(Constants.AUTHORITY_URL)
+                .setEndpoint(Constants.UNIFIED_API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setConverter(mGsonConverter)
                 .setRequestInterceptor(requestInterceptor)

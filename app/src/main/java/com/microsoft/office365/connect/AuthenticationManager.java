@@ -251,8 +251,7 @@ public class AuthenticationManager {
 
     /**
      * Dependency resolver that can be used to create client objects.
-     * The {@link DiscoveryController#getServiceInfo} method uses it to create a DiscoveryClient object.
-     * The {@link MailController#sendMail(String, String, String)} uses it to create an OutlookClient object.
+     * The {@link UnifiedAPIController#sendMail(String, String, String, retrofit.Callback<MailVO>)} uses it to create an OutlookClient object.
      * @return The dependency resolver object.
      */
     public DependencyResolver getDependencyResolver() {

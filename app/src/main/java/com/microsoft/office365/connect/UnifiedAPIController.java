@@ -75,7 +75,7 @@ public class UnifiedAPIController {
          jsonObject_ToAddress.addProperty("Address", address);
 
         JsonObject jsonObject_ToRecipient = new JsonObject();
-        jsonObject_ToRecipient.addProperty("EmailAddress", jsonObject_ToAddress.toString());
+        jsonObject_ToRecipient.add("EmailAddress", jsonObject_ToAddress);
 
         JsonArray  toRecipients = new JsonArray();
         toRecipients.add(jsonObject_ToRecipient);
@@ -84,7 +84,7 @@ public class UnifiedAPIController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("Subject",subject);
         jsonObject.addProperty("Importance","Low");
-        jsonObject.addProperty("body", jsonObject_Body.toString());
+        jsonObject.add("Body", jsonObject_Body);
         jsonObject.add("ToRecipients", toRecipients);
 
         return new TypedString(jsonObject.toString()){

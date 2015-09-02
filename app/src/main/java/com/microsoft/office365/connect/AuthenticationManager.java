@@ -242,6 +242,10 @@ public class AuthenticationManager {
                                                 ADALError.AUTH_FAILED,
                                                 authenticationResult.getErrorDescription()));
                             }
+                        }else if (authenticationResult != null) {
+                            // I could not authenticate the user silently,
+                            // falling back to prompt the user for credentials.
+                            authenticatePrompt(authenticationCallback);
                         }
                     }
 

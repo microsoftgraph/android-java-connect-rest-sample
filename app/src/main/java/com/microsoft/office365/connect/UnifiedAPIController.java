@@ -49,7 +49,8 @@ public class UnifiedAPIController {
 
         insureService();
             // Use the Unified API service on Office 365 to create the message.
-        mUnifiedAPIService.createDraftMail("application.html",createNewMailBody(subject, body),callback);
+        mUnifiedAPIService.createDraftMail("application/json",
+                createMailPayload(subject, body, emailAddress),callback);
     }
     public void sendDraftMail(Response messageResponse, Callback<MailVO> callback){
         int messageIdIndex = messageResponse.getHeaders().indexOf("Id");
@@ -65,14 +66,14 @@ public class UnifiedAPIController {
         // Use the Unified API service on Office 365 to send the message.
 
     }
-    private TypedString createNewMailBody(String subject, String bodyString){
+    private TypedString createMailPayload(String subject, String bodyString, String address){
 
         JsonObject jsonObject_Body = new JsonObject();
         jsonObject_Body.addProperty("ContentType", "HTML");
-        jsonObject_Body.addProperty("Content", "Hi there!");
+        jsonObject_Body.addProperty("Content", bodyString);
 
          JsonObject jsonObject_ToAddress = new JsonObject();
-         jsonObject_ToAddress.addProperty("Address", "");
+         jsonObject_ToAddress.addProperty("Address", address);
 
         JsonObject jsonObject_ToRecipient = new JsonObject();
         jsonObject_ToRecipient.addProperty("EmailAddress", jsonObject_ToAddress.toString());
@@ -82,8 +83,8 @@ public class UnifiedAPIController {
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("Subject","");
-        jsonObject.addProperty("Importance","");
+        jsonObject.addProperty("Subject",subject);
+        jsonObject.addProperty("Importance","Low");
         jsonObject.addProperty("body", jsonObject_Body.toString());
         jsonObject.add("ToRecipients", toRecipients);
 

@@ -21,7 +21,6 @@ public class UnifiedAPIController {
 
     private static final String TAG = "UnifiedAPIController";
     private static UnifiedAPIController INSTANCE;
-    private String mAccessToken;
     private RESTHelper mRESTHelper;
     private UnifiedAPIService mUnifiedAPIService;
 

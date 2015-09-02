@@ -3,15 +3,24 @@
 */
 package com.microsoft.office365.connect;
 
-/**
- * Created by johnaustin on 9/2/15.
- */
-public class DateTimeDeSerializer {
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
+import org.joda.time.DateTime;
+
+import java.lang.reflect.Type;
+
+public class DateTimeDeSerializer implements JsonDeserializer<DateTime> {
+    public DateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+        return new DateTime(json.getAsJsonPrimitive().getAsString());
+    }
 }
 // *********************************************************
 //
-// O365-Android-OneNote-Rest, https://github.com/OfficeDev/O365-Android-OneNote-Rest
-//
+// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
 // Copyright (c) Microsoft Corporation
 // All rights reserved.
 //

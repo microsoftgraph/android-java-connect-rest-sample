@@ -19,7 +19,7 @@ public class DateTimeSerializer implements JsonSerializer<DateTime> {
 }
 // *********************************************************
 //
-// O365-Android-OneNote-Rest, https://github.com/OfficeDev/O365-Android-OneNote-Rest
+// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

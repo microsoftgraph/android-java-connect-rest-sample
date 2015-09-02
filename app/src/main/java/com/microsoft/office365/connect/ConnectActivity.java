@@ -73,7 +73,7 @@ public class ConnectActivity extends AppCompatActivity {
                     /**
                      * If the connection is successful, the activity extracts the username and
                      * displayableId values from the authentication result object and sends them
-                     * to the SendMail activity.
+                     * to the SendDraftMail activity.
                      * @param result The authentication result object that contains information about
                      *               the user and the tokens.
                      */

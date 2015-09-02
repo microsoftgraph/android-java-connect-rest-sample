@@ -3,44 +3,37 @@
  */
 package com.microsoft.office365.connect;
 
-import android.util.Log;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.outlookservices.BodyType;
-import com.microsoft.outlookservices.EmailAddress;
-import com.microsoft.outlookservices.ItemBody;
-import com.microsoft.outlookservices.Message;
-import com.microsoft.outlookservices.Recipient;
-import com.microsoft.outlookservices.odata.OutlookClient;
-import com.microsoft.services.odata.impl.ADALDependencyResolver;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.MissingResourceException;
 import retrofit.Callback;
+import retrofit.client.Response;
+import retrofit.mime.TypedString;
 
 
 /**
  * Handles the creation of the message and contacting the
  * mail service to send the message. The app must have
  * connected to Office 365 and discovered the mail service
- * endpoints before using the sendMail method.
+ * endpoints before using the createDraftMail method.
  */
 public class UnifiedAPIController {
 
     private static final String TAG = "UnifiedAPIController";
     private static UnifiedAPIController INSTANCE;
+    private String mAccessToken;
+    private RESTHelper mRESTHelper;
+    private UnifiedAPIService mUnifiedAPIService;
 
     public static synchronized UnifiedAPIController getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new UnifiedAPIController();
-            // TODO get access token and initialize the Builder() to get a RestAdapter.
-            // Or initialize in the constructor (might be better there).
         }
         return INSTANCE;
+    }
+
+    private UnifiedAPIController(){
+        mRESTHelper = new RESTHelper(AuthenticationManager.getInstance().getAccessToken());
     }
 
 
@@ -52,17 +45,61 @@ public class UnifiedAPIController {
      * @param subject      The subject to use in the mail message.
      * @param body         The body of the message.
      */
-    public void sendMail(final String emailAddress, final String subject, final String body, Callback<MailVO> callback) {
+    public void createDraftMail(final String emailAddress, final String subject, final String body, Callback<MailVO> callback) {
 
-            // Prepare the message.
-            //TODO prepare message by storing it in MailVO object
-
-
+        insureService();
             // Use the Unified API service on Office 365 to create the message.
-            //TODO create the draft message on UnifiedAPIService. This requires a callback I think
+        mUnifiedAPIService.createDraftMail("application.html",createNewMailBody(subject, body),callback);
+    }
+    public void sendDraftMail(Response messageResponse, Callback<MailVO> callback){
+        int messageIdIndex = messageResponse.getHeaders().indexOf("Id");
 
-            // Use the Unified API service on Office 365 to send the message.
-            //TODO send the draft message on UnifiedAPIService. This happens in the callback onsuccess I think
+        insureService();
+
+        String MessageId = messageResponse
+                .getHeaders()
+                .get(messageIdIndex)
+                .getValue();
+
+         mUnifiedAPIService.SendDraftMail(MessageId, callback);
+        // Use the Unified API service on Office 365 to send the message.
+
+    }
+    private TypedString createNewMailBody(String subject, String bodyString){
+
+        JsonObject jsonObject_Body = new JsonObject();
+        jsonObject_Body.addProperty("ContentType", "HTML");
+        jsonObject_Body.addProperty("Content", "Hi there!");
+
+         JsonObject jsonObject_ToAddress = new JsonObject();
+         jsonObject_ToAddress.addProperty("Address", "");
+
+        JsonObject jsonObject_ToRecipient = new JsonObject();
+        jsonObject_ToRecipient.addProperty("EmailAddress", jsonObject_ToAddress.toString());
+
+        JsonArray  toRecipients = new JsonArray();
+        toRecipients.add(jsonObject_ToRecipient);
+
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("Subject","");
+        jsonObject.addProperty("Importance","");
+        jsonObject.addProperty("body", jsonObject_Body.toString());
+        jsonObject.add("ToRecipients", toRecipients);
+
+        return new TypedString(jsonObject.toString()){
+            @Override
+            public String mimeType() {return "application/json";}
+        };
+    }
+
+    private void insureService() {
+        if (mUnifiedAPIService == null)
+            mUnifiedAPIService = mRESTHelper
+                    .getRestAdapter()
+                    .create(UnifiedAPIService.class);
+
+
     }
 }
 

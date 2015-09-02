@@ -5,6 +5,7 @@ import retrofit.http.Body;
 import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.mime.TypedString;
 
 
 public interface UnifiedAPIService {
@@ -14,13 +15,12 @@ public interface UnifiedAPIService {
 
     @POST("/me/messages")
     void createDraftMail(@Header("Content-type") String contentTypeHeader,
-                    @Body MailVO mail,
+                    @Body TypedString mail,
                     Callback<MailVO> callback );
 
     @POST("/me/messages/{messageID}")
-    void SendMail(@Header("Content-type") String contentTypeHeader,
-                  @Path("messageID") String messageID,
-                  @Body MailVO mail,
-                  Callback<MailVO> callback);
+    void SendDraftMail(
+            @Path("messageID") String messageID,
+            Callback<MailVO> callback);
 }
 

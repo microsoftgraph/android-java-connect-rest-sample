@@ -1,8 +1,6 @@
 /*
-* Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
-* Portions of this class are adapted from the AuthenticationController.java file from Microsoft Open Technologies, Inc.
-* located at https://github.com/OfficeDev/Office-365-SDK-for-Android/blob/master/samples/outlook/app/src/main/java/com/microsoft/services/controllers/AuthenticationController.java
-*/
+ *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
+ */
 package com.microsoft.office365.connect;
 
 import android.app.Activity;
@@ -38,6 +36,7 @@ public class AuthenticationManager {
     private ADALDependencyResolver mDependencyResolver;
     private Activity mContextActivity;
     private String mResourceId;
+    private String mAccessToken;
 
     /**
      * Generates an encryption key for devices with API level lower than 18 using the
@@ -118,6 +117,18 @@ public class AuthenticationManager {
     }
 
     /**
+     * Returns the access token obtained in authentication
+     * @return mAccessToken
+     */
+    public String getAccessToken(){
+        if (mAccessToken != null)
+            return mAccessToken;
+        else
+            return "";
+    }
+
+
+    /**
      * Turn logging on.
      * @param level LogLevel to set.
      */
@@ -166,12 +177,20 @@ public class AuthenticationManager {
                 new AuthenticationCallback<AuthenticationResult>() {
                     @Override
                     public void onSuccess(final AuthenticationResult authenticationResult) {
-                        if (authenticationResult != null && authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
-                            mDependencyResolver = new ADALDependencyResolver(
-                                    getAuthenticationContext(),
-                                    mResourceId,
-                                    Constants.CLIENT_ID);
-                            authenticationCallback.onSuccess(authenticationResult);
+                        if (authenticationResult != null  ) {
+                            if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
+                                mDependencyResolver = new ADALDependencyResolver(
+                                        getAuthenticationContext(),
+                                        mResourceId,
+                                        Constants.CLIENT_ID);
+                                mAccessToken = authenticationResult.getAccessToken();
+                                authenticationCallback.onSuccess(authenticationResult);
+                            }
+                            else {
+                                authenticationCallback.onError(
+                                        (Exception) new Throwable(authenticationResult.getErrorDescription()));
+
+                            }
                         } else if (authenticationResult != null) {
                             // I could not authenticate the user silently,
                             // falling back to prompt the user for credentials.
@@ -203,24 +222,26 @@ public class AuthenticationManager {
                 new AuthenticationCallback<AuthenticationResult>() {
                     @Override
                     public void onSuccess(final AuthenticationResult authenticationResult) {
-                        if (authenticationResult != null && authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
-                            setUserId(authenticationResult.getUserInfo().getUserId());
-                            mDependencyResolver = new ADALDependencyResolver(
-                                    getAuthenticationContext(),
-                                    mResourceId,
-                                    Constants.CLIENT_ID);
-                            authenticationCallback.onSuccess(authenticationResult);
-                        } else if (authenticationResult != null) {
-                            // We need to make sure that there is no data stored with the failed auth
-                            AuthenticationManager.getInstance().disconnect();
-                            // This condition can happen if user signs in with an MSA account
-                            // instead of an Office 365 account
-                            authenticationCallback.onError(
-                                    new AuthenticationException(
-                                            ADALError.AUTH_FAILED,
-                                            authenticationResult.getErrorDescription()
-                                    )
-                            );
+                        if (authenticationResult != null ) {
+                            if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded){
+                                setUserId(authenticationResult.getUserInfo().getUserId());
+                                mDependencyResolver = new ADALDependencyResolver(
+                                        getAuthenticationContext(),
+                                        mResourceId,
+                                        Constants.CLIENT_ID);
+                                mAccessToken = authenticationResult.getAccessToken();
+                                authenticationCallback.onSuccess(authenticationResult);
+                            }
+                            else {
+                                // We need to make sure that there is no data stored with the failed auth
+                                AuthenticationManager.getInstance().disconnect();
+                                // This condition can happen if user signs in with an MSA account
+                                // instead of an Office 365 account
+                                authenticationCallback.onError(
+                                        new AuthenticationException(
+                                                ADALError.AUTH_FAILED,
+                                                authenticationResult.getErrorDescription()));
+                            }
                         }
                     }
 
@@ -251,7 +272,7 @@ public class AuthenticationManager {
 
     /**
      * Dependency resolver that can be used to create client objects.
-     * The {@link UnifiedAPIController#sendMail(String, String, String, retrofit.Callback<MailVO>)} uses it to create an OutlookClient object.
+     * The {@link UnifiedAPIController#createDraftMail(String, String, String, retrofit.Callback<MailVO>)} uses it to create an OutlookClient object.
      * @return The dependency resolver object.
      */
     public DependencyResolver getDependencyResolver() {
@@ -319,3 +340,31 @@ public class AuthenticationManager {
         editor.apply();
     }
 }
+// *********************************************************
+//
+// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
+//
+// Copyright (c) Microsoft Corporation
+// All rights reserved.
+//
+// MIT License:
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// *********************************************************

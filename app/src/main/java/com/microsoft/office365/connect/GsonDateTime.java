@@ -11,12 +11,12 @@ public class GsonDateTime {
     public  static GsonBuilder getDirectoryServiceBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeSerializer());
-        gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeDeserializer());
+        gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeDeSerializer());
         return gsonBuilder;
     }
 }// *********************************************************
 //
-// O365-Android-OneNote-Rest, https://github.com/OfficeDev/O365-Android-OneNote-Rest
+// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

@@ -16,14 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.discoveryservices.ServiceInfo;
-
-import java.text.MessageFormat;
-import java.util.concurrent.ExecutionException;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -70,7 +62,13 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
      */
     public void onSendMailButtonClick(View v) {
         resetUIForSendMail();
-        UnifiedAPIController.getInstance().sendMail(mEmailEditText.getText().toString(), getResources().getString(R.string.mail_subject_text), getResources().getString(R.string.mail_body_text), this);
+        UnifiedAPIController
+                .getInstance()
+                .createDraftMail(
+                        mEmailEditText.getText().toString(),
+                        getResources().getString(R.string.mail_subject_text),
+                        getResources().getString(R.string.mail_body_text),
+                        this);
     }
 
     @Override
@@ -166,7 +164,12 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
     @Override
     public void success(MailVO result, Response response) {
         Log.i(TAG, "sendMailToRecipient - Mail sent");
+        UnifiedAPIController
+                .getInstance()
+                .sendDraftMail(response, this);
+
         showSendMailSuccessUI();
+
     }
 
     @Override

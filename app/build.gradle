@@ -33,4 +33,10 @@ dependencies {
 
     // Azure Active Directory Library
     compile group: 'com.microsoft.aad', name: 'adal', version: '1.1.2'
+
+
+    // Retrofit + custom HTTP
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
 }

@@ -92,8 +92,8 @@ public class AuthenticationManager {
     }
 
     private static AuthenticationManager INSTANCE;
-
     private AuthenticationManager() {
+        mResourceId = Constants.UNIFIED_ENDPOINT_RESOURCE_ID;
     }
 
     /**

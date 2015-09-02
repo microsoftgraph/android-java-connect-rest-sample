@@ -24,13 +24,17 @@ import com.microsoft.discoveryservices.ServiceInfo;
 import java.text.MessageFormat;
 import java.util.concurrent.ExecutionException;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 /**
  * This activity handles the send mail operation of the app.
  * The app must be connected to Office 365 before this activity can send an email.
  * The activity uses the DiscoveryController class to get the service endpoint. It also
  * uses the MailController to send the message.
  */
-public class SendMailActivity extends AppCompatActivity {
+public class SendMailActivity extends AppCompatActivity implements Callback<MailVO> {
 
     private static final String TAG = "SendMailActivity";
 
@@ -56,64 +60,17 @@ public class SendMailActivity extends AppCompatActivity {
     }
 
     /**
-     * Handler for the onclick event of the send mail button. It locates the service endpoints
-     * for the mail service using the DiscoveryController class. It also uses the MailController
-     * class to send an email to the address stored in the mEmailEditText view.
+     * Handler for the onclick event of the send mail button. It uses the UnifiedAPIController to
+     * send an email. When the call is completed, the call will return to either the success()
+     * or failure() methods in this class which will then take the next steps on the UI.
+     * This method sends the email using the address stored in the mEmailEditText view.
      * The subject and body of the message is stored in the strings.xml file.
-     * @param v
+     *
+     * @param v The view.
      */
-    public void onSendMailButtonClick(View v){
-        final SettableFuture<ServiceInfo> serviceDiscovered;
-
+    public void onSendMailButtonClick(View v) {
         resetUIForSendMail();
-
-        serviceDiscovered = DiscoveryController
-                .getInstance()
-                .getServiceInfo(Constants.MAIL_CAPABILITY);
-
-        Futures.addCallback(serviceDiscovered,
-                new FutureCallback<ServiceInfo>() {
-                    @Override
-                    public void onSuccess(ServiceInfo serviceInfo) {
-                        Log.i(TAG, "onSendMailButtonClick - Mail service discovered");
-                        showDiscoverSuccessUI();
-
-                        MailController
-                                .getInstance()
-                                .setServiceResourceId(
-                                        serviceInfo.getserviceResourceId()
-                                );
-                        MailController
-                                .getInstance()
-                                .setServiceEndpointUri(
-                                        serviceInfo.getserviceEndpointUri()
-                                );
-
-                        try {
-                            // Since we are no longer on the UI thread,
-                            // we can call this method synchronously without blocking the UI
-                            Boolean mailSent = MailController.getInstance().sendMail(
-                                    mEmailEditText.getText().toString(),
-                                    getResources().getString(R.string.mail_subject_text),
-                                    MessageFormat.format(
-                                            getResources().getString(R.string.mail_body_text),
-                                            getIntent().getStringExtra("givenName")
-                                    )
-                            ).get();
-                            Log.i(TAG, "sendMailToRecipient - Mail sent");
-                            showSendMailSuccessUI();
-                        } catch (InterruptedException | ExecutionException e) {
-                            Log.e(TAG, "onSendMailButtonClick - " + e.getMessage());
-                            showSendMailErrorUI();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(final Throwable t) {
-                        Log.e(TAG, "onSendMailButtonClick - " + t.getMessage());
-                        showDiscoverErrorUI();
-                    }
-                });
+        UnifiedAPIController.getInstance().sendMail(mEmailEditText.getText().toString(), getResources().getString(R.string.mail_subject_text), getResources().getString(R.string.mail_body_text), this);
     }
 
     @Override
@@ -146,37 +103,25 @@ public class SendMailActivity extends AppCompatActivity {
         return true;
     }
 
-    private void initializeViews(){
-        mTitleTextView = (TextView)findViewById(R.id.titleTextView);
-        mDescriptionTextView = (TextView)findViewById(R.id.descriptionTextView);
-        mEmailEditText = (EditText)findViewById(R.id.emailEditText);
-        mSendMailButton = (ImageButton)findViewById(R.id.sendMailButton);
-        mSendMailProgressBar = (ProgressBar)findViewById(R.id.sendMailProgressBar);
-        mConclusionTextView = (TextView)findViewById(R.id.conclusionTextView);
+    private void initializeViews() {
+        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
+        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+        mEmailEditText = (EditText) findViewById(R.id.emailEditText);
+        mSendMailButton = (ImageButton) findViewById(R.id.sendMailButton);
+        mSendMailProgressBar = (ProgressBar) findViewById(R.id.sendMailProgressBar);
+        mConclusionTextView = (TextView) findViewById(R.id.conclusionTextView);
     }
 
-    private void resetUIForSendMail(){
+    private void resetUIForSendMail() {
         mSendMailButton.setVisibility(View.GONE);
         mConclusionTextView.setVisibility(View.GONE);
         mSendMailProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void showDiscoverSuccessUI(){
+    private void showSendMailSuccessUI() {
         runOnUiThread(new Runnable() {
             @Override
-            public void run(){
-                Toast.makeText(
-                        SendMailActivity.this,
-                        R.string.discover_toast_text,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showSendMailSuccessUI(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run(){
+            public void run() {
                 mSendMailProgressBar.setVisibility(View.GONE);
                 mSendMailButton.setVisibility(View.VISIBLE);
                 mConclusionTextView.setText(R.string.conclusion_text);
@@ -189,26 +134,10 @@ public class SendMailActivity extends AppCompatActivity {
         });
     }
 
-    private void showDiscoverErrorUI(){
+    private void showSendMailErrorUI() {
         runOnUiThread(new Runnable() {
             @Override
-            public void run(){
-                mSendMailProgressBar.setVisibility(View.GONE);
-                mSendMailButton.setVisibility(View.VISIBLE);
-                mConclusionTextView.setText(R.string.discover_text_error);
-                mConclusionTextView.setVisibility(View.VISIBLE);
-                Toast.makeText(
-                        SendMailActivity.this,
-                        R.string.discover_toast_text_error,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void showSendMailErrorUI(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run(){
+            public void run() {
                 mSendMailProgressBar.setVisibility(View.GONE);
                 mSendMailButton.setVisibility(View.VISIBLE);
                 mConclusionTextView.setText(R.string.sendmail_text_error);
@@ -221,7 +150,7 @@ public class SendMailActivity extends AppCompatActivity {
         });
     }
 
-    private void showDisconnectSuccessUI(){
+    private void showDisconnectSuccessUI() {
         mTitleTextView.setVisibility(View.GONE);
         mDescriptionTextView.setVisibility(View.GONE);
         mEmailEditText.setVisibility(View.GONE);
@@ -232,6 +161,18 @@ public class SendMailActivity extends AppCompatActivity {
                 SendMailActivity.this,
                 R.string.disconnect_toast_text,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void success(MailVO result, Response response) {
+        Log.i(TAG, "sendMailToRecipient - Mail sent");
+        showSendMailSuccessUI();
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(TAG, "onSendMailButtonClick - " + error.getMessage());
+        showSendMailErrorUI();
     }
 }
 

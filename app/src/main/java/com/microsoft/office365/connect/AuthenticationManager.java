@@ -95,7 +95,6 @@ public class AuthenticationManager {
     private static AuthenticationManager INSTANCE;
 
     private AuthenticationManager() {
-        mResourceId = Constants.DISCOVERY_RESOURCE_ID;
     }
 
     /**

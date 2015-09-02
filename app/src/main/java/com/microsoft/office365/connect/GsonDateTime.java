@@ -1,19 +1,29 @@
 /*
- *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
- */
+*  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
+*/
 package com.microsoft.office365.connect;
 
-interface Constants {
-    public static final String AUTHORITY_URL = "https://login.microsoftonline.com/common";
-    // Update these two constants with the values for your application:
-    public static final String CLIENT_ID = "<Your client id here>";
-    public static final String REDIRECT_URI = "<Your redirect URI here>";
-    public static final String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/beta/";
-}
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
 
-// *********************************************************
+import org.joda.time.DateTime;
+
+import java.lang.reflect.Type;
+
+public class GsonDateTime {
+    public  static GsonBuilder getDirectoryServiceBuilder() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeSerializer());
+        gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeDeSerializer());
+        return gsonBuilder;
+    }
+}// *********************************************************
 //
-// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
+// O365-Android-OneNote-Rest, https://github.com/OfficeDev/O365-Android-OneNote-Rest
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

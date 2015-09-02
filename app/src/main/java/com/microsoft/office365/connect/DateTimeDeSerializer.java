@@ -1,19 +1,16 @@
 /*
- *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
- */
+*  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
+*/
 package com.microsoft.office365.connect;
 
-interface Constants {
-    public static final String AUTHORITY_URL = "https://login.microsoftonline.com/common";
-    // Update these two constants with the values for your application:
-    public static final String CLIENT_ID = "<Your client id here>";
-    public static final String REDIRECT_URI = "<Your redirect URI here>";
-    public static final String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/beta/";
+/**
+ * Created by johnaustin on 9/2/15.
+ */
+public class DateTimeDeSerializer {
 }
-
 // *********************************************************
 //
-// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
+// O365-Android-OneNote-Rest, https://github.com/OfficeDev/O365-Android-OneNote-Rest
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

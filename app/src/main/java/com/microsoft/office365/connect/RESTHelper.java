@@ -5,7 +5,6 @@ package com.microsoft.office365.connect;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
 
 public class RESTHelper {
 
@@ -21,10 +20,6 @@ public class RESTHelper {
      * @return
      */
     public RestAdapter getRestAdapter() {
-        GsonConverter mGsonConverter = new GsonConverter(GsonDateTime.getDirectoryServiceBuilder()
-                .create());
-
-
         //This method catches outgoing REST calls and injects the Authorization and host headers before
         //sending to REST endpoint
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
@@ -42,7 +37,6 @@ public class RESTHelper {
         return new RestAdapter.Builder()
                 .setEndpoint(Constants.UNIFIED_API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setConverter(mGsonConverter)
                 .setRequestInterceptor(requestInterceptor)
                 .build();
     }

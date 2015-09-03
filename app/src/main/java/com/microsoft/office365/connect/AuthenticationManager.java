@@ -49,8 +49,7 @@ public class AuthenticationManager {
 
         try {
             android_id = Settings.Secure.ANDROID_ID.getBytes("UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "generateSecretKey - " + e.getMessage());
             throw new RuntimeException(e);
         }
@@ -113,12 +112,10 @@ public class AuthenticationManager {
     public String getAccessToken() {
         if (mAccessToken != null) {
             return mAccessToken;
-        }
-        else {
+        } else {
             return "";
         }
     }
-
 
 
     /**
@@ -131,12 +128,10 @@ public class AuthenticationManager {
         if (verifyAuthenticationContext()) {
             if (isConnected()) {
                 authenticateSilent(authenticationCallback);
-            }
-            else {
+            } else {
                 authenticatePrompt(authenticationCallback);
             }
-        }
-        else {
+        } else {
             Log.e(TAG,
                     "connect - Auth context verification failed. Did you set a context activity?");
             throw new AuthenticationException(
@@ -163,14 +158,12 @@ public class AuthenticationManager {
                             if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
                                 mAccessToken = authenticationResult.getAccessToken();
                                 authenticationCallback.onSuccess(authenticationResult);
-                            }
-                            else {
+                            } else {
                                 authenticationCallback.onError(
                                         (Exception) new Throwable(authenticationResult.getErrorDescription()));
 
                             }
-                        }
-                        else if (authenticationResult != null) {
+                        } else if (authenticationResult != null) {
                             // I could not authenticate the user silently,
                             // falling back to prompt the user for credentials.
                             authenticatePrompt(authenticationCallback);
@@ -207,8 +200,7 @@ public class AuthenticationManager {
                                 setUserId(authenticationResult.getUserInfo().getUserId());
                                 mAccessToken = authenticationResult.getAccessToken();
                                 authenticationCallback.onSuccess(authenticationResult);
-                            }
-                            else {
+                            } else {
                                 // We need to make sure that there is no data stored with the failed auth
                                 AuthenticationManager.getInstance().disconnect();
                                 // This condition can happen if user signs in with an MSA account
@@ -218,8 +210,7 @@ public class AuthenticationManager {
                                                 ADALError.AUTH_FAILED,
                                                 authenticationResult.getErrorDescription()));
                             }
-                        }
-                        else if (authenticationResult != null) {
+                        } else if (authenticationResult != null) {
                             // I could not authenticate the user silently,
                             // falling back to prompt the user for credentials.
                             authenticatePrompt(authenticationCallback);
@@ -247,8 +238,7 @@ public class AuthenticationManager {
                 mAuthenticationContext = new AuthenticationContext(this.mContextActivity,
                         Constants.AUTHORITY_URL,
                         false);
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 Log.e(TAG, t.toString());
             }
         }

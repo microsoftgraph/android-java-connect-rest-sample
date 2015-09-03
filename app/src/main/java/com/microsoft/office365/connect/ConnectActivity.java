@@ -55,8 +55,7 @@ public class ConnectActivity extends AppCompatActivity {
         try {
             UUID.fromString(Constants.CLIENT_ID);
             URI.create(Constants.REDIRECT_URI);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Toast.makeText(
                     this
                     , getString(R.string.warning_clientid_redirecturi_incorrect)
@@ -68,7 +67,6 @@ public class ConnectActivity extends AppCompatActivity {
 
         final Intent sendMailIntent = new Intent(this, SendMailActivity.class);
         AuthenticationManager.getInstance().setContextActivity(this);
-
         AuthenticationManager.getInstance().connect(
                 new AuthenticationCallback<AuthenticationResult>() {
                     /**

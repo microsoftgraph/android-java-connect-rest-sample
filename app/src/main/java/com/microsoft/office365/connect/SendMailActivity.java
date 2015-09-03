@@ -99,12 +99,10 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
                     return super.onOptionsItemSelected(item);
             }
 
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             if (t.getMessage() == null) {
                 Log.e(TAG, " ");
-            }
-            else {
+            } else {
                 Log.e(TAG, t.getMessage());
             }
         }

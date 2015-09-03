@@ -48,7 +48,7 @@ public class UnifiedAPIController {
 
         insureService();
             // Use the Unified API service on Office 365 to create the message.
-        mUnifiedAPIService.createDraftMail("application/json",
+        mUnifiedAPIService.createDraftMail("application/json;charset=utf-8;odata=minimalmetadata",
                 createMailPayload(subject, body, emailAddress),callback);
     }
     public void sendDraftMail(Response messageResponse, Callback<MailVO> callback){
@@ -83,7 +83,7 @@ public class UnifiedAPIController {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("Subject",subject);
-        jsonObject.addProperty("Importance","Low");
+        jsonObject.addProperty("Importance", "Low");
         jsonObject.add("Body", jsonObject_Body);
         jsonObject.add("ToRecipients", toRecipients);
 

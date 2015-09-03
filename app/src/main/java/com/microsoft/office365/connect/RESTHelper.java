@@ -28,6 +28,7 @@ public  class RESTHelper {
                 if (null != token) {
                     request.addHeader("Authorization", "Bearer " + token);
                 }
+                request.addHeader("host", "graph.microsoft.com"); //host: graph.microsoft.com
             }
         };
 

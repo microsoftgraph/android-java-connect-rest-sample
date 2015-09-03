@@ -14,15 +14,15 @@ public class MailVO {
     public String Importance;
     public ToRecipients[] toRecipients;
 
-    public class Body{
+    public class Body {
         public String contentType;
         public String content;
     }
 
-    public class ToRecipients{
+    public class ToRecipients {
         public EmailAddress emailAddress;
 
-        public class EmailAddress{
+        public class EmailAddress {
             public String address;
         }
     }

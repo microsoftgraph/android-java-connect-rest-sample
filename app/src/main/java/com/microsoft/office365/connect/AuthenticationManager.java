@@ -24,6 +24,8 @@ import com.microsoft.services.odata.interfaces.LogLevel;
 
 import java.io.UnsupportedEncodingException;
 
+import retrofit.Callback;
+
 /**
  * Handles setup of ADAL Dependency Resolver for use in API clients.
  */
@@ -44,27 +46,29 @@ public class AuthenticationManager {
      * In production scenarios, you should come up with your own implementation of this method.
      * Consider that your algorithm must return the same key so it can encrypt/decrypt values
      * successfully.
+     *
      * @return The encryption key in a 32 byte long array.
      */
     private static byte[] generateSecretKey() {
         byte[] key = new byte[32];
         byte[] android_id = null;
 
-        try{
+        try {
             android_id = Settings.Secure.ANDROID_ID.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e){
+        }
+        catch (UnsupportedEncodingException e) {
             Log.e(TAG, "generateSecretKey - " + e.getMessage());
             throw new RuntimeException(e);
         }
 
-        for(int i = 0; i < key.length; i++){
+        for (int i = 0; i < key.length; i++) {
             key[i] = android_id[i % android_id.length];
         }
 
         return key;
     }
 
-    static{
+    static {
         // Devices with API level lower than 18 must setup an encryption key.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 &&
                 AuthenticationSettings.INSTANCE.getSecretKeyData() == null) {
@@ -92,12 +96,14 @@ public class AuthenticationManager {
     }
 
     private static AuthenticationManager INSTANCE;
+
     private AuthenticationManager() {
         mResourceId = Constants.UNIFIED_ENDPOINT_RESOURCE_ID;
     }
 
     /**
      * Set the context activity before connecting to the currently active activity.
+     *
      * @param contextActivity Currently active activity which can be utilized for interactive
      *                        prompt.
      */
@@ -109,6 +115,7 @@ public class AuthenticationManager {
      * Change from the default Resource ID set in ServiceConstants to a different
      * resource ID.
      * This can be called at anytime without requiring another interactive prompt.
+     *
      * @param resourceId URL of resource ID to be accessed on behalf of user.
      */
     public void setResourceId(final String resourceId) {
@@ -118,18 +125,22 @@ public class AuthenticationManager {
 
     /**
      * Returns the access token obtained in authentication
+     *
      * @return mAccessToken
      */
-    public String getAccessToken(){
-        if (mAccessToken != null)
+    public String getAccessToken() {
+        if (mAccessToken != null) {
             return mAccessToken;
-        else
+        }
+        else {
             return "";
+        }
     }
 
 
     /**
      * Turn logging on.
+     *
      * @param level LogLevel to set.
      */
     public void enableLogging(LogLevel level) {
@@ -147,17 +158,21 @@ public class AuthenticationManager {
     /**
      * Calls {@link AuthenticationManager#authenticatePrompt(AuthenticationCallback)} if no user id is stored in the shared preferences.
      * Calls {@link AuthenticationManager#authenticateSilent(AuthenticationCallback)} otherwise.
+     *
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
     public void connect(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         if (verifyAuthenticationContext()) {
-            if(isConnected()) {
+            if (isConnected()) {
                 authenticateSilent(authenticationCallback);
-            } else {
+            }
+            else {
                 authenticatePrompt(authenticationCallback);
             }
-        } else {
-            Log.e(TAG, "connect - Auth context verification failed. Did you set a context activity?");
+        }
+        else {
+            Log.e(TAG,
+                    "connect - Auth context verification failed. Did you set a context activity?");
             throw new AuthenticationException(
                     ADALError.ACTIVITY_REQUEST_INTENT_DATA_IS_NULL,
                     "Auth context verification failed. Did you set a context activity?");
@@ -167,6 +182,7 @@ public class AuthenticationManager {
     /**
      * Calls acquireTokenSilent with the user id stored in shared preferences.
      * In case of an error, it falls back to {@link AuthenticationManager#authenticatePrompt(AuthenticationCallback)}.
+     *
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
     private void authenticateSilent(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
@@ -177,7 +193,7 @@ public class AuthenticationManager {
                 new AuthenticationCallback<AuthenticationResult>() {
                     @Override
                     public void onSuccess(final AuthenticationResult authenticationResult) {
-                        if (authenticationResult != null  ) {
+                        if (authenticationResult != null) {
                             if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
                                 mDependencyResolver = new ADALDependencyResolver(
                                         getAuthenticationContext(),
@@ -191,7 +207,8 @@ public class AuthenticationManager {
                                         (Exception) new Throwable(authenticationResult.getErrorDescription()));
 
                             }
-                        } else if (authenticationResult != null) {
+                        }
+                        else if (authenticationResult != null) {
                             // I could not authenticate the user silently,
                             // falling back to prompt the user for credentials.
                             authenticatePrompt(authenticationCallback);
@@ -210,6 +227,7 @@ public class AuthenticationManager {
 
     /**
      * Calls acquireToken to prompt the user for credentials.
+     *
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
     private void authenticatePrompt(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
@@ -222,8 +240,8 @@ public class AuthenticationManager {
                 new AuthenticationCallback<AuthenticationResult>() {
                     @Override
                     public void onSuccess(final AuthenticationResult authenticationResult) {
-                        if (authenticationResult != null ) {
-                            if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded){
+                        if (authenticationResult != null) {
+                            if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
                                 setUserId(authenticationResult.getUserInfo().getUserId());
                                 mDependencyResolver = new ADALDependencyResolver(
                                         getAuthenticationContext(),
@@ -242,7 +260,8 @@ public class AuthenticationManager {
                                                 ADALError.AUTH_FAILED,
                                                 authenticationResult.getErrorDescription()));
                             }
-                        }else if (authenticationResult != null) {
+                        }
+                        else if (authenticationResult != null) {
                             // I could not authenticate the user silently,
                             // falling back to prompt the user for credentials.
                             authenticatePrompt(authenticationCallback);
@@ -261,13 +280,17 @@ public class AuthenticationManager {
 
     /**
      * Gets authentication context for Azure Active Directory.
+     *
      * @return an authentication context, if successful.
      */
     public AuthenticationContext getAuthenticationContext() {
         if (mAuthenticationContext == null) {
             try {
-                mAuthenticationContext = new AuthenticationContext(this.mContextActivity, Constants.AUTHORITY_URL, false);
-            } catch (Throwable t) {
+                mAuthenticationContext = new AuthenticationContext(this.mContextActivity,
+                        Constants.AUTHORITY_URL,
+                        false);
+            }
+            catch (Throwable t) {
                 Log.e(TAG, t.toString());
             }
         }
@@ -276,7 +299,8 @@ public class AuthenticationManager {
 
     /**
      * Dependency resolver that can be used to create client objects.
-     * The {@link UnifiedAPIController#createDraftMail(String, String, String, retrofit.Callback<MailVO>)} uses it to create an OutlookClient object.
+     * The {@link UnifiedAPIController#sendMail(String, String, String, Callback)} uses it to create an OutlookClient object.
+     *
      * @return The dependency resolver object.
      */
     public DependencyResolver getDependencyResolver() {
@@ -287,9 +311,9 @@ public class AuthenticationManager {
      * Disconnects the app from Office 365 by clearing the token cache, setting the client objects
      * to null, and removing the user id from shred preferences.
      */
-    public void disconnect(){
+    public void disconnect() {
         // Clear tokens.
-        if(getAuthenticationContext().getCache() != null) {
+        if (getAuthenticationContext().getCache() != null) {
             getAuthenticationContext().getCache().removeAll();
         }
 
@@ -308,7 +332,7 @@ public class AuthenticationManager {
         return true;
     }
 
-    private boolean isConnected(){
+    private boolean isConnected() {
         SharedPreferences settings = this
                 .mContextActivity
                 .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
@@ -316,7 +340,7 @@ public class AuthenticationManager {
         return settings.contains(USER_ID_VAR_NAME);
     }
 
-    private String getUserId(){
+    private String getUserId() {
         SharedPreferences settings = this
                 .mContextActivity
                 .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
@@ -324,7 +348,7 @@ public class AuthenticationManager {
         return settings.getString(USER_ID_VAR_NAME, "");
     }
 
-    private void setUserId(String value){
+    private void setUserId(String value) {
         SharedPreferences settings = this
                 .mContextActivity
                 .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
@@ -334,7 +358,7 @@ public class AuthenticationManager {
         editor.apply();
     }
 
-    private void removeUserId(){
+    private void removeUserId() {
         SharedPreferences settings = this
                 .mContextActivity
                 .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);

@@ -20,8 +20,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static android.content.Intent.getIntent;
-
 /**
  * This activity handles the send mail operation of the app.
  * The app must be connected to Office 365 before this activity can send an email.
@@ -69,7 +67,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
         //Prepare body message and insert name of sender
         String body = getResources().getString(R.string.mail_body_text);
         //TODO Can a format command be used here?
-        body = body.replace("{0}",mGivenName);
+        body = body.replace("{0}", mGivenName);
 
         UnifiedAPIController
                 .getInstance()
@@ -101,11 +99,14 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
                     return super.onOptionsItemSelected(item);
             }
 
-        } catch (Throwable t) {
-            if (t.getMessage() == null)
+        }
+        catch (Throwable t) {
+            if (t.getMessage() == null) {
                 Log.e(TAG, " ");
-            else
+            }
+            else {
                 Log.e(TAG, t.getMessage());
+            }
         }
         return true;
     }

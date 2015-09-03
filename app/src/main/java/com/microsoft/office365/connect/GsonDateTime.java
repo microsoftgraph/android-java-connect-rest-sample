@@ -8,13 +8,14 @@ import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
 
 public class GsonDateTime {
-    public  static GsonBuilder getDirectoryServiceBuilder() {
+    public static GsonBuilder getDirectoryServiceBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeSerializer());
         gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeDeSerializer());
         return gsonBuilder;
     }
-}// *********************************************************
+}
+// *********************************************************
 //
 // O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
 //

@@ -7,30 +7,38 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-public  class RESTHelper {
+public class RESTHelper {
 
-    private  String mAccessToken;
-    private RequestInterceptor mRequestInterceptor;
+    private String mAccessToken;
 
-    public  RESTHelper (String AccessToken) {
+    public RESTHelper(String AccessToken) {
         mAccessToken = AccessToken;
     }
-    public  RestAdapter getRestAdapter() {
+
+    /**
+     * Returns a retrofit rest adaptor class. The adaptor is created in calling code.
+     *
+     * @return
+     */
+    public RestAdapter getRestAdapter() {
         GsonConverter mGsonConverter = new GsonConverter(GsonDateTime.getDirectoryServiceBuilder()
                 .create());
 
 
-        RequestInterceptor requestInterceptor =  new RequestInterceptor() {
+        //This method catches outgoing REST calls and injects the Authorization and host headers before
+        //sending to REST endpoint
+        RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
                 final String token = mAccessToken;
                 if (null != token) {
                     request.addHeader("Authorization", "Bearer " + token);
                 }
-                request.addHeader("host", "graph.microsoft.com"); //host: graph.microsoft.com
+                request.addHeader("host", "graph.microsoft.com");
             }
         };
 
+        //Sets required properties in rest adaptor class before it is created.
         return new RestAdapter.Builder()
                 .setEndpoint(Constants.UNIFIED_API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -41,7 +49,7 @@ public  class RESTHelper {
 
 }// *********************************************************
 //
-// O365-Android-OneNote-Rest, https://github.com/OfficeDev/O365-Android-OneNote-Rest
+// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

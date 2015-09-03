@@ -15,7 +15,6 @@ import retrofit.mime.TypedString;
  */
 public class UnifiedAPIController {
 
-    private static final String TAG = "UnifiedAPIController";
     private static UnifiedAPIController INSTANCE;
     private RESTHelper mRESTHelper;
     private UnifiedAPIService mUnifiedAPIService;
@@ -39,15 +38,30 @@ public class UnifiedAPIController {
      * @param emailAddress The recipient email address.
      * @param subject      The subject to use in the mail message.
      * @param body         The body of the message.
+     * @param callback     UI callback to be invoked by Retrofit call when
+     *                     operation completed
      */
-    public void sendMail(final String emailAddress, final String subject, final String body, Callback<MailVO> callback) {
+    public void sendMail(
+            final String emailAddress,
+            final String subject,
+            final String body,
+            Callback<MailVO> callback) {
         insureService();
         // Use the Unified API service on Office 365 to create the message.
-        mUnifiedAPIService.sendMail("application/json", createMailPayload(subject, body, emailAddress), callback);
+        mUnifiedAPIService.sendMail(
+                "application/json",
+                createMailPayload(
+                        subject,
+                        body,
+                        emailAddress),
+                callback);
     }
 
 
-    private TypedString createMailPayload(String subject, String body, String address) {
+    private TypedString createMailPayload(
+            String subject,
+            String body,
+            String address) {
         String templateEmail = String.format("{" +
                         "    Message: {" +
                         "        Subject: \"%s\"," +
@@ -71,11 +85,13 @@ public class UnifiedAPIController {
         return typedEmail;
     }
 
+    //Creates a unified endpoint service interface if it does not exist.
     private void insureService() {
-        if (mUnifiedAPIService == null)
+        if (mUnifiedAPIService == null) {
             mUnifiedAPIService = mRESTHelper
                     .getRestAdapter()
                     .create(UnifiedAPIService.class);
+        }
     }
 }
 

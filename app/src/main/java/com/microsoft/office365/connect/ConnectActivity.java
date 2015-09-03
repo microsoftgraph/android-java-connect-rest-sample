@@ -45,6 +45,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     /**
      * Event handler for the onclick event of the button.
+     *
      * @param v
      */
     public void onConnectButtonClick(View v) {
@@ -102,12 +103,13 @@ public class ConnectActivity extends AppCompatActivity {
 
     /**
      * This activity gets notified about the completion of the ADAL activity through this method.
+     *
      * @param requestCode The integer request code originally supplied to startActivityForResult(),
      *                    allowing you to identify who this result came from.
-     * @param resultCode The integer result code returned by the child activity through its
-     *                   setResult().
-     * @param data An Intent, which can return result data to the caller (various data
-     *             can be attached to Intent "extras").
+     * @param resultCode  The integer result code returned by the child activity through its
+     *                    setResult().
+     * @param data        An Intent, which can return result data to the caller (various data
+     *                    can be attached to Intent "extras").
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -119,28 +121,28 @@ public class ConnectActivity extends AppCompatActivity {
                 .onActivityResult(requestCode, resultCode, data);
     }
 
-    private void initializeViews(){
-        mConnectButton = (Button)findViewById(R.id.connectButton);
-        mConnectProgressBar = (ProgressBar)findViewById(R.id.connectProgressBar);
-        mTitleTextView = (TextView)findViewById(R.id.titleTextView);
-        mDescriptionTextView = (TextView)findViewById(R.id.descriptionTextView);
+    private void initializeViews() {
+        mConnectButton = (Button) findViewById(R.id.connectButton);
+        mConnectProgressBar = (ProgressBar) findViewById(R.id.connectProgressBar);
+        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
+        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
     }
 
-    private void resetUIForConnect(){
+    private void resetUIForConnect() {
         mConnectButton.setVisibility(View.VISIBLE);
         mTitleTextView.setVisibility(View.GONE);
         mDescriptionTextView.setVisibility(View.GONE);
         mConnectProgressBar.setVisibility(View.GONE);
     }
 
-    private void showConnectingInProgressUI(){
+    private void showConnectingInProgressUI() {
         mConnectButton.setVisibility(View.GONE);
         mTitleTextView.setVisibility(View.GONE);
         mDescriptionTextView.setVisibility(View.GONE);
         mConnectProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void showConnectErrorUI(){
+    private void showConnectErrorUI() {
         mConnectButton.setVisibility(View.VISIBLE);
         mConnectProgressBar.setVisibility(View.GONE);
         mTitleTextView.setText(R.string.title_text_error);

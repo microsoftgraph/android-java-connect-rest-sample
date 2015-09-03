@@ -6,8 +6,8 @@ package com.microsoft.office365.connect;
 interface Constants {
     public static final String AUTHORITY_URL = "https://login.microsoftonline.com/common";
     // Update these two constants with the values for your application:
-    public static final String CLIENT_ID = "<Your client id here>";
-    public static final String REDIRECT_URI = "<Your redirect URI here>";
+    public static final String CLIENT_ID = "bbe42a51-40df-4bab-aafe-f12f5f0c5b13";
+    public static final String REDIRECT_URI = "http://www.microsoft.com";
     public static final String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/beta/";
     public static final String UNIFIED_ENDPOINT_RESOURCE_ID = "https://graph.microsoft.com/";
 }

@@ -18,13 +18,8 @@ import com.microsoft.aad.adal.AuthenticationResult;
 import com.microsoft.aad.adal.AuthenticationResult.AuthenticationStatus;
 import com.microsoft.aad.adal.AuthenticationSettings;
 import com.microsoft.aad.adal.PromptBehavior;
-import com.microsoft.services.odata.impl.ADALDependencyResolver;
-import com.microsoft.services.odata.interfaces.DependencyResolver;
-import com.microsoft.services.odata.interfaces.LogLevel;
 
 import java.io.UnsupportedEncodingException;
-
-import retrofit.Callback;
 
 /**
  * Handles setup of ADAL Dependency Resolver for use in API clients.
@@ -35,7 +30,6 @@ public class AuthenticationManager {
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
     private AuthenticationContext mAuthenticationContext;
-    private ADALDependencyResolver mDependencyResolver;
     private Activity mContextActivity;
     private String mResourceId;
     private String mAccessToken;
@@ -112,18 +106,6 @@ public class AuthenticationManager {
     }
 
     /**
-     * Change from the default Resource ID set in ServiceConstants to a different
-     * resource ID.
-     * This can be called at anytime without requiring another interactive prompt.
-     *
-     * @param resourceId URL of resource ID to be accessed on behalf of user.
-     */
-    public void setResourceId(final String resourceId) {
-        this.mResourceId = resourceId;
-        this.mDependencyResolver.setResourceId(resourceId);
-    }
-
-    /**
      * Returns the access token obtained in authentication
      *
      * @return mAccessToken
@@ -138,22 +120,6 @@ public class AuthenticationManager {
     }
 
 
-    /**
-     * Turn logging on.
-     *
-     * @param level LogLevel to set.
-     */
-    public void enableLogging(LogLevel level) {
-        this.mDependencyResolver.getLogger().setEnabled(true);
-        this.mDependencyResolver.getLogger().setLogLevel(level);
-    }
-
-    /**
-     * Turn logging off.
-     */
-    public void disableLogging() {
-        this.mDependencyResolver.getLogger().setEnabled(false);
-    }
 
     /**
      * Calls {@link AuthenticationManager#authenticatePrompt(AuthenticationCallback)} if no user id is stored in the shared preferences.
@@ -195,10 +161,6 @@ public class AuthenticationManager {
                     public void onSuccess(final AuthenticationResult authenticationResult) {
                         if (authenticationResult != null) {
                             if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
-                                mDependencyResolver = new ADALDependencyResolver(
-                                        getAuthenticationContext(),
-                                        mResourceId,
-                                        Constants.CLIENT_ID);
                                 mAccessToken = authenticationResult.getAccessToken();
                                 authenticationCallback.onSuccess(authenticationResult);
                             }
@@ -243,10 +205,6 @@ public class AuthenticationManager {
                         if (authenticationResult != null) {
                             if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
                                 setUserId(authenticationResult.getUserInfo().getUserId());
-                                mDependencyResolver = new ADALDependencyResolver(
-                                        getAuthenticationContext(),
-                                        mResourceId,
-                                        Constants.CLIENT_ID);
                                 mAccessToken = authenticationResult.getAccessToken();
                                 authenticationCallback.onSuccess(authenticationResult);
                             }
@@ -295,16 +253,6 @@ public class AuthenticationManager {
             }
         }
         return mAuthenticationContext;
-    }
-
-    /**
-     * Dependency resolver that can be used to create client objects.
-     * The {@link UnifiedAPIController#sendMail(String, String, String, Callback)} uses it to create an OutlookClient object.
-     *
-     * @return The dependency resolver object.
-     */
-    public DependencyResolver getDependencyResolver() {
-        return getInstance().mDependencyResolver;
     }
 
     /**

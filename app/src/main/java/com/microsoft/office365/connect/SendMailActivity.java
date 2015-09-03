@@ -38,6 +38,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
     private ImageButton mSendMailButton;
     private ProgressBar mSendMailProgressBar;
     private TextView mConclusionTextView;
+    private String mGivenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,8 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
         initializeViews();
 
         // Extract the givenName and displayableId and use it in the UI.
-        mTitleTextView.append(getIntent()
-                .getStringExtra("givenName") + "!");
+        mGivenName = getIntent().getStringExtra("givenName");
+        mTitleTextView.append(mGivenName + "!");
         mEmailEditText.setText(getIntent()
                 .getStringExtra("displayableId"));
     }
@@ -64,12 +65,18 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
      */
     public void onSendMailButtonClick(View v) {
         resetUIForSendMail();
+
+        //Prepare body message and insert name of sender
+        String body = getResources().getString(R.string.mail_body_text);
+        //TODO Can a format command be used here?
+        body = body.replace("{0}",mGivenName);
+
         UnifiedAPIController
                 .getInstance()
-                .createDraftMail(
+                .sendMail(
                         mEmailEditText.getText().toString(),
                         getResources().getString(R.string.mail_subject_text),
-                        getResources().getString(R.string.mail_body_text),
+                        body,
                         this);
     }
 
@@ -165,24 +172,8 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
 
     @Override
     public void success(MailVO result, Response response) {
-
-        UnifiedAPIController
-                .getInstance()
-                .sendDraftMail(response,
-                        new Callback<MailVO>() {
-                            @Override
-                            public void success(MailVO mailVO, Response response) {
-                                Log.i(TAG, "sendMailToRecipient - Mail sent");
-                                showSendMailSuccessUI();
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.e(TAG, "onSendMailButtonClick - " + error.getMessage());
-                                showSendMailErrorUI();
-                            }
-                        }
-                );
+        Log.i(TAG, "sendMailToRecipient - Mail sent");
+        showSendMailSuccessUI();
     }
 
     @Override

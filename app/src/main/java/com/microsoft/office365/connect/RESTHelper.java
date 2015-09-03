@@ -9,7 +9,6 @@ import retrofit.converter.GsonConverter;
 
 public  class RESTHelper {
 
-    private GsonConverter mGsonConverter;
     private  String mAccessToken;
     private RequestInterceptor mRequestInterceptor;
 
@@ -17,7 +16,7 @@ public  class RESTHelper {
         mAccessToken = AccessToken;
     }
     public  RestAdapter getRestAdapter() {
-        mGsonConverter = new GsonConverter(GsonDateTime.getDirectoryServiceBuilder()
+        GsonConverter mGsonConverter = new GsonConverter(GsonDateTime.getDirectoryServiceBuilder()
                 .create());
 
 

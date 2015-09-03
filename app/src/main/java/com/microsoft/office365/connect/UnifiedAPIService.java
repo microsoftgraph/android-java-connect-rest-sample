@@ -22,5 +22,12 @@ public interface UnifiedAPIService {
     void SendDraftMail(
             @Path("messageID") String messageID,
             Callback<MailVO> callback);
+
+    @POST("/me/sendMail")
+    void sendMail(@Header("Content-type") String contentTypeHeader,
+            @Body TypedString mail,
+            Callback<MailVO> callback);
+
+
 }
 

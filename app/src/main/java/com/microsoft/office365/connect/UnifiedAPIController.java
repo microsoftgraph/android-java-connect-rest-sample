@@ -3,11 +3,7 @@
  */
 package com.microsoft.office365.connect;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.mime.TypedString;
 
 
@@ -31,7 +27,7 @@ public class UnifiedAPIController {
         return INSTANCE;
     }
 
-    private UnifiedAPIController(){
+    private UnifiedAPIController() {
         mRESTHelper = new RESTHelper(AuthenticationManager.getInstance().getAccessToken());
     }
 
@@ -44,53 +40,35 @@ public class UnifiedAPIController {
      * @param subject      The subject to use in the mail message.
      * @param body         The body of the message.
      */
-    public void createDraftMail(final String emailAddress, final String subject, final String body, Callback<MailVO> callback) {
-
+    public void sendMail(final String emailAddress, final String subject, final String body, Callback<MailVO> callback) {
         insureService();
-            // Use the Unified API service on Office 365 to create the message.
-        mUnifiedAPIService.createDraftMail("application/json",
-                createMailPayload(subject, body, emailAddress),callback);
+        // Use the Unified API service on Office 365 to create the message.
+        mUnifiedAPIService.sendMail("application/json", createMailPayload(subject, body, emailAddress), callback);
     }
-    public void sendDraftMail(Response messageResponse, Callback<MailVO> callback){
-        int messageIdIndex = messageResponse.getHeaders().indexOf("Id");
-
-        insureService();
-
-        String MessageId = messageResponse
-                .getHeaders()
-                .get(messageIdIndex)
-                .getValue();
-
-         mUnifiedAPIService.SendDraftMail(MessageId, callback);
-        // Use the Unified API service on Office 365 to send the message.
-
-    }
-    private TypedString createMailPayload(String subject, String bodyString, String address){
-
-        JsonObject jsonObject_Body = new JsonObject();
-        jsonObject_Body.addProperty("ContentType", "HTML");
-        jsonObject_Body.addProperty("Content", bodyString);
-
-         JsonObject jsonObject_ToAddress = new JsonObject();
-         jsonObject_ToAddress.addProperty("Address", address);
-
-        JsonObject jsonObject_ToRecipient = new JsonObject();
-        jsonObject_ToRecipient.add("EmailAddress", jsonObject_ToAddress);
-
-        JsonArray  toRecipients = new JsonArray();
-        toRecipients.add(jsonObject_ToRecipient);
 
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("Subject",subject);
-        jsonObject.addProperty("Importance","Low");
-        jsonObject.add("Body", jsonObject_Body);
-        jsonObject.add("ToRecipients", toRecipients);
+    private TypedString createMailPayload(String subject, String body, String address) {
+        String templateEmail = String.format("{" +
+                        "    Message: {" +
+                        "        Subject: \"%s\"," +
+                        "        Body: {" +
+                        "            ContentType: \"HTML\"," +
+                        "            Content: \"%s\"" +
+                        "        }," +
+                        "        ToRecipients: [{" +
+                        "            EmailAddress: {" +
+                        "                Address: \"%s\"" +
+                        "            }" +
+                        "        }]" +
+                        "    }," +
+                        "    SaveToSentItems: true" +
+                        "}",
+                subject,
+                body,
+                address);
+        TypedString typedEmail = new TypedString(templateEmail);
 
-        return new TypedString(jsonObject.toString()){
-            @Override
-            public String mimeType() {return "application/json";}
-        };
+        return typedEmail;
     }
 
     private void insureService() {
@@ -98,8 +76,6 @@ public class UnifiedAPIController {
             mUnifiedAPIService = mRESTHelper
                     .getRestAdapter()
                     .create(UnifiedAPIService.class);
-
-
     }
 }
 

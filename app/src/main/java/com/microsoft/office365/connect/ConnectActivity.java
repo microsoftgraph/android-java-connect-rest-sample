@@ -46,7 +46,7 @@ public class ConnectActivity extends AppCompatActivity {
     /**
      * Event handler for the onclick event of the button.
      *
-     * @param v
+     * @param v The view
      */
     public void onConnectButtonClick(View v) {
         showConnectingInProgressUI();

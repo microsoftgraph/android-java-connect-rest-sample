@@ -23,8 +23,7 @@ import retrofit.client.Response;
 /**
  * This activity handles the send mail operation of the app.
  * The app must be connected to Office 365 before this activity can send an email.
- * The activity uses the DiscoveryController class to get the service endpoint. It also
- * uses the MailController to send the message.
+ * It also uses the UnifiedAPIController to send the message.
  */
 public class SendMailActivity extends AppCompatActivity implements Callback<MailVO> {
 
@@ -66,7 +65,6 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
 
         //Prepare body message and insert name of sender
         String body = getResources().getString(R.string.mail_body_text);
-        //TODO Can a format command be used here?
         body = body.replace("{0}", mGivenName);
 
         UnifiedAPIController

@@ -25,7 +25,7 @@ import retrofit.client.Response;
  * The app must be connected to Office 365 before this activity can send an email.
  * It also uses the UnifiedAPIController to send the message.
  */
-public class SendMailActivity extends AppCompatActivity implements Callback<MailVO> {
+public class SendMailActivity extends AppCompatActivity implements Callback<Void> {
 
     private static final String TAG = "SendMailActivity";
 
@@ -41,14 +41,21 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
-
         initializeViews();
-
         // Extract the givenName and displayableId and use it in the UI.
         mGivenName = getIntent().getStringExtra("givenName");
         mTitleTextView.append(mGivenName + "!");
         mEmailEditText.setText(getIntent()
                 .getStringExtra("displayableId"));
+    }
+
+    private void initializeViews() {
+        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
+        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+        mEmailEditText = (EditText) findViewById(R.id.emailEditText);
+        mSendMailButton = (ImageButton) findViewById(R.id.sendMailButton);
+        mSendMailProgressBar = (ProgressBar) findViewById(R.id.sendMailProgressBar);
+        mConclusionTextView = (TextView) findViewById(R.id.conclusionTextView);
     }
 
     /**
@@ -107,15 +114,6 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
         return true;
     }
 
-    private void initializeViews() {
-        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
-        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
-        mEmailEditText = (EditText) findViewById(R.id.emailEditText);
-        mSendMailButton = (ImageButton) findViewById(R.id.sendMailButton);
-        mSendMailProgressBar = (ProgressBar) findViewById(R.id.sendMailProgressBar);
-        mConclusionTextView = (TextView) findViewById(R.id.conclusionTextView);
-    }
-
     private void resetUIForSendMail() {
         mSendMailButton.setVisibility(View.GONE);
         mConclusionTextView.setVisibility(View.GONE);
@@ -168,7 +166,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
     }
 
     @Override
-    public void success(MailVO result, Response response) {
+    public void success(Void _void, Response response) {
         Log.i(TAG, "sendMailToRecipient - Mail sent");
         showSendMailSuccessUI();
     }

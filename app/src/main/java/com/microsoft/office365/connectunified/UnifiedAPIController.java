@@ -3,6 +3,13 @@
  */
 package com.microsoft.office365.connectunified;
 
+import com.google.gson.Gson;
+import com.microsoft.office365.connectunified.vo.BodyVO;
+import com.microsoft.office365.connectunified.vo.EmailAddressVO;
+import com.microsoft.office365.connectunified.vo.MessageVO;
+import com.microsoft.office365.connectunified.vo.MessageWrapper;
+import com.microsoft.office365.connectunified.vo.ToRecipientsVO;
+
 import retrofit.Callback;
 import retrofit.mime.TypedString;
 
@@ -45,8 +52,8 @@ public class UnifiedAPIController {
             final String emailAddress,
             final String subject,
             final String body,
-            Callback<MailVO> callback) {
-        insureService();
+            Callback<Void> callback) {
+        ensureService();
         // Use the Unified API service on Office 365 to create the message.
         mUnifiedAPIService.sendMail(
                 "application/json",
@@ -62,31 +69,30 @@ public class UnifiedAPIController {
             String subject,
             String body,
             String address) {
-        String templateEmail = String.format("{" +
-                        "    Message: {" +
-                        "        Subject: \"%s\"," +
-                        "        Body: {" +
-                        "            ContentType: \"HTML\"," +
-                        "            Content: \"%s\"" +
-                        "        }," +
-                        "        ToRecipients: [{" +
-                        "            EmailAddress: {" +
-                        "                Address: \"%s\"" +
-                        "            }" +
-                        "        }]" +
-                        "    }," +
-                        "    SaveToSentItems: true" +
-                        "}",
-                subject,
-                body,
-                address);
-        TypedString typedEmail = new TypedString(templateEmail);
+        EmailAddressVO emailAddressVO = new EmailAddressVO();
+        emailAddressVO.mAddress = address;
+
+        ToRecipientsVO toRecipientsVO = new ToRecipientsVO();
+        toRecipientsVO.emailAddress = emailAddressVO;
+
+        BodyVO bodyVO = new BodyVO();
+        bodyVO.mContentType = "HTML";
+        bodyVO.mContent = body;
+
+        MessageVO sampleMsg = new MessageVO();
+        sampleMsg.mSubject = subject;
+        sampleMsg.mBody = bodyVO;
+        sampleMsg.mToRecipients = new ToRecipientsVO[]{toRecipientsVO};
+
+        MessageWrapper wrapper = new MessageWrapper(sampleMsg);
+
+        TypedString typedEmail = new TypedString(new Gson().toJson(wrapper));
 
         return typedEmail;
     }
 
     //Creates a unified endpoint service interface if it does not exist.
-    private void insureService() {
+    private void ensureService() {
         if (mUnifiedAPIService == null) {
             mUnifiedAPIService = mRESTHelper
                     .getRestAdapter()

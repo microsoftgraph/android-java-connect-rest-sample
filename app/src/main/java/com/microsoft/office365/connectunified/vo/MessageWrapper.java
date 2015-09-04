@@ -1,17 +1,24 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectunified.vo;
 
-interface Constants {
-    String AUTHORITY_URL = "https://login.microsoftonline.com/common";
-    // Update these two constants with the values for your application:
-    String CLIENT_ID = "<Your client id here>";
-    String REDIRECT_URI = "<Your redirect uri here>";
-    String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/beta/";
-    String UNIFIED_ENDPOINT_RESOURCE_ID = "https://graph.microsoft.com/";
+import android.annotation.SuppressLint;
+
+import com.google.gson.annotations.SerializedName;
+
+public class MessageWrapper {
+
+    @SuppressLint("unused")
+    public MessageWrapper() {}
+
+    public MessageWrapper(MessageVO msg) {
+        mMessage = msg;
+    }
+
+    @SerializedName("Message")
+    public MessageVO mMessage;
 }
-
 // *********************************************************
 //
 // O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git

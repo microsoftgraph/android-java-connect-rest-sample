@@ -1,5 +1,4 @@
 # Office 365 Connect Sample for Android Using Unified API
-[![Build Status](https://travis-ci.org/OfficeDev/O365-Android-Connect.svg)](https://travis-ci.org/OfficeDev/O365-Android-Connect)
 
 [![Office 365 Connect sample](/readme-images/O365-Android-Connect-video_play_icon.png)](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Click to see the sample in action")
 

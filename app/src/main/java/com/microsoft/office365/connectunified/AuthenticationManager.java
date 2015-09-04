@@ -45,7 +45,7 @@ public class AuthenticationManager {
      */
     private static byte[] generateSecretKey() {
         byte[] key = new byte[32];
-        byte[] android_id = null;
+        byte[] android_id;
 
         try {
             android_id = Settings.Secure.ANDROID_ID.getBytes("UTF-8");
@@ -160,10 +160,10 @@ public class AuthenticationManager {
                                 authenticationCallback.onSuccess(authenticationResult);
                             } else {
                                 authenticationCallback.onError(
-                                        (Exception) new Throwable(authenticationResult.getErrorDescription()));
+                                        new Exception(authenticationResult.getErrorDescription()));
 
                             }
-                        } else if (authenticationResult != null) {
+                        } else {
                             // I could not authenticate the user silently,
                             // falling back to prompt the user for credentials.
                             authenticatePrompt(authenticationCallback);
@@ -210,7 +210,7 @@ public class AuthenticationManager {
                                                 ADALError.AUTH_FAILED,
                                                 authenticationResult.getErrorDescription()));
                             }
-                        } else if (authenticationResult != null) {
+                        } else {
                             // I could not authenticate the user silently,
                             // falling back to prompt the user for credentials.
                             authenticatePrompt(authenticationCallback);

@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * Mail Value Object for holding values in an email
  */
-public class MailVO {
+public class MessageVO {
 
     @SerializedName("Subject")
     public String mSubject;

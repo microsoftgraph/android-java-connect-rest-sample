@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.microsoft.office365.connectunified.vo.MailVO;
+import com.microsoft.office365.connectunified.vo.MessageVO;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -27,7 +27,7 @@ import retrofit.client.Response;
  * The app must be connected to Office 365 before this activity can send an email.
  * It also uses the UnifiedAPIController to send the message.
  */
-public class SendMailActivity extends AppCompatActivity implements Callback<MailVO> {
+public class SendMailActivity extends AppCompatActivity implements Callback<MessageVO> {
 
     private static final String TAG = "SendMailActivity";
 
@@ -168,9 +168,15 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
     }
 
     @Override
-    public void success(MailVO result, Response response) {
+    public void success(MessageVO result, Response response) {
         Log.i(TAG, "sendMailToRecipient - Mail sent");
-        Log.d(TAG, result.toString());
+        //
+        Log.d(TAG, "\n\n\n\nRESPONSE");
+        if (null != response)
+            Log.d(TAG, response.getBody().toString());
+        if (null != result)
+            Log.d(TAG, result.toString());
+        //
         showSendMailSuccessUI();
     }
 

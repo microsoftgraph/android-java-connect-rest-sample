@@ -3,6 +3,8 @@
  */
 package com.microsoft.office365.connectunified;
 
+import com.microsoft.office365.connectunified.vo.MailVO;
+
 import retrofit.Callback;
 import retrofit.mime.TypedString;
 

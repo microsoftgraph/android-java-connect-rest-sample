@@ -5,27 +5,25 @@
 package com.microsoft.office365.connectunified.vo;
 
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Mail Value Object for holding values in an email
  */
 public class MailVO {
-    public String subject;
-    public Body body;
-    public String importance;
-    public ToRecipients[] toRecipients;
 
-    public class Body {
-        public String contentType;
-        public String content;
-    }
+    @SerializedName("Subject")
+    public String mSubject;
 
-    public class ToRecipients {
-        public EmailAddress emailAddress;
+    @SerializedName("Body")
+    public BodyVO mBody;
 
-        public class EmailAddress {
-            public String address;
-        }
-    }
+    @SerializedName("Importance")
+    public String mImportance;
+
+    @SerializedName("ToRecipients")
+    public ToRecipientsVO[] mToRecipients;
+
 }
 // *********************************************************
 //
@@ -55,5 +53,3 @@ public class MailVO {
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // *********************************************************
-
-

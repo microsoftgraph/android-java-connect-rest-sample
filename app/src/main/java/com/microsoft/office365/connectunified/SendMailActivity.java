@@ -43,14 +43,21 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
-
         initializeViews();
-
         // Extract the givenName and displayableId and use it in the UI.
         mGivenName = getIntent().getStringExtra("givenName");
         mTitleTextView.append(mGivenName + "!");
         mEmailEditText.setText(getIntent()
                 .getStringExtra("displayableId"));
+    }
+
+    private void initializeViews() {
+        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
+        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+        mEmailEditText = (EditText) findViewById(R.id.emailEditText);
+        mSendMailButton = (ImageButton) findViewById(R.id.sendMailButton);
+        mSendMailProgressBar = (ProgressBar) findViewById(R.id.sendMailProgressBar);
+        mConclusionTextView = (TextView) findViewById(R.id.conclusionTextView);
     }
 
     /**
@@ -109,15 +116,6 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
         return true;
     }
 
-    private void initializeViews() {
-        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
-        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
-        mEmailEditText = (EditText) findViewById(R.id.emailEditText);
-        mSendMailButton = (ImageButton) findViewById(R.id.sendMailButton);
-        mSendMailProgressBar = (ProgressBar) findViewById(R.id.sendMailProgressBar);
-        mConclusionTextView = (TextView) findViewById(R.id.conclusionTextView);
-    }
-
     private void resetUIForSendMail() {
         mSendMailButton.setVisibility(View.GONE);
         mConclusionTextView.setVisibility(View.GONE);
@@ -172,6 +170,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Mail
     @Override
     public void success(MailVO result, Response response) {
         Log.i(TAG, "sendMailToRecipient - Mail sent");
+        Log.d(TAG, result.toString());
         showSendMailSuccessUI();
     }
 

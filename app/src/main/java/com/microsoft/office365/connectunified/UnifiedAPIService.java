@@ -12,17 +12,11 @@ import retrofit.mime.TypedString;
 
 
 public interface UnifiedAPIService {
-
-    //See https://msdn.microsoft.com/office/office365/HowTo/examples-of-office-365-unified-api-calls#msg_eg_manage_me_send_mail_message_draft
-    //for more information on creating and sending mail using the Unified API.
-
     @POST("/me/sendMail")
     void sendMail(
             @Header("Content-type") String contentTypeHeader,
             @Body TypedString mail,
             Callback<Void> callback);
-
-
 }
 // *********************************************************
 //

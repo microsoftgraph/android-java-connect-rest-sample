@@ -48,7 +48,7 @@ public class UnifiedAPIController {
             final String subject,
             final String body,
             Callback<MailVO> callback) {
-        insureService();
+        ensureService();
         // Use the Unified API service on Office 365 to create the message.
         mUnifiedAPIService.sendMail(
                 "application/json",
@@ -88,7 +88,7 @@ public class UnifiedAPIController {
     }
 
     //Creates a unified endpoint service interface if it does not exist.
-    private void insureService() {
+    private void ensureService() {
         if (mUnifiedAPIService == null) {
             mUnifiedAPIService = mRESTHelper
                     .getRestAdapter()

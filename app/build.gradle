@@ -27,7 +27,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
 
     // Azure Active Directory Library
-    compile group: 'com.microsoft.aad', name: 'adal', version: '1.1.2'
+    compile 'com.microsoft.aad:adal:1.1.2'
 
     // Retrofit + custom HTTP
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'

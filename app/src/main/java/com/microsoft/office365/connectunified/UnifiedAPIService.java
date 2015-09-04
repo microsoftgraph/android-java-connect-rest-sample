@@ -4,8 +4,6 @@
 
 package com.microsoft.office365.connectunified;
 
-import com.microsoft.office365.connectunified.vo.MessageVO;
-
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.Header;
@@ -22,7 +20,7 @@ public interface UnifiedAPIService {
     void sendMail(
             @Header("Content-type") String contentTypeHeader,
             @Body TypedString mail,
-            Callback<MessageVO> callback);
+            Callback<Void> callback);
 
 
 }

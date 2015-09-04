@@ -52,7 +52,7 @@ public class UnifiedAPIController {
             final String emailAddress,
             final String subject,
             final String body,
-            Callback<MessageVO> callback) {
+            Callback<Void> callback) {
         ensureService();
         // Use the Unified API service on Office 365 to create the message.
         mUnifiedAPIService.sendMail(

@@ -26,16 +26,6 @@ public class MessageVO {
     @SerializedName("ToRecipients")
     public ToRecipientsVO[] mToRecipients;
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("MailVO{");
-        sb.append("mSubject='").append(mSubject).append('\'');
-        sb.append(", mBody=").append(mBody);
-        sb.append(", mImportance='").append(mImportance).append('\'');
-        sb.append(", mToRecipients=").append(mToRecipients == null ? "null" : Arrays.asList(mToRecipients).toString());
-        sb.append('}');
-        return sb.toString();
-    }
 }
 // *********************************************************
 //

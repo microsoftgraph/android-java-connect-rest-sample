@@ -13,14 +13,6 @@ public class BodyVO {
     @SerializedName("Content")
     public String mContent;
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("BodyVO{");
-        sb.append("mContentType='").append(mContentType).append('\'');
-        sb.append(", mContent='").append(mContent).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
 }
 // *********************************************************
 //

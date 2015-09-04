@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.microsoft.aad.adal.AuthenticationCallback;
+import com.microsoft.aad.adal.AuthenticationCancelError;
 import com.microsoft.aad.adal.AuthenticationResult;
 
 import java.net.URI;
@@ -94,7 +95,11 @@ public class ConnectActivity extends AppCompatActivity {
                     @Override
                     public void onError(final Exception e) {
                         Log.e(TAG, "onCreate - " + e.getMessage());
-                        showConnectErrorUI();
+                        if (!(e instanceof AuthenticationCancelError)) {
+                            showConnectErrorUI();
+                        } else {
+                            resetUIForConnect();
+                        }
                     }
                 });
     }

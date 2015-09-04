@@ -1,7 +1,7 @@
 /*
 *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
 */
-package com.microsoft.office365.connect;
+package com.microsoft.office365.connectunified;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -17,7 +17,7 @@ public class RESTHelper {
     /**
      * Returns a retrofit rest adaptor class. The adaptor is created in calling code.
      *
-     * @return
+     * @return A new RestAdapter instance.
      */
     public RestAdapter getRestAdapter() {
         //This method catches outgoing REST calls and injects the Authorization and host headers before
@@ -29,7 +29,6 @@ public class RESTHelper {
                 if (null != token) {
                     request.addHeader("Authorization", "Bearer " + token);
                 }
-                request.addHeader("host", "graph.microsoft.com");
             }
         };
 

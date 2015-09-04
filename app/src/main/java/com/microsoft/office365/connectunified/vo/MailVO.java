@@ -2,7 +2,7 @@
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
 
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectunified.vo;
 
 
 /**
@@ -11,7 +11,7 @@ package com.microsoft.office365.connectunified;
 public class MailVO {
     public String subject;
     public Body body;
-    public String Importance;
+    public String importance;
     public ToRecipients[] toRecipients;
 
     public class Body {

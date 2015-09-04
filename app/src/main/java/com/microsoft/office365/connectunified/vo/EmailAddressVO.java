@@ -9,6 +9,14 @@ public class EmailAddressVO {
 
     @SerializedName("Address")
     public String mAddress;
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("EmailAddressVO{");
+        sb.append("mAddress='").append(mAddress).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
 // *********************************************************
 //

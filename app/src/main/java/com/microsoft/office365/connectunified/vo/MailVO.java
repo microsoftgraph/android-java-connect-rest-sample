@@ -7,6 +7,8 @@ package com.microsoft.office365.connectunified.vo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+
 /**
  * Mail Value Object for holding values in an email
  */
@@ -24,6 +26,16 @@ public class MailVO {
     @SerializedName("ToRecipients")
     public ToRecipientsVO[] mToRecipients;
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("MailVO{");
+        sb.append("mSubject='").append(mSubject).append('\'');
+        sb.append(", mBody=").append(mBody);
+        sb.append(", mImportance='").append(mImportance).append('\'');
+        sb.append(", mToRecipients=").append(mToRecipients == null ? "null" : Arrays.asList(mToRecipients).toString());
+        sb.append('}');
+        return sb.toString();
+    }
 }
 // *********************************************************
 //

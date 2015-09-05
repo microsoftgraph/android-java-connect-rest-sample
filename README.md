@@ -39,7 +39,7 @@ To use the Office 365 Connect sample for Android you need the following:
 4. Open the Constants.java file.
 	1. Find the CLIENT\_ID constant and set its String value equal to the client id you registered in Azure Active Directory.
 	2. Find the REDIRECT\_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
-    ![Office 365 Connect sample](/readme-images/O365-Android-Unified-API-Connect-Constants.png "Client ID and Redirect URI values in Constants file")
+    ![Office 365 Connect sample](/readme-images/O365-Connect-Constants.png "Client ID and Redirect URI values in Constants file")
 
     > Note: If you have don't have CLIENT\_ID and REDIRECT\_URI values, [add a native client application in Azure](https://msdn.microsoft.com/library/azure/dn132599.aspx#BKMK_Adding) and take note of the CLIENT\_ID and REDIRECT_URI.
 

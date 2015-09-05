@@ -45,7 +45,7 @@ To use the Office 365 Connect sample for Android, you need the following:
 
 Once you've built the Connect sample, you can run it on an emulator or device. Pick a device with API level 15 or higher from the **Choose device** dialog.
 
-To learn more about the sample, visit our [understanding the code](https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git/wiki/Understanding-the-Connect-sample-code) wiki page. If you just want to use this code sample in your app, visit the [Using the Office 365 Android Connect sample code in your app](https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git/wiki/Using-the-O365-Android-Unified-API-Connect-sample-code-in-your-app).
+To learn more about the sample, visit our [understanding the code](https://github.com/OfficeDev/O365-Android-Unified-API-Connect/wiki/Understanding-the-Connect-sample-code) wiki page. If you just want to use this code sample in your app, visit the [Using the Office 365 Android Connect sample code in your app](https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git/wiki/Using-the-O365-Android-Unified-API-Connect-sample-code-in-your-app).
 
 ## Questions and comments
 

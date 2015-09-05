@@ -9,7 +9,7 @@ Connecting to Office 365 is the first step every Android app must take to start 
 To run the Connect sample, your device needs to meet the following requirements:
 
 * A screen size of 800 x 480 or larger.
-* Android API level 15 or later.
+* Android API level 15 or higher.
  
 ## Prerequisites
 

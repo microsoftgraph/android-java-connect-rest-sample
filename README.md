@@ -13,7 +13,7 @@ To run the Connect sample, your device needs to meet the following requirements:
  
 ## Prerequisites
 
-To use the Office 365 Connect sample for Android you need the following:
+To use the Office 365 Connect sample for Android, you need the following:
 
 * [Android Studio](http://developer.android.com/sdk/index.html) version 1.0 or later.
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).

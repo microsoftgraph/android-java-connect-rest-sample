@@ -24,7 +24,7 @@ To use the Office 365 Connect sample for Android you need the following:
 
      > Important: You will also need to ensure your Azure subscription is bound to your Office 365 tenant. To do this see the Active Directory team's blog post, [Creating and Managing Multiple Windows Azure Active Directories](http://blogs.technet.com/b/ad/archive/2013/11/08/creating-and-managing-multiple-windows-azure-active-directories.aspx). The section **Adding a new directory** will explain how to do this. You can also see [Set up your Office 365 development environment](https://msdn.microsoft.com/office/office365/howto/setup-development-environment#bk_CreateAzureSubscription) and the section **Associate your Office 365 account with Azure AD to create and manage apps** for more information.
       
-* A client id and redirect uri values of an application registered in Azure. This sample application must be granted the **Send mail as signed-in user** permission for the **Office 365 unified API (preview)**. This sample application must also be granted the **Sign in and read user profile** permission for the **Windows Azure Active Directory** application. [Add a native client application in Azure](https://msdn.microsoft.com/library/azure/dn132599.aspx#BKMK_Adding) and [grant proper permissions](https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git/wiki/Grant-permissions-to-the-Connect-application-in-Azure) to it.
+* A client id and redirect uri values of an application registered in Azure. This sample application must be granted the **Send mail as signed-in user** permission for the **Office 365 unified API (preview)**. [Add a native client application in Azure](https://msdn.microsoft.com/library/azure/dn132599.aspx#BKMK_Adding) and [grant proper permissions](https://github.com/OfficeDev/O365-Android-Unified-API-Connect.git/wiki/Grant-permissions-to-the-Connect-application-in-Azure) to it.
 
 ## Open the sample using Android Studio
 
@@ -39,7 +39,7 @@ To use the Office 365 Connect sample for Android you need the following:
 4. Open the Constants.java file.
 	1. Find the CLIENT\_ID constant and set its String value equal to the client id you registered in Azure Active Directory.
 	2. Find the REDIRECT\_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
-    ![Office 365 Connect sample](/readme-images/O365-Android-Unified-API-Connect-Constants.png "Client ID and Redirect URI values in Constants file")
+    ![Office 365 Connect sample](/readme-images/O365-Android-Connect-Constants.png "Client ID and Redirect URI values in Constants file")
 
     > Note: If you have don't have CLIENT\_ID and REDIRECT\_URI values, [add a native client application in Azure](https://msdn.microsoft.com/library/azure/dn132599.aspx#BKMK_Adding) and take note of the CLIENT\_ID and REDIRECT_URI.
 

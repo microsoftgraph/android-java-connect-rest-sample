@@ -28,7 +28,7 @@ To use the Office 365 Connect sample for Android, you need the following:
 
 ## Open the sample using Android Studio
 
-1. Install [Android Studio](http://developer.android.com/tools/studio/index.html#install-updates) and add the Android SDK packages according to the [instructions](http://developer.android.com/sdk/installing/adding-packages.html) on developer.android.com.
+1. Install [Android Studio](http://developer.android.com/sdk/index.html) and add the Android SDK packages according to the [instructions](http://developer.android.com/sdk/installing/adding-packages.html) on developer.android.com.
 2. Download or clone this sample.
 3. Start Android Studio.
 	a. Close any projects that you might have open, and then choose **Open an existing Android Studio project**.

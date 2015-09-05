@@ -31,14 +31,14 @@ To use the Office 365 Connect sample for Android, you need the following:
 1. Install [Android Studio](http://developer.android.com/sdk/index.html) and add the Android SDK packages according to the [instructions](http://developer.android.com/sdk/installing/adding-packages.html) on developer.android.com.
 2. Download or clone this sample.
 3. Start Android Studio.
-	a. Close any projects that you might have open, and then choose **Open an existing Android Studio project**.
-	b. Browse to your local repository and choose the O365-Android-Unified-API-Connect project. Click **OK**.
+	1. Close any projects that you might have open, and then choose **Open an existing Android Studio project**.
+	2. Browse to your local repository and choose the O365-Android-Unified-API-Connect project. Click **OK**.
 	> Note: Android Studio might display a dialog box asking if you want to use Gradle wrapper. Click **OK**.
 	> 
 	> Additionally, Android Studio shows a **Frameworks detected** notification if you don't have the **Android Support Repository** installed. Open the SDK manager and add the Android Support Repository to avoid the Frameworks detected notification.
 4. Open the Constants.java file.
-	a. Find the CLIENT_ID constant and set its String value equal to the client id you registered in Azure Active Directory.
-	b. Find the REDIRECT_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
+	1. Find the CLIENT_ID constant and set its String value equal to the client id you registered in Azure Active Directory.
+	2. Find the REDIRECT_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
     ![Office 365 Connect sample](/readme-images/O365-Android-Connect-Constants.png "Client ID and Redirect URI values in Constants file")
 
     > Note: If you have don't have CLIENT_ID and REDIRECT_URI values, [add a native client application in Azure](https://msdn.microsoft.com/library/azure/dn132599.aspx#BKMK_Adding) and take note of the CLIENT\_ID and REDIRECT_URI.

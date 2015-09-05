@@ -7,7 +7,7 @@
     <string name="disconnect_menu_item_text">Disconnect</string>
     <string name="title_text">Hi\u00A0</string>
     <string name="description_text">\nYou\'re now connected to Office 365. Tap the mail icon below to send a message from your account using the Office 365 SDK.\n</string>
-    <string name="conclusion_text">\nCheck your inbox, you have a new message :)</string>
+    <string name="conclusion_text">\nCheck your inbox. You have a new message :)</string>
 
     <!-- Toast successful messages -->
     <string name="connect_toast_text">Connected to Office 365</string>

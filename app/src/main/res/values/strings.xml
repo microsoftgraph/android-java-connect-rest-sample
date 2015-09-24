@@ -6,7 +6,7 @@
     <string name="connect_button_text">Connect to Office 365</string>
     <string name="disconnect_menu_item_text">Disconnect</string>
     <string name="title_text">Hi\u00A0</string>
-    <string name="description_text">\nYou\'re now connected to Office 365. Tap the mail icon below to send a message from your account using the Office 365 SDK.\n</string>
+    <string name="description_text">\nYou\'re now connected to Office 365. Tap the mail icon below to send a message from your account using the Unified API (preview).\n</string>
     <string name="conclusion_text">\nCheck your inbox. You have a new message :)</string>
 
     <!-- Toast successful messages -->

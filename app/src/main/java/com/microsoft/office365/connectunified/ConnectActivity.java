@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connect;
+package com.microsoft.office365.connectunified;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.microsoft.aad.adal.AuthenticationCallback;
+import com.microsoft.aad.adal.AuthenticationCancelError;
 import com.microsoft.aad.adal.AuthenticationResult;
 
 import java.net.URI;
@@ -45,7 +46,8 @@ public class ConnectActivity extends AppCompatActivity {
 
     /**
      * Event handler for the onclick event of the button.
-     * @param v
+     *
+     * @param v The view
      */
     public void onConnectButtonClick(View v) {
         showConnectingInProgressUI();
@@ -54,8 +56,7 @@ public class ConnectActivity extends AppCompatActivity {
         try {
             UUID.fromString(Constants.CLIENT_ID);
             URI.create(Constants.REDIRECT_URI);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Toast.makeText(
                     this
                     , getString(R.string.warning_clientid_redirecturi_incorrect)
@@ -67,13 +68,12 @@ public class ConnectActivity extends AppCompatActivity {
 
         final Intent sendMailIntent = new Intent(this, SendMailActivity.class);
         AuthenticationManager.getInstance().setContextActivity(this);
-
         AuthenticationManager.getInstance().connect(
                 new AuthenticationCallback<AuthenticationResult>() {
                     /**
                      * If the connection is successful, the activity extracts the username and
                      * displayableId values from the authentication result object and sends them
-                     * to the SendMail activity.
+                     * to the SendDraftMail activity.
                      * @param result The authentication result object that contains information about
                      *               the user and the tokens.
                      */
@@ -95,19 +95,24 @@ public class ConnectActivity extends AppCompatActivity {
                     @Override
                     public void onError(final Exception e) {
                         Log.e(TAG, "onCreate - " + e.getMessage());
-                        showConnectErrorUI();
+                        if (!(e instanceof AuthenticationCancelError)) {
+                            showConnectErrorUI();
+                        } else {
+                            resetUIForConnect();
+                        }
                     }
                 });
     }
 
     /**
      * This activity gets notified about the completion of the ADAL activity through this method.
+     *
      * @param requestCode The integer request code originally supplied to startActivityForResult(),
      *                    allowing you to identify who this result came from.
-     * @param resultCode The integer result code returned by the child activity through its
-     *                   setResult().
-     * @param data An Intent, which can return result data to the caller (various data
-     *             can be attached to Intent "extras").
+     * @param resultCode  The integer result code returned by the child activity through its
+     *                    setResult().
+     * @param data        An Intent, which can return result data to the caller (various data
+     *                    can be attached to Intent "extras").
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -119,28 +124,28 @@ public class ConnectActivity extends AppCompatActivity {
                 .onActivityResult(requestCode, resultCode, data);
     }
 
-    private void initializeViews(){
-        mConnectButton = (Button)findViewById(R.id.connectButton);
-        mConnectProgressBar = (ProgressBar)findViewById(R.id.connectProgressBar);
-        mTitleTextView = (TextView)findViewById(R.id.titleTextView);
-        mDescriptionTextView = (TextView)findViewById(R.id.descriptionTextView);
+    private void initializeViews() {
+        mConnectButton = (Button) findViewById(R.id.connectButton);
+        mConnectProgressBar = (ProgressBar) findViewById(R.id.connectProgressBar);
+        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
+        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
     }
 
-    private void resetUIForConnect(){
+    private void resetUIForConnect() {
         mConnectButton.setVisibility(View.VISIBLE);
         mTitleTextView.setVisibility(View.GONE);
         mDescriptionTextView.setVisibility(View.GONE);
         mConnectProgressBar.setVisibility(View.GONE);
     }
 
-    private void showConnectingInProgressUI(){
+    private void showConnectingInProgressUI() {
         mConnectButton.setVisibility(View.GONE);
         mTitleTextView.setVisibility(View.GONE);
         mDescriptionTextView.setVisibility(View.GONE);
         mConnectProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void showConnectErrorUI(){
+    private void showConnectErrorUI() {
         mConnectButton.setVisibility(View.VISIBLE);
         mConnectProgressBar.setVisibility(View.GONE);
         mTitleTextView.setText(R.string.title_text_error);
@@ -156,7 +161,7 @@ public class ConnectActivity extends AppCompatActivity {
 
 // *********************************************************
 //
-// O365-Android-Connect, https://github.com/OfficeDev/O365-Android-Connect
+// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

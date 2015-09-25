@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file. -->
+<?xml version="1.0" encoding="utf-8" ?><!-- Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file. -->
 <resources>
 
     <!-- Regular UI text -->
@@ -7,8 +6,8 @@
     <string name="connect_button_text">Connect to Office 365</string>
     <string name="disconnect_menu_item_text">Disconnect</string>
     <string name="title_text">Hi\u00A0</string>
-    <string name="description_text">\nYou\'re now connected to Office 365. Tap the mail icon below to send a message from your account using the Office 365 SDK.\n</string>
-    <string name="conclusion_text">\nCheck your inbox, you have a new message :)</string>
+    <string name="description_text">\nYou\'re now connected to Office 365. Tap the mail icon below to send a message from your account using the Unified API (preview).\n</string>
+    <string name="conclusion_text">\nCheck your inbox. You have a new message :)</string>
 
     <!-- Toast successful messages -->
     <string name="connect_toast_text">Connected to Office 365</string>
@@ -43,11 +42,11 @@ in your apps.
 &lt;p&gt;You can use the classes in the Android Studio project to integrate Office 365 services and data into your own apps.&lt;/p&gt;
 &lt;h2&gt;Give us feedback&lt;/h2&gt;
 &lt;p&gt;We hope you found this sample useful. We&amp;#8217;d love to hear from you, so drop us an email at
-&lt;a href=\'mailto:docthis@microsoft.com?subject=Feedback%20on%20the%20Office%20365%20Connect%20sample\'&gt;
-docthis@microsoft.com&lt;/a&gt; with your comments or &lt;a href=\'http://aka.ms/o365-android-connect-issues\'&gt;
+&lt;a href=\'mailto:docthis@microsoft.com?subject=Feedback%20on%20the%20Office%20365%20Unified%20API%20Connect%20sample\'&gt;
+docthis@microsoft.com&lt;/a&gt; with your comments or &lt;a href=\'https://github.com/OfficeDev/O365-Android-Unified-API-Connect/issues\'&gt;
 log an issue&lt;/a&gt; on our repository. &lt;/p&gt;
 &lt;p&gt;For more details on what else you can do with the Office 365 services in your Android app, start with the
-&lt;a href=\'http://aka.ms/o365-android-connect-getstarted\'&gt;Getting started&lt;/a&gt; page on dev.office.com.
+&lt;a href=\'http://dev.office.com/getting-started\'&gt;Getting started&lt;/a&gt; page on dev.office.com.
 &lt;/p&gt;
 &lt;p&gt;Thanks, and happy coding!&lt;br&gt;
 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Your Office 365 Development team &lt;/p&gt;
@@ -55,11 +54,11 @@ log an issue&lt;/a&gt; on our repository. &lt;/p&gt;
 &lt;table style=\'width:100%; font-family:calibri\'&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=\'http://aka.ms/o365-android-connect\'&gt;See on GitHub&lt;/a&gt;
+&lt;td&gt;&lt;a href=\'https://github.com/OfficeDev/O365-Android-Unified-API-Connect\'&gt;See on GitHub&lt;/a&gt;
 &lt;/td&gt;
 &lt;td&gt;&lt;a href=\'http://aka.ms/o365-android-connect-uservoice\'&gt;Suggest on UserVoice&lt;/a&gt;
 &lt;/td&gt;
-&lt;td&gt;&lt;a href=\'http://twitter.com/share?text=I%20just%20started%20developing%20apps%20for%20%23Android%20using%20the%20%23Office365%20Connect%20app%20%40OfficeDev&amp;amp;url=https://github.com/OfficeDev/O365-Android-Connect\'&gt;Share on Twitter&lt;/a&gt;
+&lt;td&gt;&lt;a href=\'http://twitter.com/share?text=I%20just%20started%20developing%20apps%20for%20%23Android%20using%20the%20%23Office365%20Connect%20app%20%40OfficeDev&amp;amp;url=https://github.com/OfficeDev/O365-Android-Unified-API-Connect\'&gt;Share on Twitter&lt;/a&gt;
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -69,31 +68,31 @@ log an issue&lt;/a&gt; on our repository. &lt;/p&gt;
 &lt;/html&gt;</string>
 </resources>
 
-<!-- *********************************************************
+    <!-- *********************************************************
 
-     O365-Android-Connect, https://github.com/OfficeDev/O365-Android-Connect
+         O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect
 
-     Copyright (c) Microsoft Corporation
-     All rights reserved.
+         Copyright (c) Microsoft Corporation
+         All rights reserved.
 
-     MIT License:
-     Permission is hereby granted, free of charge, to any person obtaining
-     a copy of this software and associated documentation files (the
-     "Software"), to deal in the Software without restriction, including
-     without limitation the rights to use, copy, modify, merge, publish,
-     distribute, sublicense, and/or sell copies of the Software, and to
-     permit persons to whom the Software is furnished to do so, subject to
-     the following conditions:
+         MIT License:
+         Permission is hereby granted, free of charge, to any person obtaining
+         a copy of this software and associated documentation files (the
+         "Software"), to deal in the Software without restriction, including
+         without limitation the rights to use, copy, modify, merge, publish,
+         distribute, sublicense, and/or sell copies of the Software, and to
+         permit persons to whom the Software is furnished to do so, subject to
+         the following conditions:
 
-     The above copyright notice and this permission notice shall be
-     included in all copies or substantial portions of the Software.
+         The above copyright notice and this permission notice shall be
+         included in all copies or substantial portions of the Software.
 
-     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-     LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-     OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+         EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+         MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+         NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+         LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+         OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+         WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-     ********************************************************* -->
+         ********************************************************* -->

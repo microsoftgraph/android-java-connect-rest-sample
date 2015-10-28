@@ -6,8 +6,8 @@ package com.microsoft.office365.connectunified;
 interface Constants {
     String AUTHORITY_URL = "https://login.microsoftonline.com/common";
     // Update these two constants with the values for your application:
-    String CLIENT_ID = "<Your client id here>";
-    String REDIRECT_URI = "<Your redirect uri here>";
+    String CLIENT_ID = "ENTER_YOUR_CLIENT_ID";
+    String REDIRECT_URI = "ENTER_YOUR_REDIRECT_URI";
     String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/beta/";
     String UNIFIED_ENDPOINT_RESOURCE_ID = "https://graph.microsoft.com/";
 }

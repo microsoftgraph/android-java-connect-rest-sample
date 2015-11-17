@@ -20,7 +20,7 @@ public interface UnifiedAPIService {
 }
 // *********************************************************
 //
-// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect
+// O365-Android-Microsoft-Graph-Connect, https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

@@ -12,7 +12,7 @@ import retrofit.mime.TypedString;
 
 
 public interface UnifiedAPIService {
-    @POST("/me/sendMail")
+    @POST("/me/microsoft.graph.sendmail")
     void sendMail(
             @Header("Content-type") String contentTypeHeader,
             @Body TypedString mail,

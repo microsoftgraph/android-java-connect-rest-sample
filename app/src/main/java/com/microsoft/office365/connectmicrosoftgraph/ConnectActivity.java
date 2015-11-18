@@ -16,8 +16,6 @@ import android.widget.Toast;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationCancelError;
 import com.microsoft.aad.adal.AuthenticationResult;
-import com.microsoft.office365.connectmicrosoftgraph.R;
-
 
 import java.net.URI;
 import java.util.UUID;

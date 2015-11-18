@@ -4,11 +4,11 @@
 package com.microsoft.office365.connectmicrosoftgraph;
 
 import com.google.gson.Gson;
-import com.microsoft.office365.connectmicrosoftgraph.vo.ToRecipientsVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.BodyVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.EmailAddressVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.MessageVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.MessageWrapper;
+import com.microsoft.office365.connectmicrosoftgraph.vo.ToRecipientsVO;
 
 import retrofit.Callback;
 import retrofit.mime.TypedString;
@@ -26,17 +26,16 @@ public class MSGraphAPIController {
     private RESTHelper mRESTHelper;
     private MSGraphAPIService mMSGraphAPIService;
 
+    private MSGraphAPIController() {
+        mRESTHelper = new RESTHelper(AuthenticationManager.getInstance().getAccessToken());
+    }
+
     public static synchronized MSGraphAPIController getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new MSGraphAPIController();
         }
         return INSTANCE;
     }
-
-    private MSGraphAPIController() {
-        mRESTHelper = new RESTHelper(AuthenticationManager.getInstance().getAccessToken());
-    }
-
 
     /**
      * Sends an email message using the Microsoft Graph API on Office 365. The mail is sent

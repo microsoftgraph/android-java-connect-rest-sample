@@ -9,15 +9,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class MessageWrapper {
 
+    @SerializedName("Message")
+    public MessageVO mMessage;
+
     @SuppressLint("unused")
-    public MessageWrapper() {}
+    public MessageWrapper() {
+    }
 
     public MessageWrapper(MessageVO msg) {
         mMessage = msg;
     }
-
-    @SerializedName("Message")
-    public MessageVO mMessage;
 }
 // *********************************************************
 //

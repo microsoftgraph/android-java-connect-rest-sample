@@ -29,10 +29,32 @@ public class AuthenticationManager {
     private static final String TAG = "AuthenticationManager";
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
+    private static AuthenticationManager INSTANCE;
+
+    static {
+        // Devices with API level lower than 18 must setup an encryption key.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 &&
+                AuthenticationSettings.INSTANCE.getSecretKeyData() == null) {
+            AuthenticationSettings.INSTANCE.setSecretKey(generateSecretKey());
+        }
+
+        // We're not using Microsoft Intune's Company portal app,
+        // skip the broker check so we don't get warnings about the following permissions
+        // in manifest:
+        // GET_ACCOUNTS
+        // USE_CREDENTIALS
+        // MANAGE_ACCOUNTS
+        AuthenticationSettings.INSTANCE.setSkipBroker(true);
+    }
+
     private AuthenticationContext mAuthenticationContext;
     private Activity mContextActivity;
     private String mResourceId;
     private String mAccessToken;
+
+    private AuthenticationManager() {
+        mResourceId = Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID;
+    }
 
     /**
      * Generates an encryption key for devices with API level lower than 18 using the
@@ -61,22 +83,6 @@ public class AuthenticationManager {
         return key;
     }
 
-    static {
-        // Devices with API level lower than 18 must setup an encryption key.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 &&
-                AuthenticationSettings.INSTANCE.getSecretKeyData() == null) {
-            AuthenticationSettings.INSTANCE.setSecretKey(generateSecretKey());
-        }
-
-        // We're not using Microsoft Intune's Company portal app,
-        // skip the broker check so we don't get warnings about the following permissions
-        // in manifest:
-        // GET_ACCOUNTS
-        // USE_CREDENTIALS
-        // MANAGE_ACCOUNTS
-        AuthenticationSettings.INSTANCE.setSkipBroker(true);
-    }
-
     public static synchronized AuthenticationManager getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new AuthenticationManager();
@@ -86,12 +92,6 @@ public class AuthenticationManager {
 
     public static synchronized void resetInstance() {
         INSTANCE = null;
-    }
-
-    private static AuthenticationManager INSTANCE;
-
-    private AuthenticationManager() {
-        mResourceId = Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID;
     }
 
     /**

@@ -23,8 +23,8 @@
         <activity
             android:name="com.microsoft.office365.connectmicrosoftgraph.SendMailActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.microsoft.office365.connectmicrosoftgraph.ConnectActivity">
+            android:parentActivityName="com.microsoft.office365.connectmicrosoftgraph.ConnectActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.microsoft.office365.connectmicrosoftgraph.ConnectActivity" />

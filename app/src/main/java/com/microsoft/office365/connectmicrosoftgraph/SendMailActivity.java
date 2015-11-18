@@ -16,8 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.microsoft.office365.connectmicrosoftgraph.R;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

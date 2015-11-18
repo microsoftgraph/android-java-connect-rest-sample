@@ -92,7 +92,6 @@ public class MSGraphAPIController {
 
     //Creates a Microsoft Graph API endpoint service interface if it does not exist.
     private void ensureService() {
-        mRESTHelper.setAccessToken(AuthenticationManager.getInstance().getAccessToken());
         if (mMSGraphAPIService == null) {
             mMSGraphAPIService = mRESTHelper
                     .getRestAdapter()

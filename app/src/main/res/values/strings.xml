@@ -6,7 +6,7 @@
     <string name="connect_button_text">Connect to Office 365</string>
     <string name="disconnect_menu_item_text">Disconnect</string>
     <string name="title_text">Hi\u00A0</string>
-    <string name="description_text">\nYou\'re now connected to Office 365. Tap the mail icon below to send a message from your account using the Unified API (preview).\n</string>
+    <string name="description_text">\nYou\'re now connected to Office 365. Tap the mail icon below to send a message from your account using the Microsoft Graph API.\n</string>
     <string name="conclusion_text">\nCheck your inbox. You have a new message :)</string>
 
     <!-- Toast successful messages -->
@@ -42,7 +42,7 @@ in your apps.
 &lt;p&gt;You can use the classes in the Android Studio project to integrate Office 365 services and data into your own apps.&lt;/p&gt;
 &lt;h2&gt;Give us feedback&lt;/h2&gt;
 &lt;p&gt;We hope you found this sample useful. We&amp;#8217;d love to hear from you, so drop us an email at
-&lt;a href=\'mailto:docthis@microsoft.com?subject=Feedback%20on%20the%20Office%20365%20Unified%20API%20Connect%20sample\'&gt;
+&lt;a href=\'mailto:docthis@microsoft.com?subject=Feedback%20on%20the%20Office%20365%20Microsoft%20Graph%20API%20Connect%20sample\'&gt;
 docthis@microsoft.com&lt;/a&gt; with your comments or &lt;a href=\'https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/issues\'&gt;
 log an issue&lt;/a&gt; on our repository. &lt;/p&gt;
 &lt;p&gt;For more details on what else you can do with the Office 365 services in your Android app, start with the

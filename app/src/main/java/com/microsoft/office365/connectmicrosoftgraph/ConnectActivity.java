@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectmicrosoftgraph;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -255,6 +255,7 @@ public class AuthenticationManager {
             getAuthenticationContext().getCache().removeAll();
         }
 
+        mAccessToken = null;
         // Reset the AuthenticationManager object
         AuthenticationManager.resetInstance();
 

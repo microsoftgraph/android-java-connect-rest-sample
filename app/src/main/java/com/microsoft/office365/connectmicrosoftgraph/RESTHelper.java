@@ -8,11 +8,7 @@ import retrofit.RestAdapter;
 
 public class RESTHelper {
 
-    private String mAccessToken;
 
-    public RESTHelper(String AccessToken) {
-        mAccessToken = AccessToken;
-    }
 
     /**
      * Returns a retrofit rest adaptor class. The adaptor is created in calling code.
@@ -25,7 +21,7 @@ public class RESTHelper {
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                final String token = mAccessToken;
+                final String token = AuthenticationManager.getInstance().getAccessToken();;
                 if (null != token) {
                     request.addHeader("Authorization", "Bearer " + token);
                 }

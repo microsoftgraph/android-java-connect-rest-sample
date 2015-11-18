@@ -27,7 +27,7 @@ public class MSGraphAPIController {
     private MSGraphAPIService mMSGraphAPIService;
 
     private MSGraphAPIController() {
-        mRESTHelper = new RESTHelper(AuthenticationManager.getInstance().getAccessToken());
+        mRESTHelper = new RESTHelper();
     }
 
     public static synchronized MSGraphAPIController getInstance() {

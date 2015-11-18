@@ -1,7 +1,7 @@
 /*
 *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
 */
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectmicrosoftgraph;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -34,7 +34,7 @@ public class RESTHelper {
 
         //Sets required properties in rest adaptor class before it is created.
         return new RestAdapter.Builder()
-                .setEndpoint(Constants.UNIFIED_API_ENDPOINT)
+                .setEndpoint(Constants.MICROSOFT_GRAPH_API_ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setRequestInterceptor(requestInterceptor)
                 .build();

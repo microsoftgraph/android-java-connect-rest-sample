@@ -1,18 +1,24 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified.vo;
+package com.microsoft.office365.connectmicrosoftgraph.vo;
+
+import android.annotation.SuppressLint;
 
 import com.google.gson.annotations.SerializedName;
 
-public class BodyVO {
+public class MessageWrapper {
 
-    @SerializedName("ContentType")
-    public String mContentType;
+    @SerializedName("Message")
+    public MessageVO mMessage;
 
-    @SerializedName("Content")
-    public String mContent;
+    @SuppressLint("unused")
+    public MessageWrapper() {
+    }
 
+    public MessageWrapper(MessageVO msg) {
+        mMessage = msg;
+    }
 }
 // *********************************************************
 //

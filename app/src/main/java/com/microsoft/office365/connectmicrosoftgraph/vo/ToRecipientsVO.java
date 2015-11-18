@@ -1,22 +1,15 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
+package com.microsoft.office365.connectmicrosoftgraph.vo;
 
-package com.microsoft.office365.connectunified;
+import com.google.gson.annotations.SerializedName;
 
-import retrofit.Callback;
-import retrofit.http.Body;
-import retrofit.http.Header;
-import retrofit.http.POST;
-import retrofit.mime.TypedString;
+public class ToRecipientsVO {
 
+    @SerializedName("EmailAddress")
+    public EmailAddressVO emailAddress;
 
-public interface UnifiedAPIService {
-    @POST("/me/microsoft.graph.sendmail")
-    void sendMail(
-            @Header("Content-type") String contentTypeHeader,
-            @Body TypedString mail,
-            Callback<Void> callback);
 }
 // *********************************************************
 //
@@ -46,4 +39,3 @@ public interface UnifiedAPIService {
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // *********************************************************
-

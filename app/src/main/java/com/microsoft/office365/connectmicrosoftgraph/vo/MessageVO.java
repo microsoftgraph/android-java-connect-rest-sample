@@ -1,17 +1,30 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified;
 
-interface Constants {
-    String AUTHORITY_URL = "https://login.microsoftonline.com/common";
-    // Update these two constants with the values for your application:
-    String CLIENT_ID = "ENTER_YOUR_CLIENT_ID";
-    String REDIRECT_URI = "ENTER_YOUR_REDIRECT_URI";
-    String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/v1.0/";
-    String UNIFIED_ENDPOINT_RESOURCE_ID = "https://graph.microsoft.com/";
+package com.microsoft.office365.connectmicrosoftgraph.vo;
+
+
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * Mail Value Object for holding values in an email
+ */
+public class MessageVO {
+
+    @SerializedName("Subject")
+    public String mSubject;
+
+    @SerializedName("Body")
+    public BodyVO mBody;
+
+    @SerializedName("Importance")
+    public String mImportance;
+
+    @SerializedName("ToRecipients")
+    public ToRecipientsVO[] mToRecipients;
+
 }
-
 // *********************************************************
 //
 // O365-Android-Microsoft-Graph-Connect, https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect

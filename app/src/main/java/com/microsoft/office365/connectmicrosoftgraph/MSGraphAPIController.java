@@ -1,14 +1,14 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectmicrosoftgraph;
 
 import com.google.gson.Gson;
-import com.microsoft.office365.connectunified.vo.BodyVO;
-import com.microsoft.office365.connectunified.vo.EmailAddressVO;
-import com.microsoft.office365.connectunified.vo.MessageVO;
-import com.microsoft.office365.connectunified.vo.MessageWrapper;
-import com.microsoft.office365.connectunified.vo.ToRecipientsVO;
+import com.microsoft.office365.connectmicrosoftgraph.vo.ToRecipientsVO;
+import com.microsoft.office365.connectmicrosoftgraph.vo.BodyVO;
+import com.microsoft.office365.connectmicrosoftgraph.vo.EmailAddressVO;
+import com.microsoft.office365.connectmicrosoftgraph.vo.MessageVO;
+import com.microsoft.office365.connectmicrosoftgraph.vo.MessageWrapper;
 
 import retrofit.Callback;
 import retrofit.mime.TypedString;
@@ -20,26 +20,26 @@ import retrofit.mime.TypedString;
  * connected to Office 365 and discovered the mail service
  * endpoints before using the createDraftMail method.
  */
-public class UnifiedAPIController {
+public class MSGraphAPIController {
 
-    private static UnifiedAPIController INSTANCE;
+    private static MSGraphAPIController INSTANCE;
     private RESTHelper mRESTHelper;
-    private UnifiedAPIService mUnifiedAPIService;
+    private MSGraphAPIService mMSGraphAPIService;
 
-    public static synchronized UnifiedAPIController getInstance() {
+    public static synchronized MSGraphAPIController getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new UnifiedAPIController();
+            INSTANCE = new MSGraphAPIController();
         }
         return INSTANCE;
     }
 
-    private UnifiedAPIController() {
+    private MSGraphAPIController() {
         mRESTHelper = new RESTHelper(AuthenticationManager.getInstance().getAccessToken());
     }
 
 
     /**
-     * Sends an email message using the Unified API on Office 365. The mail is sent
+     * Sends an email message using the Microsoft Graph API on Office 365. The mail is sent
      * from the address of the signed in user.
      *
      * @param emailAddress The recipient email address.
@@ -54,8 +54,8 @@ public class UnifiedAPIController {
             final String body,
             Callback<Void> callback) {
         ensureService();
-        // Use the Unified API service on Office 365 to create the message.
-        mUnifiedAPIService.sendMail(
+        // Use the Microsoft Graqph API service on Office 365 to create the message.
+        mMSGraphAPIService.sendMail(
                 "application/json",
                 createMailPayload(
                         subject,
@@ -91,12 +91,12 @@ public class UnifiedAPIController {
         return typedEmail;
     }
 
-    //Creates a unified endpoint service interface if it does not exist.
+    //Creates a Microsoft Graph API endpoint service interface if it does not exist.
     private void ensureService() {
-        if (mUnifiedAPIService == null) {
-            mUnifiedAPIService = mRESTHelper
+        if (mMSGraphAPIService == null) {
+            mMSGraphAPIService = mRESTHelper
                     .getRestAdapter()
-                    .create(UnifiedAPIService.class);
+                    .create(MSGraphAPIService.class);
         }
     }
 }

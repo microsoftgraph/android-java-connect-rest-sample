@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectmicrosoftgraph;
 
 import android.app.Activity;
 import android.content.Context;
@@ -91,7 +91,7 @@ public class AuthenticationManager {
     private static AuthenticationManager INSTANCE;
 
     private AuthenticationManager() {
-        mResourceId = Constants.UNIFIED_ENDPOINT_RESOURCE_ID;
+        mResourceId = Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID;
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectmicrosoftgraph;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationCancelError;
 import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.office365.connectmicrosoftgraph.R;
+
 
 import java.net.URI;
 import java.util.UUID;

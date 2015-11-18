@@ -1,17 +1,28 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified.vo;
+
+package com.microsoft.office365.connectmicrosoftgraph.vo;
+
 
 import com.google.gson.annotations.SerializedName;
 
-public class BodyVO {
+/**
+ * Mail Value Object for holding values in an email
+ */
+public class MessageVO {
 
-    @SerializedName("ContentType")
-    public String mContentType;
+    @SerializedName("Subject")
+    public String mSubject;
 
-    @SerializedName("Content")
-    public String mContent;
+    @SerializedName("Body")
+    public BodyVO mBody;
+
+    @SerializedName("Importance")
+    public String mImportance;
+
+    @SerializedName("ToRecipients")
+    public ToRecipientsVO[] mToRecipients;
 
 }
 // *********************************************************

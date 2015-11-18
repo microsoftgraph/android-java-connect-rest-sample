@@ -1,23 +1,22 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified.vo;
 
-import android.annotation.SuppressLint;
+package com.microsoft.office365.connectmicrosoftgraph;
 
-import com.google.gson.annotations.SerializedName;
+import retrofit.Callback;
+import retrofit.http.Body;
+import retrofit.http.Header;
+import retrofit.http.POST;
+import retrofit.mime.TypedString;
 
-public class MessageWrapper {
 
-    @SuppressLint("unused")
-    public MessageWrapper() {}
-
-    public MessageWrapper(MessageVO msg) {
-        mMessage = msg;
-    }
-
-    @SerializedName("Message")
-    public MessageVO mMessage;
+public interface MSGraphAPIService {
+    @POST("/me/microsoft.graph.sendmail")
+    void sendMail(
+            @Header("Content-type") String contentTypeHeader,
+            @Body TypedString mail,
+            Callback<Void> callback);
 }
 // *********************************************************
 //
@@ -47,3 +46,4 @@ public class MessageWrapper {
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // *********************************************************
+

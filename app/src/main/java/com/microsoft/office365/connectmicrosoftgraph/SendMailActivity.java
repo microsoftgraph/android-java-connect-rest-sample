@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
  */
-package com.microsoft.office365.connectunified;
+package com.microsoft.office365.connectmicrosoftgraph;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.microsoft.office365.connectmicrosoftgraph.R;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -23,7 +25,7 @@ import retrofit.client.Response;
 /**
  * This activity handles the send mail operation of the app.
  * The app must be connected to Office 365 before this activity can send an email.
- * It also uses the UnifiedAPIController to send the message.
+ * It also uses the MSGraphAPIController to send the message.
  */
 public class SendMailActivity extends AppCompatActivity implements Callback<Void> {
 
@@ -59,7 +61,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
     }
 
     /**
-     * Handler for the onclick event of the send mail button. It uses the UnifiedAPIController to
+     * Handler for the onclick event of the send mail button. It uses the MSGraphAPIController to
      * send an email. When the call is completed, the call will return to either the success()
      * or failure() methods in this class which will then take the next steps on the UI.
      * This method sends the email using the address stored in the mEmailEditText view.
@@ -74,7 +76,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
         String body = getResources().getString(R.string.mail_body_text);
         body = body.replace("{0}", mGivenName);
 
-        UnifiedAPIController
+        MSGraphAPIController
                 .getInstance()
                 .sendMail(
                         mEmailEditText.getText().toString(),

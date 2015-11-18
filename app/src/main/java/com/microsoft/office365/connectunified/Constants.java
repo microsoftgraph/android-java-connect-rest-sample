@@ -8,13 +8,13 @@ interface Constants {
     // Update these two constants with the values for your application:
     String CLIENT_ID = "ENTER_YOUR_CLIENT_ID";
     String REDIRECT_URI = "ENTER_YOUR_REDIRECT_URI";
-    String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/beta/";
+    String UNIFIED_API_ENDPOINT = "https://graph.microsoft.com/v1.0/";
     String UNIFIED_ENDPOINT_RESOURCE_ID = "https://graph.microsoft.com/";
 }
 
 // *********************************************************
 //
-// O365-Android-Unified-API-Connect, https://github.com/OfficeDev/O365-Android-Unified-API-Connect
+// O365-Android-Microsoft-Graph-Connect, https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect
 //
 // Copyright (c) Microsoft Corporation
 // All rights reserved.

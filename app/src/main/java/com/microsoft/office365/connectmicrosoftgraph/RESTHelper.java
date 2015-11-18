@@ -21,7 +21,7 @@ public class RESTHelper {
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                final String token = AuthenticationManager.getInstance().getAccessToken();;
+                final String token = AuthenticationManager.getInstance().getAccessToken();
                 if (null != token) {
                     request.addHeader("Authorization", "Bearer " + token);
                 }

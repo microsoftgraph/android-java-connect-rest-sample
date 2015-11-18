@@ -10,10 +10,12 @@ public class RESTHelper {
 
     private String mAccessToken;
 
-    public RESTHelper(String AccessToken) {
-        mAccessToken = AccessToken;
+    public RESTHelper() {
     }
 
+    public void setAccessToken(String accessToken){
+        mAccessToken = accessToken;
+    }
     /**
      * Returns a retrofit rest adaptor class. The adaptor is created in calling code.
      *

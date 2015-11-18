@@ -79,6 +79,8 @@ public class ConnectActivity extends AppCompatActivity {
                      */
                     @Override
                     public void onSuccess(AuthenticationResult result) {
+
+                        //Need to get the new access token to the RESTHelper instance
                         Log.i(TAG, "onConnectButtonClick - Successfully connected to Office 365");
 
                         sendMailIntent.putExtra("givenName", result

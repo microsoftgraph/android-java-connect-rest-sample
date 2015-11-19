@@ -110,11 +110,7 @@ public class AuthenticationManager {
      * @return mAccessToken
      */
     public String getAccessToken() {
-        if (mAccessToken != null) {
-            return mAccessToken;
-        } else {
-            return "";
-        }
+        return mAccessToken;
     }
 
 

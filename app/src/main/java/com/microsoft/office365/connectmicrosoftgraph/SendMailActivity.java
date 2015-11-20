@@ -72,8 +72,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
         String body = getString(R.string.mail_body_text);
         body = body.replace("{0}", mGivenName);
 
-        MSGraphAPIController
-                .getInstance()
+        new MSGraphAPIController()
                 .sendMail(
                         mEmailEditText.getText().toString(),
                         getString(R.string.mail_subject_text),

@@ -21,19 +21,12 @@ import retrofit.Callback;
  */
 public class MSGraphAPIController {
 
-    private static MSGraphAPIController INSTANCE;
-    private RESTHelper mRESTHelper;
     private MSGraphAPIService mMSGraphAPIService;
 
-    private MSGraphAPIController() {
-        mRESTHelper = new RESTHelper();
-    }
-
-    public static synchronized MSGraphAPIController getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MSGraphAPIController();
-        }
-        return INSTANCE;
+    public MSGraphAPIController() {
+        mMSGraphAPIService = new RESTHelper()
+                .getRestAdapter()
+                .create(MSGraphAPIService.class);
     }
 
     /**
@@ -51,7 +44,6 @@ public class MSGraphAPIController {
             final String subject,
             final String body,
             Callback<Void> callback) {
-        ensureService();
         // Use the Microsoft Graph API service on Office 365 to create the message.
         mMSGraphAPIService.sendMail(
                 "application/json",
@@ -85,12 +77,4 @@ public class MSGraphAPIController {
         return new MessageWrapper(sampleMsg);
     }
 
-    //Creates a Microsoft Graph API endpoint service interface if it does not exist.
-    private void ensureService() {
-        if (mMSGraphAPIService == null) {
-            mMSGraphAPIService = mRESTHelper
-                    .getRestAdapter()
-                    .create(MSGraphAPIService.class);
-        }
-    }
 }

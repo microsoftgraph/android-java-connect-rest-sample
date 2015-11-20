@@ -75,7 +75,7 @@ public class ConnectActivity extends AppCompatActivity {
         // define the post-auth callback
         AuthenticationCallback<AuthenticationResult> callback =
                 new AuthenticationCallback<AuthenticationResult>() {
-                    
+
                     @Override
                     public void onSuccess(AuthenticationResult result) {
                         // get the UserInfo from the auth response
@@ -92,8 +92,8 @@ public class ConnectActivity extends AppCompatActivity {
                                 new Intent(ConnectActivity.this, SendMailActivity.class);
 
                         // take the user's info along
-                        sendMailActivity.putExtra("givenName", givenName);
-                        sendMailActivity.putExtra("displayableId", displayableId);
+                        sendMailActivity.putExtra(SendMailActivity.ARG_GIVEN_NAME, givenName);
+                        sendMailActivity.putExtra(SendMailActivity.ARG_DISPLAY_ID, displayableId);
 
                         // actually start the Activity
                         startActivity(sendMailActivity);
@@ -136,6 +136,19 @@ public class ConnectActivity extends AppCompatActivity {
                 .onActivityResult(requestCode, resultCode, data);
     }
 
+    private static boolean userCancelledConnect(Exception e) {
+        return e instanceof AuthenticationCancelError;
+    }
+
+    private static boolean hasAzureConfiguration() {
+        try {
+            UUID.fromString(Constants.CLIENT_ID);
+            URI.create(Constants.REDIRECT_URI);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 
     private void resetUIForConnect() {
         mConnectButton.setVisibility(View.VISIBLE);
@@ -162,19 +175,5 @@ public class ConnectActivity extends AppCompatActivity {
                 ConnectActivity.this,
                 R.string.connect_toast_text_error,
                 Toast.LENGTH_LONG).show();
-    }
-
-    private static boolean userCancelledConnect(Exception e) {
-        return e instanceof AuthenticationCancelError;
-    }
-
-    private static boolean hasAzureConfiguration() {
-        try {
-            UUID.fromString(Constants.CLIENT_ID);
-            URI.create(Constants.REDIRECT_URI);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
     }
 }

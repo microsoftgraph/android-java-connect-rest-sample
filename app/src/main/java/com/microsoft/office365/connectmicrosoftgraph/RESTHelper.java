@@ -9,8 +9,6 @@ import retrofit.RestAdapter;
 
 public class RESTHelper {
 
-
-
     /**
      * Returns a retrofit rest adaptor class. The adaptor is created in calling code.
      *

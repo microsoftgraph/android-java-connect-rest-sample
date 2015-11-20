@@ -7,7 +7,6 @@ package com.microsoft.office365.connectmicrosoftgraph;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,35 +27,36 @@ import retrofit.client.Response;
  */
 public class SendMailActivity extends AppCompatActivity implements Callback<Void> {
 
-    private static final String TAG = "SendMailActivity";
+    // arguments for this activity
+    public static final String ARG_GIVEN_NAME = "givenName";
+    public static final String ARG_DISPLAY_ID = "displayableId";
 
-    private TextView mTitleTextView;
-    private TextView mDescriptionTextView;
+    // views
     private EditText mEmailEditText;
     private ImageButton mSendMailButton;
     private ProgressBar mSendMailProgressBar;
-    private TextView mConclusionTextView;
     private String mGivenName;
+    private TextView mConclusionTextView;
+    private TextView mDescriptionTextView;
+    private TextView mTitleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_mail);
-        initializeViews();
-        // Extract the givenName and displayableId and use it in the UI.
-        mGivenName = getIntent().getStringExtra("givenName");
-        mTitleTextView.append(mGivenName + "!");
-        mEmailEditText.setText(getIntent()
-                .getStringExtra("displayableId"));
-    }
 
-    private void initializeViews() {
+        // find the views
         mTitleTextView = (TextView) findViewById(R.id.titleTextView);
         mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
         mEmailEditText = (EditText) findViewById(R.id.emailEditText);
         mSendMailButton = (ImageButton) findViewById(R.id.sendMailButton);
         mSendMailProgressBar = (ProgressBar) findViewById(R.id.sendMailProgressBar);
         mConclusionTextView = (TextView) findViewById(R.id.conclusionTextView);
+
+        // Extract the givenName and displayableId and use it in the UI.
+        mGivenName = getIntent().getStringExtra(ARG_GIVEN_NAME);
+        mTitleTextView.append(mGivenName + "!");
+        mEmailEditText.setText(getIntent().getStringExtra(ARG_DISPLAY_ID));
     }
 
     /**
@@ -93,26 +93,26 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        try {
-            switch (item.getItemId()) {
-                case R.id.disconnectMenuitem:
-                    AuthenticationManager.getInstance().disconnect();
-                    showDisconnectSuccessUI();
-                    Intent connectIntent = new Intent(this, ConnectActivity.class);
-                    startActivity(connectIntent);
-                    return true;
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
-
-        } catch (Throwable t) {
-            if (t.getMessage() == null) {
-                Log.e(TAG, " ");
-            } else {
-                Log.e(TAG, t.getMessage());
-            }
+        switch (item.getItemId()) {
+            case R.id.disconnectMenuitem:
+                AuthenticationManager.getInstance().disconnect();
+                Intent connectIntent = new Intent(this, ConnectActivity.class);
+                startActivity(connectIntent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
+    }
+
+    @Override
+    public void success(Void _void, Response response) {
+        showSendMailSuccessUI();
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        showSendMailErrorUI();
     }
 
     private void resetUIForSendMail() {
@@ -122,59 +122,24 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
     }
 
     private void showSendMailSuccessUI() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mSendMailProgressBar.setVisibility(View.GONE);
-                mSendMailButton.setVisibility(View.VISIBLE);
-                mConclusionTextView.setText(R.string.conclusion_text);
-                mConclusionTextView.setVisibility(View.VISIBLE);
-                Toast.makeText(
-                        SendMailActivity.this,
-                        R.string.send_mail_toast_text,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showSendMailErrorUI() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mSendMailProgressBar.setVisibility(View.GONE);
-                mSendMailButton.setVisibility(View.VISIBLE);
-                mConclusionTextView.setText(R.string.sendmail_text_error);
-                mConclusionTextView.setVisibility(View.VISIBLE);
-                Toast.makeText(
-                        SendMailActivity.this,
-                        R.string.send_mail_toast_text_error,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void showDisconnectSuccessUI() {
-        mTitleTextView.setVisibility(View.GONE);
-        mDescriptionTextView.setVisibility(View.GONE);
-        mEmailEditText.setVisibility(View.GONE);
-        mSendMailButton.setVisibility(View.GONE);
-        mConclusionTextView.setVisibility(View.GONE);
-
+        mSendMailProgressBar.setVisibility(View.GONE);
+        mSendMailButton.setVisibility(View.VISIBLE);
+        mConclusionTextView.setText(R.string.conclusion_text);
+        mConclusionTextView.setVisibility(View.VISIBLE);
         Toast.makeText(
                 SendMailActivity.this,
-                R.string.disconnect_toast_text,
+                R.string.send_mail_toast_text,
                 Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void success(Void _void, Response response) {
-        Log.i(TAG, "sendMailToRecipient - Mail sent");
-        showSendMailSuccessUI();
-    }
-
-    @Override
-    public void failure(RetrofitError error) {
-        Log.e(TAG, "onSendMailButtonClick - " + error.getMessage());
-        showSendMailErrorUI();
+    private void showSendMailErrorUI() {
+        mSendMailProgressBar.setVisibility(View.GONE);
+        mSendMailButton.setVisibility(View.VISIBLE);
+        mConclusionTextView.setText(R.string.sendmail_text_error);
+        mConclusionTextView.setVisibility(View.VISIBLE);
+        Toast.makeText(
+                SendMailActivity.this,
+                R.string.send_mail_toast_text_error,
+                Toast.LENGTH_LONG).show();
     }
 }

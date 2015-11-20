@@ -27,6 +27,7 @@ import java.io.UnsupportedEncodingException;
  */
 
 public class AuthenticationManager {
+
     private static final String TAG = "AuthenticationManager";
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
@@ -50,11 +51,9 @@ public class AuthenticationManager {
 
     private AuthenticationContext mAuthenticationContext;
     private Activity mContextActivity;
-    private String mResourceId;
     private String mAccessToken;
 
     private AuthenticationManager() {
-        mResourceId = Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID;
     }
 
     /**
@@ -102,7 +101,7 @@ public class AuthenticationManager {
      *                        prompt.
      */
     public void setContextActivity(final Activity contextActivity) {
-        this.mContextActivity = contextActivity;
+        mContextActivity = contextActivity;
     }
 
     /**
@@ -145,7 +144,7 @@ public class AuthenticationManager {
      */
     private void authenticateSilent(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         getAuthenticationContext().acquireTokenSilent(
-                this.mResourceId,
+                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
                 Constants.CLIENT_ID,
                 getUserId(),
                 new AuthenticationCallback<AuthenticationResult>() {
@@ -184,8 +183,8 @@ public class AuthenticationManager {
      */
     private void authenticatePrompt(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         getAuthenticationContext().acquireToken(
-                this.mContextActivity,
-                this.mResourceId,
+                mContextActivity,
+                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
                 Constants.CLIENT_ID,
                 Constants.REDIRECT_URI,
                 PromptBehavior.Always,
@@ -232,9 +231,12 @@ public class AuthenticationManager {
     public AuthenticationContext getAuthenticationContext() {
         if (mAuthenticationContext == null) {
             try {
-                mAuthenticationContext = new AuthenticationContext(this.mContextActivity,
-                        Constants.AUTHORITY_URL,
-                        false);
+                mAuthenticationContext =
+                        new AuthenticationContext(
+                                mContextActivity,
+                                Constants.AUTHORITY_URL,
+                                false
+                        );
             } catch (Throwable t) {
                 Log.e(TAG, t.toString());
             }
@@ -261,45 +263,33 @@ public class AuthenticationManager {
     }
 
     private boolean verifyAuthenticationContext() {
-        if (this.mContextActivity == null) {
+        if (null == mContextActivity) {
             Log.e(TAG, "Must set context activity");
             return false;
         }
         return true;
     }
 
-    private boolean isConnected() {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+    private SharedPreferences getSharedPreferences() {
+        return mContextActivity.getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+    }
 
-        return settings.contains(USER_ID_VAR_NAME);
+    private boolean isConnected() {
+        return getSharedPreferences().contains(USER_ID_VAR_NAME);
     }
 
     private String getUserId() {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-
-        return settings.getString(USER_ID_VAR_NAME, "");
+        return getSharedPreferences().getString(USER_ID_VAR_NAME, "");
     }
 
     private void setUserId(String value) {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(USER_ID_VAR_NAME, value);
         editor.apply();
     }
 
     private void removeUserId() {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.remove(USER_ID_VAR_NAME);
         editor.apply();
     }

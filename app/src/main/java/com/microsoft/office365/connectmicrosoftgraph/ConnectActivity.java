@@ -72,11 +72,10 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     private void connect() {
-        AuthenticationManager mgr = AuthenticationManager.getInstance();
-        mgr.setContextActivity(this);
-        mgr.connect(
+        // define the post-auth callback
+        AuthenticationCallback<AuthenticationResult> callback =
                 new AuthenticationCallback<AuthenticationResult>() {
-
+                    
                     @Override
                     public void onSuccess(AuthenticationResult result) {
                         // get the UserInfo from the auth response
@@ -103,15 +102,18 @@ public class ConnectActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onError(final Exception e) {
-                        if (userCancelledConnect(e)) {
+                    public void onError(Exception exc) {
+                        if (userCancelledConnect(exc)) {
                             resetUIForConnect();
                         } else {
                             showConnectErrorUI();
                         }
                     }
+                };
 
-                });
+        AuthenticationManager mgr = AuthenticationManager.getInstance();
+        mgr.setContextActivity(this);
+        mgr.connect(callback);
     }
 
     /**

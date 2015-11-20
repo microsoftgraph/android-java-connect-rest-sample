@@ -37,8 +37,6 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
     private ProgressBar mSendMailProgressBar;
     private String mGivenName;
     private TextView mConclusionTextView;
-    private TextView mDescriptionTextView;
-    private TextView mTitleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +44,7 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
         setContentView(R.layout.activity_send_mail);
 
         // find the views
-        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
-        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+        TextView mTitleTextView = (TextView) findViewById(R.id.titleTextView);
         mEmailEditText = (EditText) findViewById(R.id.emailEditText);
         mSendMailButton = (ImageButton) findViewById(R.id.sendMailButton);
         mSendMailProgressBar = (ProgressBar) findViewById(R.id.sendMailProgressBar);

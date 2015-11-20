@@ -52,7 +52,7 @@ public class MSGraphAPIController {
             final String body,
             Callback<Void> callback) {
         ensureService();
-        // Use the Microsoft Graqph API service on Office 365 to create the message.
+        // Use the Microsoft Graph API service on Office 365 to create the message.
         mMSGraphAPIService.sendMail(
                 "application/json",
                 createMailPayload(

@@ -33,17 +33,11 @@ public class ConnectActivity extends AppCompatActivity {
 
     private static final String TAG = "ConnectActivity";
 
-    // the connect button
     private Button mConnectButton;
-
-    // greeting
     private TextView mTitleTextView;
-
-    // progress spinner
+    private TextView mDescriptionTextView;
     private ProgressBar mConnectProgressBar;
 
-    // instructions
-    private TextView mDescriptionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

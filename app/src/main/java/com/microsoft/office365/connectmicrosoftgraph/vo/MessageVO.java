@@ -17,9 +17,6 @@ public class MessageVO {
     @SerializedName("Body")
     public BodyVO mBody;
 
-    @SerializedName("Importance")
-    public String mImportance;
-
     @SerializedName("ToRecipients")
     public ToRecipientsVO[] mToRecipients;
 

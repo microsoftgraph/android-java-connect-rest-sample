@@ -72,14 +72,14 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
         resetUIForSendMail();
 
         //Prepare body message and insert name of sender
-        String body = getResources().getString(R.string.mail_body_text);
+        String body = getString(R.string.mail_body_text);
         body = body.replace("{0}", mGivenName);
 
         MSGraphAPIController
                 .getInstance()
                 .sendMail(
                         mEmailEditText.getText().toString(),
-                        getResources().getString(R.string.mail_subject_text),
+                        getString(R.string.mail_subject_text),
                         body,
                         this);
     }

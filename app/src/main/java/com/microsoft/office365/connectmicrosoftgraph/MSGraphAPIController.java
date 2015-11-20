@@ -4,7 +4,6 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
-import com.google.gson.Gson;
 import com.microsoft.office365.connectmicrosoftgraph.vo.BodyVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.EmailAddressVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.MessageVO;
@@ -12,7 +11,6 @@ import com.microsoft.office365.connectmicrosoftgraph.vo.MessageWrapper;
 import com.microsoft.office365.connectmicrosoftgraph.vo.ToRecipientsVO;
 
 import retrofit.Callback;
-import retrofit.mime.TypedString;
 
 
 /**
@@ -65,7 +63,7 @@ public class MSGraphAPIController {
     }
 
 
-    private TypedString createMailPayload(
+    private MessageWrapper createMailPayload(
             String subject,
             String body,
             String address) {
@@ -84,11 +82,7 @@ public class MSGraphAPIController {
         sampleMsg.mBody = bodyVO;
         sampleMsg.mToRecipients = new ToRecipientsVO[]{toRecipientsVO};
 
-        MessageWrapper wrapper = new MessageWrapper(sampleMsg);
-
-        TypedString typedEmail = new TypedString(new Gson().toJson(wrapper));
-
-        return typedEmail;
+        return new MessageWrapper(sampleMsg);
     }
 
     //Creates a Microsoft Graph API endpoint service interface if it does not exist.

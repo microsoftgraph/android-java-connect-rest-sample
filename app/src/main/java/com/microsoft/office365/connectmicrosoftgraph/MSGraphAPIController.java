@@ -44,14 +44,11 @@ public class MSGraphAPIController {
             final String subject,
             final String body,
             Callback<Void> callback) {
-        // Use the Microsoft Graph API service on Office 365 to create the message.
-        mMSGraphAPIService.sendMail(
-                "application/json",
-                createMailPayload(
-                        subject,
-                        body,
-                        emailAddress),
-                callback);
+        // create the email
+        MessageWrapper msg = createMailPayload(subject, body, emailAddress);
+
+        // send it using our service
+        mMSGraphAPIService.sendMail("application/json", msg, callback);
     }
 
 

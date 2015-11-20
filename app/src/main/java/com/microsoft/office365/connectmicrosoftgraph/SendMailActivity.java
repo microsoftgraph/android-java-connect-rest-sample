@@ -25,7 +25,7 @@ import retrofit.client.Response;
  * The app must be connected to Office 365 before this activity can send an email.
  * It also uses the MSGraphAPIController to send the message.
  */
-public class SendMailActivity extends AppCompatActivity implements Callback<Void> {
+public class SendMailActivity extends AppCompatActivity {
 
     // arguments for this activity
     public static final String ARG_GIVEN_NAME = "givenName";
@@ -77,7 +77,17 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
                         mEmailEditText.getText().toString(),
                         getString(R.string.mail_subject_text),
                         body,
-                        this);
+                        new Callback<Void>() {
+                            @Override
+                            public void success(Void aVoid, Response response) {
+                                showSendMailSuccessUI();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                showSendMailErrorUI();
+                            }
+                        });
     }
 
     @Override
@@ -99,16 +109,6 @@ public class SendMailActivity extends AppCompatActivity implements Callback<Void
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void success(Void _void, Response response) {
-        showSendMailSuccessUI();
-    }
-
-    @Override
-    public void failure(RetrofitError error) {
-        showSendMailErrorUI();
     }
 
     private void resetUIForSendMail() {

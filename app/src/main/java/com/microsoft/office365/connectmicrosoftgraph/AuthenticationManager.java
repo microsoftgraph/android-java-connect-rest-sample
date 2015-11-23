@@ -1,5 +1,6 @@
 /*
- *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
+ * Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
+ * See LICENSE in the project root for license information.
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
@@ -26,6 +27,7 @@ import java.io.UnsupportedEncodingException;
  */
 
 public class AuthenticationManager {
+
     private static final String TAG = "AuthenticationManager";
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
@@ -49,11 +51,9 @@ public class AuthenticationManager {
 
     private AuthenticationContext mAuthenticationContext;
     private Activity mContextActivity;
-    private String mResourceId;
     private String mAccessToken;
 
     private AuthenticationManager() {
-        mResourceId = Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID;
     }
 
     /**
@@ -101,7 +101,7 @@ public class AuthenticationManager {
      *                        prompt.
      */
     public void setContextActivity(final Activity contextActivity) {
-        this.mContextActivity = contextActivity;
+        mContextActivity = contextActivity;
     }
 
     /**
@@ -110,11 +110,7 @@ public class AuthenticationManager {
      * @return mAccessToken
      */
     public String getAccessToken() {
-        if (mAccessToken != null) {
-            return mAccessToken;
-        } else {
-            return "";
-        }
+        return mAccessToken;
     }
 
 
@@ -148,7 +144,7 @@ public class AuthenticationManager {
      */
     private void authenticateSilent(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         getAuthenticationContext().acquireTokenSilent(
-                this.mResourceId,
+                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
                 Constants.CLIENT_ID,
                 getUserId(),
                 new AuthenticationCallback<AuthenticationResult>() {
@@ -187,8 +183,8 @@ public class AuthenticationManager {
      */
     private void authenticatePrompt(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         getAuthenticationContext().acquireToken(
-                this.mContextActivity,
-                this.mResourceId,
+                mContextActivity,
+                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
                 Constants.CLIENT_ID,
                 Constants.REDIRECT_URI,
                 PromptBehavior.Always,
@@ -235,9 +231,12 @@ public class AuthenticationManager {
     public AuthenticationContext getAuthenticationContext() {
         if (mAuthenticationContext == null) {
             try {
-                mAuthenticationContext = new AuthenticationContext(this.mContextActivity,
-                        Constants.AUTHORITY_URL,
-                        false);
+                mAuthenticationContext =
+                        new AuthenticationContext(
+                                mContextActivity,
+                                Constants.AUTHORITY_URL,
+                                false
+                        );
             } catch (Throwable t) {
                 Log.e(TAG, t.toString());
             }
@@ -264,74 +263,34 @@ public class AuthenticationManager {
     }
 
     private boolean verifyAuthenticationContext() {
-        if (this.mContextActivity == null) {
+        if (null == mContextActivity) {
             Log.e(TAG, "Must set context activity");
             return false;
         }
         return true;
     }
 
-    private boolean isConnected() {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+    private SharedPreferences getSharedPreferences() {
+        return mContextActivity.getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+    }
 
-        return settings.contains(USER_ID_VAR_NAME);
+    private boolean isConnected() {
+        return getSharedPreferences().contains(USER_ID_VAR_NAME);
     }
 
     private String getUserId() {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-
-        return settings.getString(USER_ID_VAR_NAME, "");
+        return getSharedPreferences().getString(USER_ID_VAR_NAME, "");
     }
 
     private void setUserId(String value) {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(USER_ID_VAR_NAME, value);
         editor.apply();
     }
 
     private void removeUserId() {
-        SharedPreferences settings = this
-                .mContextActivity
-                .getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.remove(USER_ID_VAR_NAME);
         editor.apply();
     }
 }
-// *********************************************************
-//
-// O365-Android-Microsoft-Graph-Connect, https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect
-//
-// Copyright (c) Microsoft Corporation
-// All rights reserved.
-//
-// MIT License:
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-//
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-// *********************************************************

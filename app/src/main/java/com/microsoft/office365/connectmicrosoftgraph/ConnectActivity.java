@@ -1,5 +1,6 @@
 /*
- *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
+ * Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
+ * See LICENSE in the project root for license information.
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
@@ -16,12 +17,13 @@ import android.widget.Toast;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationCancelError;
 import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.aad.adal.UserInfo;
 
 import java.net.URI;
 import java.util.UUID;
 
 /**
- * Starting activity of the app. Handles the connection to Office 365.
+ * Starting Activity of the app. Handles the connection to Office 365.
  * When it first starts it only displays a button to Connect to Office 365.
  * If there are no cached tokens, the user is required to sign in to Office 365.
  * If there are cached tokens, the app tries to reuse them.
@@ -33,77 +35,85 @@ public class ConnectActivity extends AppCompatActivity {
 
     private Button mConnectButton;
     private TextView mTitleTextView;
-    private ProgressBar mConnectProgressBar;
     private TextView mDescriptionTextView;
+    private ProgressBar mConnectProgressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
 
-        initializeViews();
+        // set up our views
+        mConnectButton = (Button) findViewById(R.id.connectButton);
+        mConnectProgressBar = (ProgressBar) findViewById(R.id.connectProgressBar);
+        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
+        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+
+        // add click listener
+        mConnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showConnectingInProgressUI();
+
+                //check that client id and redirect have been configured
+                if (!hasAzureConfiguration()) {
+                    Toast.makeText(
+                            ConnectActivity.this,
+                            getString(R.string.warning_clientid_redirecturi_incorrect),
+                            Toast.LENGTH_LONG).show();
+                    resetUIForConnect();
+                    return;
+                }
+
+                connect();
+            }
+        });
     }
 
-    /**
-     * Event handler for the onclick event of the button.
-     *
-     * @param v The view
-     */
-    public void onConnectButtonClick(View v) {
-        showConnectingInProgressUI();
-
-        //check that client id and redirect have been set correctly
-        try {
-            UUID.fromString(Constants.CLIENT_ID);
-            URI.create(Constants.REDIRECT_URI);
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(
-                    this
-                    , getString(R.string.warning_clientid_redirecturi_incorrect)
-                    , Toast.LENGTH_LONG).show();
-
-            resetUIForConnect();
-            return;
-        }
-
-        final Intent sendMailIntent = new Intent(this, SendMailActivity.class);
-        AuthenticationManager.getInstance().setContextActivity(this);
-        AuthenticationManager.getInstance().connect(
+    private void connect() {
+        // define the post-auth callback
+        AuthenticationCallback<AuthenticationResult> callback =
                 new AuthenticationCallback<AuthenticationResult>() {
-                    /**
-                     * If the connection is successful, the activity extracts the username and
-                     * displayableId values from the authentication result object and sends them
-                     * to the SendDraftMail activity.
-                     * @param result The authentication result object that contains information about
-                     *               the user and the tokens.
-                     */
+
                     @Override
                     public void onSuccess(AuthenticationResult result) {
+                        // get the UserInfo from the auth response
+                        UserInfo user = result.getUserInfo();
 
-                        //Need to get the new access token to the RESTHelper instance
-                        Log.i(TAG, "onConnectButtonClick - Successfully connected to Office 365");
+                        // get the user's given name
+                        String givenName = user.getGivenName();
 
-                        sendMailIntent.putExtra("givenName", result
-                                .getUserInfo()
-                                .getGivenName());
-                        sendMailIntent.putExtra("displayableId", result
-                                .getUserInfo()
-                                .getDisplayableId());
-                        startActivity(sendMailIntent);
+                        // get the user's displayable Id
+                        String displayableId = user.getDisplayableId();
 
-                        resetUIForConnect();
+                        // start the SendMailActivity
+                        Intent sendMailActivity =
+                                new Intent(ConnectActivity.this, SendMailActivity.class);
+
+                        // take the user's info along
+                        sendMailActivity.putExtra(SendMailActivity.ARG_GIVEN_NAME, givenName);
+                        sendMailActivity.putExtra(SendMailActivity.ARG_DISPLAY_ID, displayableId);
+
+                        // actually start the Activity
+                        startActivity(sendMailActivity);
+
+                        finish();
                     }
 
                     @Override
-                    public void onError(final Exception e) {
-                        Log.e(TAG, "onCreate - " + e.getMessage());
-                        if (!(e instanceof AuthenticationCancelError)) {
-                            showConnectErrorUI();
-                        } else {
+                    public void onError(Exception exc) {
+                        if (userCancelledConnect(exc)) {
                             resetUIForConnect();
+                        } else {
+                            showConnectErrorUI();
                         }
                     }
-                });
+                };
+
+        AuthenticationManager mgr = AuthenticationManager.getInstance();
+        mgr.setContextActivity(this);
+        mgr.connect(callback);
     }
 
     /**
@@ -126,11 +136,18 @@ public class ConnectActivity extends AppCompatActivity {
                 .onActivityResult(requestCode, resultCode, data);
     }
 
-    private void initializeViews() {
-        mConnectButton = (Button) findViewById(R.id.connectButton);
-        mConnectProgressBar = (ProgressBar) findViewById(R.id.connectProgressBar);
-        mTitleTextView = (TextView) findViewById(R.id.titleTextView);
-        mDescriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+    private static boolean userCancelledConnect(Exception e) {
+        return e instanceof AuthenticationCancelError;
+    }
+
+    private static boolean hasAzureConfiguration() {
+        try {
+            UUID.fromString(Constants.CLIENT_ID);
+            URI.create(Constants.REDIRECT_URI);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     private void resetUIForConnect() {
@@ -160,32 +177,3 @@ public class ConnectActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 }
-
-// *********************************************************
-//
-// O365-Android-Microsoft-Graph-Connect, https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect
-//
-// Copyright (c) Microsoft Corporation
-// All rights reserved.
-//
-// MIT License:
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-//
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-// *********************************************************

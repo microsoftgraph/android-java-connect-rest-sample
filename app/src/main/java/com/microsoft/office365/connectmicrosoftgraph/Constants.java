@@ -11,4 +11,6 @@ interface Constants {
     String REDIRECT_URI = "ENTER_YOUR_REDIRECT_URI";
     String MICROSOFT_GRAPH_API_ENDPOINT = "https://graph.microsoft.com/v1.0/";
     String MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID = "https://graph.microsoft.com/";
+    String MAIL_READWRITE_SCOPE = "https://outlook.office.com/Mail.ReadWrite";
+    String MAIL_SEND_SCOPE = "https://outlook.office.com/Mail.Send";
 }

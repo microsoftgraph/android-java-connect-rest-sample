@@ -19,6 +19,7 @@ import com.microsoft.aad.adal.AuthenticationResult;
 import com.microsoft.aad.adal.AuthenticationResult.AuthenticationStatus;
 import com.microsoft.aad.adal.AuthenticationSettings;
 import com.microsoft.aad.adal.PromptBehavior;
+import com.microsoft.aad.adal.UserIdentifier;
 
 import java.io.UnsupportedEncodingException;
 
@@ -32,6 +33,9 @@ public class AuthenticationManager {
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
     private static AuthenticationManager INSTANCE;
+    String[] scopes = {Constants.MAIL_READWRITE_SCOPE,Constants.MAIL_SEND_SCOPE};
+    String[] additionalScopes = {""};
+
 
     static {
         // Devices with API level lower than 18 must setup an encryption key.
@@ -144,19 +148,20 @@ public class AuthenticationManager {
      */
     private void authenticateSilent(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         getAuthenticationContext().acquireTokenSilent(
-                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
+                scopes,
                 Constants.CLIENT_ID,
-                getUserId(),
+                UserIdentifier.getAnyUser(),
                 new AuthenticationCallback<AuthenticationResult>() {
                     @Override
                     public void onSuccess(final AuthenticationResult authenticationResult) {
                         if (authenticationResult != null) {
                             if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
-                                mAccessToken = authenticationResult.getAccessToken();
+                                mAccessToken = authenticationResult.getToken();
                                 authenticationCallback.onSuccess(authenticationResult);
                             } else {
+                                //Todo see if this can still be an error condition or not.
                                 authenticationCallback.onError(
-                                        new Exception(authenticationResult.getErrorDescription()));
+                                        new Exception("Authentication succeeded but an error occurred."));
 
                             }
                         } else {
@@ -184,7 +189,8 @@ public class AuthenticationManager {
     private void authenticatePrompt(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         getAuthenticationContext().acquireToken(
                 mContextActivity,
-                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
+                scopes,
+                additionalScopes,
                 Constants.CLIENT_ID,
                 Constants.REDIRECT_URI,
                 PromptBehavior.Always,
@@ -193,10 +199,11 @@ public class AuthenticationManager {
                     public void onSuccess(final AuthenticationResult authenticationResult) {
                         if (authenticationResult != null) {
                             if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
-                                setUserId(authenticationResult.getUserInfo().getUserId());
-                                mAccessToken = authenticationResult.getAccessToken();
+                                setUserId(authenticationResult.getUserInfo().getUniqueId());
+                                mAccessToken = authenticationResult.getToken();
                                 authenticationCallback.onSuccess(authenticationResult);
                             } else {
+                                //Todo this scenario should go away, double check
                                 // We need to make sure that there is no data stored with the failed auth
                                 AuthenticationManager.getInstance().disconnect();
                                 // This condition can happen if user signs in with an MSA account
@@ -204,7 +211,7 @@ public class AuthenticationManager {
                                 authenticationCallback.onError(
                                         new AuthenticationException(
                                                 ADALError.AUTH_FAILED,
-                                                authenticationResult.getErrorDescription()));
+                                                "Authentication succeeded but an error occurred."));
                             }
                         } else {
                             // I could not authenticate the user silently,
@@ -251,7 +258,7 @@ public class AuthenticationManager {
     public void disconnect() {
         // Clear tokens.
         if (getAuthenticationContext().getCache() != null) {
-            getAuthenticationContext().getCache().removeAll();
+            getAuthenticationContext().getCache().clear();
         }
 
         mAccessToken = null;

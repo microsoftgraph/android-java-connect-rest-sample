@@ -82,7 +82,7 @@ public class ConnectActivity extends AppCompatActivity {
                         UserInfo user = result.getUserInfo();
 
                         // get the user's given name
-                        String givenName = user.getGivenName();
+                        String givenName = user.getName();
 
                         // get the user's displayable Id
                         String displayableId = user.getDisplayableId();

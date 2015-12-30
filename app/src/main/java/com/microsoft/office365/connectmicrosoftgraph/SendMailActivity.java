@@ -7,6 +7,7 @@ package com.microsoft.office365.connectmicrosoftgraph;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +17,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.annotations.SerializedName;
+import com.microsoft.aad.adal.AuthenticationCallback;
+import com.microsoft.aad.adal.AuthenticationResult;
+import com.microsoft.aad.adal.UserInfo;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 /**
  * This activity handles the send mail operation of the app.
@@ -85,6 +92,9 @@ public class SendMailActivity extends AppCompatActivity {
 
                             @Override
                             public void failure(RetrofitError error) {
+                                //todo log out the error json retrieved below
+                                String errorDetails =  new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
+
                                 showSendMailErrorUI();
                             }
                         });

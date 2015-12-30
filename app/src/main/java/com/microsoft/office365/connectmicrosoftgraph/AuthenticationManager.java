@@ -159,9 +159,10 @@ public class AuthenticationManager {
                                 mAccessToken = authenticationResult.getToken();
                                 authenticationCallback.onSuccess(authenticationResult);
                             } else {
-                                //Todo see if this can still be an error condition or not.
+                                //Something happened that stopped authentication, such as user cancelled
+                                //todo add more detailed error handling for AuthenticationStatus
                                 authenticationCallback.onError(
-                                        new Exception("Authentication succeeded but an error occurred."));
+                                        new Exception("Authentication was not completed."));
 
                             }
                         } else {
@@ -187,13 +188,15 @@ public class AuthenticationManager {
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
     private void authenticatePrompt(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
+        UserIdentifier dud;
         getAuthenticationContext().acquireToken(
                 mContextActivity,
                 scopes,
-                additionalScopes,
+                //additionalScopes,
+                null,
                 Constants.CLIENT_ID,
                 Constants.REDIRECT_URI,
-                PromptBehavior.Always,
+                PromptBehavior.Auto,
                 new AuthenticationCallback<AuthenticationResult>() {
                     @Override
                     public void onSuccess(final AuthenticationResult authenticationResult) {
@@ -203,15 +206,16 @@ public class AuthenticationManager {
                                 mAccessToken = authenticationResult.getToken();
                                 authenticationCallback.onSuccess(authenticationResult);
                             } else {
-                                //Todo this scenario should go away, double check
+                                //Something happened that stopped authentication, such as user cancelled
+                                //todo add more detailed error handling for AuthenticationStatus
+
                                 // We need to make sure that there is no data stored with the failed auth
                                 AuthenticationManager.getInstance().disconnect();
-                                // This condition can happen if user signs in with an MSA account
-                                // instead of an Office 365 account
+
                                 authenticationCallback.onError(
                                         new AuthenticationException(
                                                 ADALError.AUTH_FAILED,
-                                                "Authentication succeeded but an error occurred."));
+                                                "Authentication was not completed."));
                             }
                         } else {
                             // I could not authenticate the user silently,

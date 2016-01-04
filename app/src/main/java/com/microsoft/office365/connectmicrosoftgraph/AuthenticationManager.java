@@ -4,12 +4,14 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
+import android.webkit.CookieManager;
 
 import com.microsoft.aad.adal.ADALError;
 import com.microsoft.aad.adal.AuthenticationCallback;
@@ -33,7 +35,7 @@ public class AuthenticationManager {
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
     private static AuthenticationManager INSTANCE;
-    String[] scopes = {Constants.MAIL_READWRITE_SCOPE,Constants.MAIL_SEND_SCOPE};
+    String[] scopes = {Constants.MAIL_READWRITE_SCOPE, Constants.MAIL_SEND_SCOPE};
     String[] additionalScopes = {""};
 
 
@@ -260,6 +262,14 @@ public class AuthenticationManager {
      * to null, and removing the user id from shred preferences.
      */
     public void disconnect() {
+        // Clear the cookies on the authentication WebView
+        CookieManager cookieManager = CookieManager.getInstance();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            clearCookies(cookieManager);
+        } else {
+            clearCookies21(cookieManager);
+        }
+
         // Clear tokens.
         if (getAuthenticationContext().getCache() != null) {
             getAuthenticationContext().getCache().clear();
@@ -271,6 +281,15 @@ public class AuthenticationManager {
 
         // Forget the user
         removeUserId();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void clearCookies21(CookieManager cookieManager) {
+        cookieManager.removeAllCookies(null);
+    }
+
+    private void clearCookies(CookieManager cookieManager) {
+        cookieManager.removeAllCookie();
     }
 
     private boolean verifyAuthenticationContext() {

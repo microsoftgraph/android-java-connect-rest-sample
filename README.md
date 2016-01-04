@@ -20,6 +20,11 @@ To use the Office 365 Connect sample for Android, you need the following:
 
 * [Android Studio](http://developer.android.com/sdk/index.html) version 1.0 or later.
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
+
+* A Microsoft Account (MSA) that supports the v2.0 app model **(TODO: get correct description of a migrated MSA account)**
+
+    > Note: If your MSA has not been migrated to support the v2.0 app model, you can request an account migration. To do this, see the **(TODO: get an URL for account migration instructions)**
+    
 * An Office 365 account. You can sign up for [an Office 365 Developer subscription](https://portal.office.com/Signup/Signup.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK&ali=1#0) that includes the resources that you need to start building Office 365 apps.
 
      > Note: If you already have a subscription, the previous link sends you to a page with the message *Sorry, you can’t add that to your current account*. In that case use an account from your current Office 365 subscription.
@@ -27,7 +32,7 @@ To use the Office 365 Connect sample for Android, you need the following:
 
      > Important: You will also need to ensure your Azure subscription is bound to your Office 365 tenant. To do this see the Active Directory team's blog post, [Creating and Managing Multiple Windows Azure Active Directories](http://blogs.technet.com/b/ad/archive/2013/11/08/creating-and-managing-multiple-windows-azure-active-directories.aspx). The section **Adding a new directory** will explain how to do this. You can also see [Set up your Office 365 development environment](https://msdn.microsoft.com/office/office365/howto/setup-development-environment#bk_CreateAzureSubscription) and the section **Associate your Office 365 account with Azure AD to create and manage apps** for more information.
       
-* A client id and redirect uri values of an application registered in Azure. This sample application must be granted the **Send mail as a user** permission for **Microsoft Graph**. [Add a native client application in Azure](https://msdn.microsoft.com/library/azure/dn132599.aspx#BKMK_Adding) and [grant proper permissions](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/wiki/Grant-permissions-to-the-Connect-application-in-Azure) to it.
+* A client id and redirect uri values of an application registered in Azure. This sample application must be granted the **Send mail as a user** permission for **Microsoft Graph**. [Add a native client application in Azure](https://azure.microsoft.com/documentation/articles/active-directory-v2-app-registration) and [grant proper permissions](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/wiki/Grant-permissions-to-the-Connect-application-in-Azure) to it. **(TODO: Need link to v2.0 app registration portal)**
 
 ## Open the sample using Android Studio
 
@@ -49,11 +54,11 @@ To use the Office 365 Connect sample for Android, you need the following:
 
 Once you've built the Connect sample, you can run it on an emulator or device. Pick a device with API level 15 or higher from the **Choose device** dialog.
 
-To learn more about the sample, visit our [understanding the code](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/wiki/Understanding-the-Connect-sample-code) wiki page.
+**(TODO: remove this sentence when wiki goes away. Replace with link to dev.office.com article url)** To learn more about the sample, visit our [understanding the code](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/wiki/Understanding-the-Connect-sample-code) wiki page.
 
 ## Questions and comments
 
-We'd love to get your feedback about the Office 365 Android Connect project. You can send your questions and suggestions to us in the [Issues](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/issues) section of this repository.
+We'd love to get your feedback about the Office 365 Android Microsoft Graph Connect project. You can send your questions and suggestions to us in the [Issues](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/issues) section of this repository.
 
 Questions about Office 365 development in general should be posted to [Stack Overflow](http://stackoverflow.com/questions/tagged/Office365+API). Make sure that your questions or comments are tagged with [Office365] and [API].
 

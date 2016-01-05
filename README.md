@@ -57,7 +57,6 @@ To use the Office 365 Connect sample for Android, you need the following:
 
 Once you've built the Connect sample, you can run it on an emulator or device. Pick a device with API level 15 or higher from the **Choose device** dialog.
 
-**(TODO: remove this sentence when wiki goes away. Replace with link to dev.office.com article url)** To learn more about the sample, visit our [understanding the code](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/wiki/Understanding-the-Connect-sample-code) wiki page.
 
 ## Questions and comments
 

@@ -15,6 +15,8 @@ interface Constants {
 
     //TODO: For GA, make these "short scopes". That is, removed the domain
     //qualifiers. Result is Mail.ReadWrite instead of "https... Mail.ReadWrite
+    // See https://msdn.microsoft.com/office/office365/howto/authenticate-Office-365-APIs-using-v2
+    // for a complete list of scopes
     String MAIL_READWRITE_SCOPE = "https://graph.microsoft.com/Mail.ReadWrite";
     String MAIL_SEND_SCOPE = "https://graph.microsoft.com/Mail.Send";
 }

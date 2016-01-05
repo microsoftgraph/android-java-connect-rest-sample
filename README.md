@@ -5,7 +5,7 @@
 [![Office 365 Connect sample](/readme-images/O365-Android-Connect-video_play_icon.png)](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Click to see the sample in action")
 
 Connecting to Office 365 is the first step every Android app must take to start working with Office 365 services and data. This sample shows how to connect and then call one API through the Microsoft Graph (previously called Office 365 unified API).
-> Note: Try out the [Get started with Office 365 APIs](http://dev.office.com/getting-started/office365apis?platform=option-android#setup) page which simplifies registration so you can get this sample running faster.
+> Note: Try out the [Application Registration Portal](https://apps.dev.microsoft.com) page which simplifies registration so you can get this sample running faster. The registration portal assigns a client id and redirect URL for your app but does not set app permissions. App permissions (scopes) are requested dynamically in your code.
 
 ## Device requirements
 

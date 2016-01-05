@@ -4,7 +4,7 @@
 
 [![Office 365 Connect sample](/readme-images/O365-Android-Connect-video_play_icon.png)](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Click to see the sample in action")
 
-Connecting to Office 365 is the first step every Android app must take to start working with Office 365 services and data. This sample shows how to connect and then call one API through the Microsoft Graph (previously called Office 365 unified API).
+Connecting to Office 365 is the first step every Android app must take to start working with Office 365 services and data. This sample shows how to connect and then call one API through the Microsoft Graph (previously called Office 365 unified API). User authentication is handled by Microsoft Azure, using the [App model v2.0 OAuth 2.0 authorization flow.](https://azure.microsoft.com/documentation/articles/active-directory-v2-compare/). App model v2.0 makes it possible for your app to authenticate users with an organization id or a consumer Microsoft Account.
 > Note: Try out the [Application Registration Portal](https://apps.dev.microsoft.com) page which simplifies registration so you can get this sample running faster. The registration portal assigns a client id and redirect URL for your app but does not set app permissions. App permissions (scopes) are requested dynamically in your code.
 
 ## Device requirements
@@ -21,7 +21,7 @@ To use the Office 365 Connect sample for Android, you need the following:
 * [Android Studio](http://developer.android.com/sdk/index.html) version 1.0 or later.
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
 
-* A Microsoft Account (MSA) that supports the v2.0 app model **(TODO: get correct description of a migrated MSA account)**
+* A Microsoft Account (MSA) that supports the v2.0 app model
 
     > Note: If your MSA has not been migrated to support the v2.0 app model, you can request an account migration. To do this, see the **(TODO: get an URL for account migration instructions)**
     
@@ -32,7 +32,7 @@ To use the Office 365 Connect sample for Android, you need the following:
 
      > Important: You will also need to ensure your Azure subscription is bound to your Office 365 tenant. To do this see the Active Directory team's blog post, [Creating and Managing Multiple Windows Azure Active Directories](http://blogs.technet.com/b/ad/archive/2013/11/08/creating-and-managing-multiple-windows-azure-active-directories.aspx). The section **Adding a new directory** will explain how to do this. You can also see [Set up your Office 365 development environment](https://msdn.microsoft.com/office/office365/howto/setup-development-environment#bk_CreateAzureSubscription) and the section **Associate your Office 365 account with Azure AD to create and manage apps** for more information.
       
-* A client id and redirect uri values of an application registered in Azure. This sample application must be granted the **Send mail as a user** permission for **Microsoft Graph**. [Add a native client application in Azure](https://azure.microsoft.com/documentation/articles/active-directory-v2-app-registration) and [grant proper permissions](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/wiki/Grant-permissions-to-the-Connect-application-in-Azure) to it. **(TODO: Need link to v2.0 app registration portal)**
+* A client id and redirect uri values of an application registered in Azure.  [How to register an app with Microsoft](https://azure.microsoft.com/documentation/articles/active-directory-v2-app-registration/) 
 
 ## Open the sample using Android Studio
 
@@ -46,11 +46,14 @@ To use the Office 365 Connect sample for Android, you need the following:
 	> 
 	> Additionally, Android Studio shows a **Frameworks detected** notification if you don't have the **Android Support Repository** installed. Open the SDK manager and add the Android Support Repository to avoid the Frameworks detected notification.
 4. Open the Constants.java file.
-	1. Find the CLIENT_ID constant and set its String value equal to the client id you registered in Azure Active Directory.
-	2. Find the REDIRECT_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
+	1. Find the [`CLIENT_ID`](/app/src/main/java/com/microsoft/office365/connectmicrosoftgraph/Constants.java#L8) constant and set its String value equal to the client id you registered in Azure Active Directory.
+	2. Find the [`REDIRECT_URI`](/app/src/main/java/com/microsoft/office365/connectmicrosoftgraph/Constants.java#L9) constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
     ![Office 365 Connect sample](/readme-images/O365-Android-Connect-Constants.png "Client ID and Redirect URI values in Constants file")
+	3. Find the [`MAIL_SEND_SCOPE`](/app/src/main/java/com/microsoft/office365/connectmicrosoftgraph/Constants.java#L21) and verif	that the value is "https://graph.microsoft.com/Mail.Send";
+	  
+	> Note: You should define any other scopes that your app may need in the constants.js file. The scope constants are used in the  [`AuthenticationManager`](/app/src/main/java/com/microsoft/office365/connectmicrosoftgraph/AuthenticationManager.java#L38) class
 
-    > Note: If you have don't have CLIENT_ID and REDIRECT_URI values, [add a native client application in Azure](https://msdn.microsoft.com/library/azure/dn132599.aspx#BKMK_Adding) and take note of the CLIENT\_ID and REDIRECT_URI.
+    > Note: If you have don't have CLIENT_ID and REDIRECT_URI values, [add a native client application in Azure](https://azure.microsoft.com/documentation/articles/active-directory-v2-app-registration/) and take note of the CLIENT\_ID and REDIRECT_URI.
 
 Once you've built the Connect sample, you can run it on an emulator or device. Pick a device with API level 15 or higher from the **Choose device** dialog.
 

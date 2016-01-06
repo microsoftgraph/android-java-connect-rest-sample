@@ -35,8 +35,7 @@ public class AuthenticationManager {
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
     private static AuthenticationManager INSTANCE;
-    String[] scopes = {Constants.MAIL_READWRITE_SCOPE, Constants.MAIL_SEND_SCOPE};
-    String[] additionalScopes = {""};
+    String[] scopes = {Constants.MAIL_SEND_SCOPE};
 
 
     static {

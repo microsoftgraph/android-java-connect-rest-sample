@@ -14,7 +14,6 @@ interface Constants {
     //Scopes your application will request
 
     //TODO: For GA, make these "short scopes". That is, removed the domain
-    //qualifiers. Result is Mail.ReadWrite instead of "https... Mail.ReadWrite
-    String MAIL_READWRITE_SCOPE = "https://graph.microsoft.com/Mail.ReadWrite";
+    //qualifiers. Result is Mail.Send instead of "https... Mail.Send
     String MAIL_SEND_SCOPE = "https://graph.microsoft.com/Mail.Send";
 }

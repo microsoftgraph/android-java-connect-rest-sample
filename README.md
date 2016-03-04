@@ -74,4 +74,4 @@ This sample just shows the essentials that your apps need to work with Office 36
 
 
 ## Copyright
-Copyright (c) 2015 Microsoft. All rights reserved.
+Copyright (c) 2016 Microsoft. All rights reserved.

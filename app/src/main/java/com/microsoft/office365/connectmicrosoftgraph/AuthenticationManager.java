@@ -130,13 +130,13 @@ public class AuthenticationManager {
     }
 
     /**
-     * Calls acquireTokenSilent with the user id stored in shared preferences.
+     * Calls acquireTokenSilentAsync with the user id stored in shared preferences.
      * In case of an error, it falls back to {@link AuthenticationManager#authenticatePrompt(AuthenticationCallback)}.
      *
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
     private void authenticateSilent(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
-        getAuthenticationContext().acquireTokenSilent(
+        getAuthenticationContext().acquireTokenSilentAsync(
                 Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
                 Constants.CLIENT_ID,
                 getUserId(),

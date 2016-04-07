@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationCancelError;
+import com.microsoft.aad.adal.AuthenticationException;
 import com.microsoft.aad.adal.AuthenticationResult;
 import com.microsoft.aad.adal.UserInfo;
 
@@ -113,7 +114,11 @@ public class ConnectActivity extends AppCompatActivity {
 
         AuthenticationManager mgr = AuthenticationManager.getInstance();
         mgr.setContextActivity(this);
-        mgr.connect(callback);
+        try {
+            mgr.connect(callback);
+        } catch (AuthenticationException ae) {
+            Toast.makeText(ConnectActivity.this, ae.getMessage(), Toast.LENGTH_LONG);
+        }
     }
 
     /**

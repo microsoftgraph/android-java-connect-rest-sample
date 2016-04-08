@@ -114,11 +114,7 @@ public class ConnectActivity extends AppCompatActivity {
 
         AuthenticationManager mgr = AuthenticationManager.getInstance();
         mgr.setContextActivity(this);
-        try {
-            mgr.connect(callback);
-        } catch (AuthenticationException ae) {
-            Toast.makeText(ConnectActivity.this, ae.getMessage(), Toast.LENGTH_LONG);
-        }
+        mgr.connect(callback);
     }
 
     /**

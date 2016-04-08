@@ -112,8 +112,7 @@ public class AuthenticationManager {
      *
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
-    public void connect(final AuthenticationCallback<AuthenticationResult> authenticationCallback)
-            throws AuthenticationException {
+    public void connect(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
         if (verifyAuthenticationContext()) {
             if (isConnected()) {
                 authenticateSilent(authenticationCallback);

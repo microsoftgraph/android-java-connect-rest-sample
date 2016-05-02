@@ -122,9 +122,6 @@ public class AuthenticationManager {
         } else {
             Log.e(TAG,
                     "connect - Auth context verification failed. Did you set a context activity?");
-            throw new AuthenticationException(
-                    ADALError.ACTIVITY_REQUEST_INTENT_DATA_IS_NULL,
-                    "Auth context verification failed. Did you set a context activity?");
         }
     }
 
@@ -149,7 +146,6 @@ public class AuthenticationManager {
                             } else {
                                 authenticationCallback.onError(
                                         new Exception(authenticationResult.getErrorDescription()));
-
                             }
                         } else {
                             // I could not authenticate the user silently,

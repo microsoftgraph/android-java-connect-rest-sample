@@ -1,6 +1,6 @@
 # Office 365 Connect Sample for Android Using Microsoft Graph
 
-[![Build Status](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect.svg?branch=master)](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect)
+[![Build Status](https://travis-ci.org/microsoftgraph/android-java-connect-rest-sample.svg?branch=master)](https://travis-ci.org/microsoftgraph/android-java-connect-rest-sample)
 
 [![Office 365 Connect sample](/readme-images/O365-Android-Connect-video_play_icon.png)](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Click to see the sample in action")
 

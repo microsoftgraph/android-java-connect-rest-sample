@@ -10,7 +10,8 @@ import com.microsoft.office365.connectmicrosoftgraph.vo.MessageVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.MessageWrapper;
 import com.microsoft.office365.connectmicrosoftgraph.vo.ToRecipientsVO;
 
-import retrofit.Callback;
+import okhttp3.Interceptor;
+import retrofit2.Call;
 
 
 /**
@@ -25,7 +26,13 @@ public class MSGraphAPIController {
 
     public MSGraphAPIController() {
         mMSGraphAPIService = new RESTHelper()
-                .getRestAdapter()
+                .getRetrofit()
+                .create(MSGraphAPIService.class);
+    }
+
+    public MSGraphAPIController(Interceptor interceptor) {
+        mMSGraphAPIService = new RESTHelper()
+                .getRetrofit(interceptor)
                 .create(MSGraphAPIService.class);
     }
 
@@ -36,21 +43,17 @@ public class MSGraphAPIController {
      * @param emailAddress The recipient email address.
      * @param subject      The subject to use in the mail message.
      * @param body         The body of the message.
-     * @param callback     UI callback to be invoked by Retrofit call when
-     *                     operation completed
      */
-    public void sendMail(
+    public Call<Void> sendMail(
             final String emailAddress,
             final String subject,
-            final String body,
-            Callback<Void> callback) {
+            final String body) {
         // create the email
         MessageWrapper msg = createMailPayload(subject, body, emailAddress);
 
         // send it using our service
-        mMSGraphAPIService.sendMail("application/json", msg, callback);
+        return mMSGraphAPIService.sendMail("application/json", msg);
     }
-
 
     private MessageWrapper createMailPayload(
             String subject,

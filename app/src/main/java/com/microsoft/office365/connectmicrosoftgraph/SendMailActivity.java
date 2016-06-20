@@ -16,9 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * This activity handles the send mail operation of the app.
@@ -72,22 +72,26 @@ public class SendMailActivity extends AppCompatActivity {
         String body = getString(R.string.mail_body_text);
         body = body.replace("{0}", mGivenName);
 
-        new MSGraphAPIController()
-                .sendMail(
-                        mEmailEditText.getText().toString(),
-                        getString(R.string.mail_subject_text),
-                        body,
-                        new Callback<Void>() {
-                            @Override
-                            public void success(Void aVoid, Response response) {
-                                showSendMailSuccessUI();
-                            }
+        Call<Void> result = new MSGraphAPIController().sendMail(
+                mEmailEditText.getText().toString(),
+                getString(R.string.mail_subject_text),
+                body);
 
-                            @Override
-                            public void failure(RetrofitError error) {
-                                showSendMailErrorUI();
-                            }
-                        });
+        result.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()) {
+                    showSendMailSuccessUI();
+                } else {
+                    showSendMailErrorUI();
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                showSendMailErrorUI();
+            }
+        });
     }
 
     @Override

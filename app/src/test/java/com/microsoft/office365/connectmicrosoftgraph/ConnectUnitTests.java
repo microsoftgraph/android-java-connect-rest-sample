@@ -32,9 +32,9 @@ import org.junit.Assert;
 
 public class ConnectUnitTests {
     private static String accessToken;
-    private static String clientId = System.getProperty("test_client_id");
-    private static String username = System.getProperty("test_username");
-    private static String password = System.getProperty("test_password");
+    private static String clientId = System.getenv("test_client_id");
+    private static String username = System.getenv("test_username");
+    private static String password = System.getenv("test_password");
 
     private static final String CONTENT_TYPE = "application/x-www-form-urlencoded";
     private static final String GRANT_TYPE = "password";
@@ -46,7 +46,7 @@ public class ConnectUnitTests {
 
     @Test
     public void testProperty() {
-        Assert.assertEquals(System.getProperty("test_username"), "ZrinkaM@MOD182601.onmicrosoft.com");
+        Assert.assertEquals(username, "ZrinkaM@MOD182601.onmicrosoft.com");
     }
 
 //    @BeforeClass

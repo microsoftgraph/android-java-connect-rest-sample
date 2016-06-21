@@ -44,70 +44,65 @@ public class ConnectUnitTests {
     private final String SUBJECT = "Email sent from test in android connect sample";
     private final String BODY = "<html><body>The body of the test email</body></html>";
 
-    @Test
-    public void testProperty() {
-        Assert.assertEquals(username, "ZrinkaM@MOD182601.onmicrosoft.com");
+    @BeforeClass
+    public static void getAccessTokenUsingPasswordGrant() throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, JSONException {
+        URL url = new URL(TOKEN_ENDPOINT);
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+        String urlParameters = String.format(
+                "grant_type=%1$s&resource=%2$s&client_id=%3$s&username=%4$s&password=%5$s",
+                GRANT_TYPE,
+                URLEncoder.encode(Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID, "UTF-8"),
+                clientId,
+                username,
+                password
+        );
+
+        connection.setRequestMethod(REQUEST_METHOD);
+        connection.setRequestProperty("Content-Type", CONTENT_TYPE);
+        connection.setRequestProperty("Content-Length", String.valueOf(urlParameters.getBytes("UTF-8").length));
+
+        connection.setDoOutput(true);
+        DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
+        dataOutputStream.writeBytes(urlParameters);
+        dataOutputStream.flush();
+        dataOutputStream.close();
+
+        connection.getResponseCode();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject grantResponse = (JsonObject)jsonParser.parse(response.toString());
+        accessToken = grantResponse.get("access_token").getAsString();
     }
 
-//    @BeforeClass
-//    public static void getAccessTokenUsingPasswordGrant() throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, JSONException {
-//        URL url = new URL(TOKEN_ENDPOINT);
-//        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-//
-//        String urlParameters = String.format(
-//                "grant_type=%1$s&resource=%2$s&client_id=%3$s&username=%4$s&password=%5$s",
-//                GRANT_TYPE,
-//                URLEncoder.encode(Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID, "UTF-8"),
-//                clientId,
-//                username,
-//                password
-//        );
-//
-//        connection.setRequestMethod(REQUEST_METHOD);
-//        connection.setRequestProperty("Content-Type", CONTENT_TYPE);
-//        connection.setRequestProperty("Content-Length", String.valueOf(urlParameters.getBytes("UTF-8").length));
-//
-//        connection.setDoOutput(true);
-//        DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
-//        dataOutputStream.writeBytes(urlParameters);
-//        dataOutputStream.flush();
-//        dataOutputStream.close();
-//
-//        connection.getResponseCode();
-//
-//        BufferedReader in = new BufferedReader(
-//                new InputStreamReader(connection.getInputStream()));
-//        String inputLine;
-//        StringBuffer response = new StringBuffer();
-//
-//        while ((inputLine = in.readLine()) != null) {
-//            response.append(inputLine);
-//        }
-//        in.close();
-//
-//        JsonParser jsonParser = new JsonParser();
-//        JsonObject grantResponse = (JsonObject)jsonParser.parse(response.toString());
-//        accessToken = grantResponse.get("access_token").getAsString();
-//    }
-//
-//    @Test
-//    public void sendMail_messageSent() throws IOException {
-//        Interceptor interceptor = new Interceptor() {
-//            @Override
-//            public Response intercept(Chain chain) throws IOException {
-//                Request request = chain.request();
-//                request = request.newBuilder()
-//                        .addHeader("Authorization", "Bearer " + accessToken)
-//                        .build();
-//
-//                Response response = chain.proceed(request);
-//                return response;
-//            }
-//        };
-//
-//        MSGraphAPIController controller = new MSGraphAPIController(interceptor);
-//        Call<Void> result = controller.sendMail(username, SUBJECT, BODY);
-//        retrofit2.Response response = result.execute();
-//        Assert.assertTrue("HTTP Response was not successful", response.isSuccessful());
-//    }
+    @Test
+    public void sendMail_messageSent() throws IOException {
+        Interceptor interceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                request = request.newBuilder()
+                        .addHeader("Authorization", "Bearer " + accessToken)
+                        .build();
+
+                Response response = chain.proceed(request);
+                return response;
+            }
+        };
+
+        MSGraphAPIController controller = new MSGraphAPIController(interceptor);
+        Call<Void> result = controller.sendMail(username, SUBJECT, BODY);
+        retrofit2.Response response = result.execute();
+        Assert.assertTrue("HTTP Response was not successful", response.isSuccessful());
+    }
 }

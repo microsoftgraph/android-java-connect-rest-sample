@@ -6,16 +6,15 @@ package com.microsoft.office365.connectmicrosoftgraph;
 
 import com.microsoft.office365.connectmicrosoftgraph.vo.MessageWrapper;
 
-import retrofit.Callback;
-import retrofit.http.Body;
-import retrofit.http.Header;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
 
 
 public interface MSGraphAPIService {
-    @POST("/me/microsoft.graph.sendmail")
-    void sendMail(
+    @POST("/v1.0/me/microsoft.graph.sendmail")
+    Call<Void> sendMail(
             @Header("Content-type") String contentTypeHeader,
-            @Body MessageWrapper mail,
-            Callback<Void> callback);
+            @Body MessageWrapper mail);
 }

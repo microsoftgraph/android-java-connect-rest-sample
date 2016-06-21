@@ -4,8 +4,16 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class RESTHelper {
 
@@ -14,25 +22,40 @@ public class RESTHelper {
      *
      * @return A new RestAdapter instance.
      */
-    public RestAdapter getRestAdapter() {
+    public Retrofit getRetrofit() {
         //This method catches outgoing REST calls and injects the Authorization and host headers before
         //sending to REST endpoint
-        RequestInterceptor requestInterceptor = new RequestInterceptor() {
+        Interceptor interceptor = new Interceptor() {
             @Override
-            public void intercept(RequestFacade request) {
+            public Response intercept(Chain chain) throws IOException {
                 final String token = AuthenticationManager.getInstance().getAccessToken();
-                if (null != token) {
-                    request.addHeader("Authorization", "Bearer " + token);
-                }
+                Request request = chain.request();
+                request = request.newBuilder()
+                        .addHeader("Authorization", "Bearer " + token)
+                        .build();
+
+                Response response = chain.proceed(request);
+                return response;
             }
         };
 
-        //Sets required properties in rest adaptor class before it is created.
-        return new RestAdapter.Builder()
-                .setEndpoint(Constants.MICROSOFT_GRAPH_API_ENDPOINT)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setRequestInterceptor(requestInterceptor)
-                .build();
+        return getRetrofit(interceptor);
     }
 
+    public Retrofit getRetrofit(Interceptor interceptor) {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .addInterceptor(logging)
+                .build();
+
+        //Sets required properties in rest adaptor class before it is created.
+        return new Retrofit.Builder()
+                .baseUrl(Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
 }

@@ -46,7 +46,7 @@ public class ConnectUnitTests {
 
     @Test
     public void testProperty() {
-        Assert.assertEquals(System.getProperty("test_property"), "ZrinkaM@MOD182601.onmicrosoft.com");
+        Assert.assertEquals(System.getProperty("test_username"), "ZrinkaM@MOD182601.onmicrosoft.com");
     }
 
 //    @BeforeClass

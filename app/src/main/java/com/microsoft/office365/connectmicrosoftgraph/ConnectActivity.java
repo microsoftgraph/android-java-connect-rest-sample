@@ -99,7 +99,7 @@ public class ConnectActivity extends AppCompatActivity {
                         // actually start the Activity
                         startActivity(sendMailActivity);
 
-                        finish();
+                        resetUIForConnect();
                     }
 
                     @Override

@@ -20,7 +20,7 @@
 
 * [Android Studio](http://developer.android.com/sdk/index.html) 1.0 或更高版本。
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)。
-* Office 365 帐户。您可以注册 [Office 365 开发人员订阅](https://portal.office.com/Signup/Signup.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK&ali=1#0)，其中包含您开始构建 Office 365 应用所需的资源。
+* Office 365 帐户。您可以注册 [Office 365 开发人员订阅](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170)，其中包含您开始构建 Office 365 应用所需的资源。
 
     > 注意： 如果您已经订阅，之前的链接会将您转至包含以下信息的页面：*抱歉，您无法将其添加到当前帐户*。在这种情况下，请使用当前 Office 365 订阅中的帐户。
 * 用于注册您的应用程序的 Microsoft Azure 租户。Azure Active Directory 为应用程序提供了用于进行身份验证和授权的标识服务。您还可在此处获得试用订阅： [Microsoft Azure](https://account.windowsazure.com/SignUp)。

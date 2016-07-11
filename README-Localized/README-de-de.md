@@ -1,6 +1,6 @@
 # Office 365 Connect-Beispiel für Android unter Verwendung von Microsoft Graph
 
-[![Buildstatus](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect.svg?branch=master)  ](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect)
+[![Buildstatus](https://ricalo.visualstudio.com/_apis/public/build/definitions/06256fa7-d8e5-4ca0-8639-7c00eb6f1fe9/7/badge)  ](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect)
 
 [![Office 365 Connect-Beispiel](../readme-images/O365-Android-Connect-video_play_icon.png)  ](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Klicken Sie, um das Beispiel in Aktion zu sehen.")
 

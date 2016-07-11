@@ -20,7 +20,7 @@
 
 * [Android Studio](http://developer.android.com/sdk/index.html) 1.0 版或更新版本。
 * [JAVA 開發套件 (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)。
-* Office 365 帳戶。您可以註冊 [Office 365 開發人員訂用帳戶](https://portal.office.com/Signup/Signup.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK&ali=1#0)，其中包含開始建置 Office 365 應用程式所需的資源。
+* Office 365 帳戶。您可以註冊 [Office 365 開發人員訂用帳戶](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170)，其中包含開始建置 Office 365 應用程式所需的資源。
 
     > 注意事項： 如果您已有訂用帳戶，則先前的連結會讓您連到顯示「抱歉，您無法將之新增到您目前的帳戶」訊息的頁面。在此情況下，請使用您目前的 Office 365 訂用帳戶所提供的帳戶。
 * 用來註冊您的應用程式的 Microsoft Azure 租用戶。Azure Active Directory 會提供識別服務，以便應用程式用於驗證和授權。在這裡可以取得試用版的訂用帳戶： [Microsoft Azure](https://account.windowsazure.com/SignUp)。

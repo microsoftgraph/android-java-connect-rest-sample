@@ -1,6 +1,6 @@
 # Exemplo de conexão com o Office 365 para Android usando o Microsoft Graph
 
-[ ![Status da Compilação](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect.svg?branch=master)](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect)
+![Status da Compilação](https://ricalo.visualstudio.com/_apis/public/build/definitions/06256fa7-d8e5-4ca0-8639-7c00eb6f1fe9/7/badge)
 
 [ ![Exemplo de conexão com o Office 365](../readme-images/O365-Android-Connect-video_play_icon.png)](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Clique no exemplo para vê-lo em ação")
 
@@ -20,7 +20,7 @@ Para usar o exemplo de conexão com o Office 365 para Android, é necessário o 
 
 * [Android Studio](http://developer.android.com/sdk/index.html) versão 1.0 ou posterior.
 * [JDK (Java Development Kit) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
-* Uma conta do Office 365. Inscreva-se para uma [Assinatura de Desenvolvedor do Office 365](https://portal.office.com/Signup/Signup.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK&ali=1#0), que inclui os recursos necessários para começar a criação de aplicativos do Office 365.
+* Uma conta do Office 365. Inscreva-se para uma [Assinatura de Desenvolvedor do Office 365](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170), que inclui os recursos necessários para começar a criação de aplicativos do Office 365.
 
     > Observação: caso já tenha uma assinatura, o link anterior direciona você para uma página com a mensagem *Não é possível adicioná-la à sua conta atual*. Nesse caso, use uma conta de sua assinatura atual do Office 365.
 * Um locatário do Microsoft Azure para registrar o seu aplicativo. O Azure Active Directory fornece serviços de identidade que os aplicativos usam para autenticação e autorização. Você pode adquirir uma assinatura de avaliação aqui: [Microsoft Azure](https://account.windowsazure.com/SignUp).

@@ -1,6 +1,7 @@
 # Exemple de connexion d’Android à Office 365 avec Microsoft Graph
 
-[ ![État de création](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect.svg?branch=master)](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect)
+![État de création](https://ricalo.visualstudio.com/_apis/public/build/definitions/06256fa7-d8e5-4ca0-8639-7c00eb6f1fe9/7/badge "État de création")
+
 
 [ ![Exemple de connexion Office 365](../readme-images/O365-Android-Connect-video_play_icon.png)](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Cliquez ici pour voir l’exemple en action")
 
@@ -20,7 +21,7 @@ Pour utiliser l’exemple de connexion d’Android à Office 365, vous devez di
 
 * [Android Studio](http://developer.android.com/sdk/index.html) version 1.0 ou ultérieure.
 * [Kit de développement Java (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
-* Un compte Office 365. Vous pouvez vous inscrire à [Office 365 Developer](https://portal.office.com/Signup/Signup.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK&ali=1#0) pour accéder aux ressources dont vous avez besoin pour commencer à créer des applications Office 365.
+* Un compte Office 365. Vous pouvez vous inscrire à [Office 365 Developer](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170) pour accéder aux ressources dont vous avez besoin pour commencer à créer des applications Office 365.
 
     > Remarque : si vous avez déjà un abonnement, le lien précédent vous renvoie vers une page avec le message suivant : *Désolé, vous ne pouvez pas ajouter ceci à votre compte existant*. Dans ce cas, utilisez un compte lié à votre abonnement Office 365 existant.
 * Un client Microsoft Azure pour enregistrer votre application. Azure Active Directory fournit des services d’identité que les applications utilisent à des fins d’authentification et d’autorisation. Un abonnement d’évaluation peut être demandé ici : [Microsoft Azure](https://account.windowsazure.com/SignUp).

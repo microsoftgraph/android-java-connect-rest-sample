@@ -1,6 +1,6 @@
 # Пример приложения Android, подключающегося к Office 365 и использующего Microsoft Graph
 
-[ ![Состояние сборки](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect.svg?branch=master)](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect)
+![Состояние сборки](https://ricalo.visualstudio.com/_apis/public/build/definitions/06256fa7-d8e5-4ca0-8639-7c00eb6f1fe9/7/badge)
 
 [ ![Пример приложения, подключающегося к Office 365](../readme-images/O365-Android-Connect-video_play_icon.png)](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Щелкните, чтобы просмотреть этот пример в действии")
 
@@ -20,7 +20,7 @@
 
 * [Android Studio](http://developer.android.com/sdk/index.html) версии 1.0 или более поздней.
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
-* Учетная запись Office 365. Вы можете [подписаться на план Office 365 для разработчиков](https://portal.office.com/Signup/Signup.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK&ali=1#0), включающий ресурсы, которые необходимы для создания приложений Office 365.
+* Учетная запись Office 365. Вы можете [подписаться на план Office 365 для разработчиков](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170), включающий ресурсы, которые необходимы для создания приложений Office 365.
 
     > Примечание. Если у вас уже есть подписка, при выборе приведенной выше ссылки откроется страница с сообщением *К сожалению, вы не можете добавить это к своей учетной записи*. В этом случае используйте учетную запись, сопоставленную с текущей подпиской на Office 365.
 * Клиент Microsoft Azure для регистрации приложения. В Azure Active Directory доступны службы идентификации, которые приложения используют для проверки подлинности и авторизации. Здесь можно получить пробную подписку: [Microsoft Azure](https://account.windowsazure.com/SignUp).

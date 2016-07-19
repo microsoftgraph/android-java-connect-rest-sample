@@ -1,6 +1,6 @@
 # Office 365 Connect-Beispiel für Android unter Verwendung von Microsoft Graph
 
-[![Buildstatus](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect.svg?branch=master)  ](https://travis-ci.org/OfficeDev/O365-Android-Microsoft-Graph-Connect)
+![Build Status](https://ricalo.visualstudio.com/_apis/public/build/definitions/06256fa7-d8e5-4ca0-8639-7c00eb6f1fe9/7/badge)
 
 [![Office 365 Connect-Beispiel](../readme-images/O365-Android-Connect-video_play_icon.png)  ](https://www.youtube.com/watch?v=3IQIDFrqhY4 "Klicken Sie, um das Beispiel in Aktion zu sehen.")
 
@@ -20,7 +20,7 @@ Zum Verwenden des Office 365 Connect-Beispiels für Android benötigen Sie Folge
 
 * [Android Studio](http://developer.android.com/sdk/index.html) Version 1.0 oder höher.
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
-* Ein Office 365-Konto. Sie können sich für [ein Office 365-Entwicklerabonnement](https://portal.office.com/Signup/Signup.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK&ali=1#0) registrieren. Dieses umfasst die Ressourcen, die Sie zum Erstellen von Office 365-Apps benötigen.
+* Ein Office 365-Konto. Sie können sich für [ein Office 365-Entwicklerabonnement](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170) registrieren. Dieses umfasst die Ressourcen, die Sie zum Erstellen von Office 365-Apps benötigen.
 
     > Hinweis: Wenn Sie bereits über ein Abonnement verfügen, gelangen Sie über den vorherigen Link zu einer Seite mit der Meldung *Leider können Sie Ihrem aktuellen Konto diesen Inhalt nicht hinzufügen*. Verwenden Sie in diesem Fall ein Konto aus Ihrem aktuellen Office 365-Abonnement.
 * Ein Microsoft Azure-Mandant zum Registrieren Ihrer Anwendung. Von Azure Active Directory werden Identitätsdienste bereitgestellt, die durch Anwendungen für die Authentifizierung und Autorisierung verwendet werden. Hier kann ein Testabonnement erworben werden: [Microsoft Azure](https://account.windowsazure.com/SignUp).

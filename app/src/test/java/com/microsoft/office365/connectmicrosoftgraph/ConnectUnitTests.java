@@ -32,7 +32,7 @@ import org.junit.Assert;
 
 public class ConnectUnitTests {
     private static String accessToken;
-    private static String clientId = System.getenv("test_client_id");
+    private static String clientId = System.getenv("test_client_id_v1");
     private static String username = System.getenv("test_username");
     private static String password = System.getenv("test_password");
 

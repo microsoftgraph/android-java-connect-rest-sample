@@ -70,15 +70,9 @@ This sample just shows the essentials that your apps need to work with Office 36
   
 ## Additional resources
 
-* [Office 365 APIs platform overview](https://msdn.microsoft.com/office/office365/howto/platform-development-overview)
-* [Getting started with Office 365 APIs](http://dev.office.com/getting-started/office365apis)
-* [Office 365 Microsoft Graph overview](http://graph.microsoft.io)
-* [Office 365 SDK for Android](https://github.com/OfficeDev/Office-365-SDK-for-Android)
-* [Office 365 APIs starter projects and code samples](https://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
-* [Office 365 Android Microsoft Graph Snippets](https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Snippets)
-* [Office 365 APIs Starter Project for Android](https://github.com/OfficeDev/O365-Android-Start)
-* [Office 365 Profile sample for Android](https://github.com/OfficeDev/O365-Android-Profile)
-
+* [Office 365 Microsoft Graph API documentation](https://graph.microsoft.io/docs)
+* [Microsoft Graph Portal](https://graph.microsoft.io/)
+* [Microsoft code samples](https://graph.microsoft.io/en-us/code-samples-and-sdks)
 
 ## Copyright
 Copyright (c) 2016 Microsoft. All rights reserved.

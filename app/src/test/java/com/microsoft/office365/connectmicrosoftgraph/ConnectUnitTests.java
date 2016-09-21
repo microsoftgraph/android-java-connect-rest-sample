@@ -38,7 +38,7 @@ public class ConnectUnitTests {
 
     private static final String CONTENT_TYPE = "application/x-www-form-urlencoded";
     private static final String GRANT_TYPE = "password";
-    private static final String TOKEN_ENDPOINT = "https://login.microsoftonline.com/common/oauth2/token";
+    private static final String TOKEN_ENDPOINT = Constants.AUTHORITY_URL + "/oauth2/token";
     private static final String REQUEST_METHOD = "POST";
 
     private final String SUBJECT = "Email sent from test in android connect sample";

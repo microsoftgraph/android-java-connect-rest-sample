@@ -18,7 +18,7 @@ To run the Connect sample, your device needs to meet the following requirements:
 
 To use the Office 365 Connect sample for Android, you need the following:
 
-* [Android Studio](http://developer.android.com/sdk/index.html) version 1.0 or later.
+* [Android Studio](http://developer.android.com/sdk/index.html) version 2.0 or later.
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
 * An Office 365 account. You can sign up for [an Office 365 Developer subscription](https://aka.ms/devprogramsignup) that includes the resources that you need to start building Office 365 apps.
 
@@ -35,9 +35,10 @@ To use the Office 365 Connect sample for Android, you need the following:
 2. Download or clone this sample.
 3. Start Android Studio.
 	1. Close any projects that you might have open, and then choose **Open an existing Android Studio project**.
-	2. Browse to your local repository and choose the O365-Android-Microsoft-Graph-Connect project. Click **OK**.
+	2. Browse to your local repository and choose the android-java-connect-rest-sample project. Click **OK**.
 	
-	> Note: Android Studio might display a dialog box asking if you want to use Gradle wrapper. Click **OK**.
+	> Note: Android Studio might display a dialog box asking to update the Android Gradle Plugin. **Do not choose Update**.
+	![Gradle Plugin Update Dialog](/readme-images/GradlePluginUpdateDialog.png "Do not update the Android Gradle Plugin")
 	> 
 	> Additionally, Android Studio shows a **Frameworks detected** notification if you don't have the **Android Support Repository** installed. Open the SDK manager and add the Android Support Repository to avoid the Frameworks detected notification.
 4. Open the Constants.java file.

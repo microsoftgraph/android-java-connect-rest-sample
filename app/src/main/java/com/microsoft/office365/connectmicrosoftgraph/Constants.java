@@ -8,6 +8,6 @@ interface Constants {
     String AUTHORITY_URL = "https://login.chinacloudapi.cn/common";
     // Update these two constants with the values for your application:
     String CLIENT_ID = "ENTER_YOUR_CLIENT_ID";
-    String REDIRECT_URI = "com.microsoft.graph.android://connect/oauth/redirect";
+    String REDIRECT_URI = "ENTER_YOUR_REDIRECT_URI";
     String MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID = "https://microsoftgraph.chinacloudapi.cn/";
 }

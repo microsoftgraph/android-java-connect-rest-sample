@@ -28,6 +28,7 @@ dependencies {
 
     // Azure Active Directory Library
     compile 'com.microsoft.aad:adal:1.2.0'
+    compile project(':oidclib')
 
     // Retrofit + custom HTTP
     compile 'com.squareup.okhttp3:okhttp:3.3.1'

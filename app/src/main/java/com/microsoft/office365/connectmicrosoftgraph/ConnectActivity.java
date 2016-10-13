@@ -4,6 +4,8 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

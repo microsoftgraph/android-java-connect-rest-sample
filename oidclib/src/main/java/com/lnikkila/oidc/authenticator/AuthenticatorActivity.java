@@ -111,7 +111,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
         boolean isPasswordFlow = requestManager.getFlowType() == OIDCRequestManager.Flows.Password;
         initAuthenticationWebView(isPasswordFlow);
-        setupPasswordGrantForm(isPasswordFlow);
+        //setupPasswordGrantForm(isPasswordFlow);
     }
 
     @Override
@@ -144,7 +144,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     @SuppressLint("SetJavaScriptEnabled")
     private void initAuthenticationWebView(boolean isPasswordFlow) {
         if (!isPasswordFlow) {
-            parentLayout = (RelativeLayout) findViewById(R.id.authenticatorActivityLayout);
+            // parentLayout = (RelativeLayout) findViewById(R.id.authenticatorActivityLayout);
+            parentLayout = (RelativeLayout) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
 
             // Initialise the WebView
             // see  http://stackoverflow.com/a/8011027/665823 of why we doing this :

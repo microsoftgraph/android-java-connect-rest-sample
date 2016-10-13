@@ -4,13 +4,30 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 
+import com.lnikkila.oidc.OIDCAccountManager;
+import com.lnikkila.oidc.OIDCRequestManager;
+import com.lnikkila.oidc.security.UserNotAuthenticatedWrapperException;
 import com.microsoft.aad.adal.ADALError;
 import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
@@ -20,7 +37,9 @@ import com.microsoft.aad.adal.AuthenticationResult.AuthenticationStatus;
 import com.microsoft.aad.adal.AuthenticationSettings;
 import com.microsoft.aad.adal.PromptBehavior;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * Handles setup of ADAL Dependency Resolver for use in API clients.
@@ -31,7 +50,10 @@ public class AuthenticationManager {
     private static final String TAG = "AuthenticationManager";
     private static final String PREFERENCES_FILENAME = "ConnectFile";
     private static final String USER_ID_VAR_NAME = "userId";
+    private static final int RENEW_REFRESH_TOKEN = 2016;
     private static AuthenticationManager INSTANCE;
+
+    private OIDCAccountManager mAccountManager;
 
     static {
         // Devices with API level lower than 18 must setup an encryption key.
@@ -113,15 +135,61 @@ public class AuthenticationManager {
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
     public void connect(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
-        if (verifyAuthenticationContext()) {
-            if (isConnected()) {
-                authenticateSilent(authenticationCallback);
-            } else {
-                authenticatePrompt(authenticationCallback);
-            }
-        } else {
-            Log.e(TAG,
-                    "connect - Auth context verification failed. Did you set a context activity?");
+        switch (getAccountManager().getAccounts().length) {
+            // No account has been created, let's create one now
+            case 0:
+                getAccountManager().createAccount(mContextActivity, new AccountManagerCallback<Bundle>() {
+                    @Override
+                    public void run(AccountManagerFuture<Bundle> futureManager) {
+                        // Unless the account creation was cancelled, try logging in again
+                        // after the account has been created.
+                        if (!futureManager.isCancelled()) {
+                            try {
+                                mAccessToken = getAccountManager().getAccessToken(getAccountManager().getAccounts()[0], null);
+                                Log.i(TAG, mAccessToken);
+                            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+                                Log.e(TAG, "Couldn't renew tokens", e);
+                            } catch (UserNotAuthenticatedWrapperException e) {
+                                Log.e(TAG, "Couldn't renew tokens", e);
+                            }
+                        }
+                    }
+                });
+                break;
+
+//            // There's just one account, let's use that
+//            case 1:
+//                // if we have an user endpoint we try to get userinfo with the receive token
+//                if (!TextUtils.isEmpty(userInfoEndpoint)) {
+//                    new LoginTask().execute(availableAccounts[0]);
+//                }
+//                break;
+//
+//            // Multiple accounts, let the user pick one
+//            default:
+//                String name[] = new String[availableAccounts.length];
+//
+//                for (int i = 0; i < availableAccounts.length; i++) {
+//                    name[i] = availableAccounts[i].name;
+//                }
+//
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Choose an account")
+//                        .setAdapter(new ArrayAdapter<>(this,
+//                                        android.R.layout.simple_list_item_1, name),
+//                                new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int selectedAccount) {
+//                                        selectedAccountIndex = selectedAccount;
+//
+//                                        // if we have an user endpoint we try to get userinfo with the receive token
+//                                        if (!TextUtils.isEmpty(userInfoEndpoint)) {
+//                                            new LoginTask().execute(availableAccounts[selectedAccountIndex]);
+//                                        }
+//                                    }
+//                                })
+//                        .create()
+//                        .show();
         }
     }
 
@@ -231,6 +299,24 @@ public class AuthenticationManager {
         }
         return mAuthenticationContext;
     }
+    public OIDCAccountManager getAccountManager() {
+        if (mAccountManager == null) {
+            mAccountManager = new OIDCAccountManager(mContextActivity);
+            SharedPreferences sharedPreferences = mContextActivity.getSharedPreferences("oidc_clientconf", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("oidc_loadfromprefs", true);
+            editor.putBoolean("oidc_oauth2only", true);
+            editor.putString("oidc_clientId", Constants.CLIENT_ID);
+            editor.putString("oidc_clientSecret", "");
+            editor.putString("oidc_redirectUrl", Constants.REDIRECT_URI);
+            editor.putString("oidc_scopes", "openid profile User.Read Mail.Send offline_access");
+            editor.putString("oidc_flowType", OIDCRequestManager.Flows.Code.name());
+            editor.putString("oidc_issuerId", "https://login.microsoftonline.com/" + Constants.CLIENT_ID + "/v2.0");
+
+            editor.apply();
+        }
+        return mAccountManager;
+    }
 
     /**
      * Disconnects the app from Office 365 by clearing the token cache, setting the client objects
@@ -280,5 +366,41 @@ public class AuthenticationManager {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.remove(USER_ID_VAR_NAME);
         editor.apply();
+    }
+
+    private class LoginTask extends AsyncTask<Account, Void, Map> {
+        /**
+         * Makes the API request. We could use the OIDCRequestManager.getUserInfo() method, but we'll do it
+         * like this to illustrate making generic API requests after we've logged in.
+         */
+        @Override
+        protected Map doInBackground(Account... args) {
+            Account account = args[0];
+            // See https://github.com/kalemontes/OIDCAndroidLib/issues/4
+            try {
+                getAccountManager().getAccessToken(account, new AccountManagerCallback<Bundle>() {
+                    @Override
+                    public void run(AccountManagerFuture<Bundle> future) {
+                        try {
+                            Bundle bundle = future.getResult();
+                            Intent launch = (Intent) bundle.get(AccountManager.KEY_INTENT);
+                            if (launch != null) {
+                                launch.setFlags(0);
+                                mContextActivity.startActivityForResult(launch, RENEW_REFRESH_TOKEN);
+                            }
+                        } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+                            Log.e(TAG, "Couldn't extract AuthenticationActivity launch intent", e);
+                        }
+                    }
+                });
+            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+                Log.e(TAG, "Couldn't renew tokens", e);
+            } catch (UserNotAuthenticatedWrapperException e) {
+                //FIXME: we gotta handle this somehow
+            }
+
+
+            return null;
+        }
     }
 }

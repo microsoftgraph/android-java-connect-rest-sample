@@ -8,9 +8,7 @@
     implemented and how they impact the authentication request. -->
     <string-array name="oidc_authextras">
         <!-- Specifies whether the Authorization Server prompts the End-User for reauthentication and consent -->
-        <item>prompt|consent</item> <!-- other possible values : none, login, select_account -->
-        <!-- Specifies how the Authorization Server displays the authentication and consent user interface pages to the End-User-->
-        <item>display|touch</item> <!-- other possible values : page, popup, wap -->
+        <item>prompt|login</item> <!-- other possible values : none, login, select_account -->
         <!-- Specifies whether the access token will be use when the End-User is not present.
         If an access token is being requested, the client does not receive a refresh token unless offline is specified -->
         <item>access_type|offline</item>
@@ -32,5 +30,5 @@
 
     <!-- Tells the WebView to enable JavaScript execution. Using setJavaScriptEnabled can introduce XSS
     vulnerabilities into you application, review carefully. More info see WebSettings#setJavaScriptEnabled(bool) -->
-    <bool name="webview_allow_js">false</bool>
+    <bool name="webview_allow_js">true</bool>
 </resources>

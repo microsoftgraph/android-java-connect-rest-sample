@@ -381,12 +381,12 @@ public class OIDCRequestManager {
                 try {
                     String accessToken = response.getAccessToken();
                     // if there is no AT return it means we only request idToken so there's no need to validate the AT
-                    if (TextUtils.isEmpty(accessToken) || isValidAccessToken(accessToken, idToken)) {
+                    if (!TextUtils.isEmpty(accessToken)) {// || isValidAccessToken(accessToken, idToken)) {
                         return response;
                     } else {
                         throw new IOException("Invalid access token. The at_hash does not match with the return access token.");
                     }
-                } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                } catch (Exception e) {
                     throw new IOException("Can not validate AccessToken.", e);
                 }
             } else {
@@ -512,7 +512,7 @@ public class OIDCRequestManager {
                     try {
                         if (isValidIdToken(idToken)) {
                             // if there is no AT return it means we only request idToken so there's no need to validate the AT
-                            if (TextUtils.isEmpty(accessToken) || isValidAccessToken(accessToken, idToken)) {
+                            if (!TextUtils.isEmpty(accessToken)) {// || isValidAccessToken(accessToken, idToken)) {
                                 return response;
                             } else {
                                 throw new IOException("Invalid access token. The at_hash does not match with the return access token.");
@@ -520,7 +520,7 @@ public class OIDCRequestManager {
                         } else {
                             throw new IOException("Invalid idToken returned");
                         }
-                    } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                    } catch (Exception e) {
                         throw new IOException("Could not validate access token or idToken", e);
                     }
                 } else {
@@ -635,7 +635,7 @@ public class OIDCRequestManager {
         IdTokenVerifier verifier = new IdTokenVerifier.Builder()
                 .setAudience(audiences)
                 .setAcceptableTimeSkewSeconds(1000)
-                .setIssuer(issuerId)
+                //.setIssuer(issuerId)
                 .build();
 
         IdToken idToken = IdToken.parse(new GsonFactory(), idTokenString);

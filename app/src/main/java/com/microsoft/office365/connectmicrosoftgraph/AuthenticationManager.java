@@ -29,13 +29,15 @@ import com.lnikkila.oidc.OIDCAccountManager;
 import com.lnikkila.oidc.OIDCRequestManager;
 import com.lnikkila.oidc.security.UserNotAuthenticatedWrapperException;
 import com.microsoft.aad.adal.ADALError;
-import com.microsoft.aad.adal.AuthenticationCallback;
 import com.microsoft.aad.adal.AuthenticationContext;
 import com.microsoft.aad.adal.AuthenticationException;
-import com.microsoft.aad.adal.AuthenticationResult;
 import com.microsoft.aad.adal.AuthenticationResult.AuthenticationStatus;
 import com.microsoft.aad.adal.AuthenticationSettings;
 import com.microsoft.aad.adal.PromptBehavior;
+
+import android.util.Base64;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -65,7 +67,6 @@ public class AuthenticationManager {
 
     private AuthenticationContext mAuthenticationContext;
     private Activity mContextActivity;
-    private String mAccessToken;
 
     private AuthenticationManager() {
     }
@@ -123,18 +124,15 @@ public class AuthenticationManager {
      *
      * @return mAccessToken
      */
-    public String getAccessToken() {
-        return mAccessToken;
+    public String getAccessToken() throws AuthenticatorException, IOException, OperationCanceledException, UserNotAuthenticatedWrapperException {
+        return getAccountManager().getAccessToken(getAccountManager().getAccounts()[0], null);
     }
 
-
     /**
-     * Calls {@link AuthenticationManager#authenticatePrompt(AuthenticationCallback)} if no user id is stored in the shared preferences.
-     * Calls {@link AuthenticationManager#authenticateSilent(AuthenticationCallback)} otherwise.
      *
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
-    public void connect(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
+    public void connect(final AuthenticationCallback<String> authenticationCallback) {
         switch (getAccountManager().getAccounts().length) {
             // No account has been created, let's create one now
             case 0:
@@ -144,139 +142,33 @@ public class AuthenticationManager {
                         // Unless the account creation was cancelled, try logging in again
                         // after the account has been created.
                         if (!futureManager.isCancelled()) {
+                            Account account = getAccountManager().getAccounts()[0];
                             try {
-                                mAccessToken = getAccountManager().getAccessToken(getAccountManager().getAccounts()[0], null);
-                                Log.i(TAG, mAccessToken);
-                            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
-                                Log.e(TAG, "Couldn't renew tokens", e);
-                            } catch (UserNotAuthenticatedWrapperException e) {
-                                Log.e(TAG, "Couldn't renew tokens", e);
+                                authenticationCallback.onSuccess(getAccountManager().getIdToken(account.name, null));
+                            } catch (AuthenticatorException | UserNotAuthenticatedWrapperException | OperationCanceledException | IOException e) {
+                                authenticationCallback.onError(e);
                             }
+                        } else {
+                            authenticationCallback.onError(new AuthenticatorException("Flow was canceled"));
                         }
                     }
                 });
                 break;
-
-//            // There's just one account, let's use that
-//            case 1:
-//                // if we have an user endpoint we try to get userinfo with the receive token
-//                if (!TextUtils.isEmpty(userInfoEndpoint)) {
-//                    new LoginTask().execute(availableAccounts[0]);
-//                }
-//                break;
-//
-//            // Multiple accounts, let the user pick one
-//            default:
-//                String name[] = new String[availableAccounts.length];
-//
-//                for (int i = 0; i < availableAccounts.length; i++) {
-//                    name[i] = availableAccounts[i].name;
-//                }
-//
-//                new AlertDialog.Builder(this)
-//                        .setTitle("Choose an account")
-//                        .setAdapter(new ArrayAdapter<>(this,
-//                                        android.R.layout.simple_list_item_1, name),
-//                                new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int selectedAccount) {
-//                                        selectedAccountIndex = selectedAccount;
-//
-//                                        // if we have an user endpoint we try to get userinfo with the receive token
-//                                        if (!TextUtils.isEmpty(userInfoEndpoint)) {
-//                                            new LoginTask().execute(availableAccounts[selectedAccountIndex]);
-//                                        }
-//                                    }
-//                                })
-//                        .create()
-//                        .show();
+            case 1:
+                // if we have an user endpoint we try to get userinfo with the receive token
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Account account = getAccountManager().getAccounts()[0];
+                        try {
+                            authenticationCallback.onSuccess(getAccountManager().getIdToken(account.name, null));
+                        } catch (AuthenticatorException | UserNotAuthenticatedWrapperException | OperationCanceledException | IOException e) {
+                            authenticationCallback.onError(e);
+                        }
+                    }
+                }).start();
+                break;
         }
-    }
-
-    /**
-     * Calls acquireTokenSilentAsync with the user id stored in shared preferences.
-     * In case of an error, it falls back to {@link AuthenticationManager#authenticatePrompt(AuthenticationCallback)}.
-     *
-     * @param authenticationCallback The callback to notify when the processing is finished.
-     */
-    private void authenticateSilent(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
-        getAuthenticationContext().acquireTokenSilentAsync(
-                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
-                Constants.CLIENT_ID,
-                getUserId(),
-                new AuthenticationCallback<AuthenticationResult>() {
-                    @Override
-                    public void onSuccess(final AuthenticationResult authenticationResult) {
-                        if (authenticationResult != null) {
-                            if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
-                                mAccessToken = authenticationResult.getAccessToken();
-                                authenticationCallback.onSuccess(authenticationResult);
-                            } else {
-                                authenticationCallback.onError(
-                                        new Exception(authenticationResult.getErrorDescription()));
-                            }
-                        } else {
-                            // I could not authenticate the user silently,
-                            // falling back to prompt the user for credentials.
-                            authenticatePrompt(authenticationCallback);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        // I could not authenticate the user silently,
-                        // falling back to prompt the user for credentials.
-                        authenticatePrompt(authenticationCallback);
-                    }
-                }
-        );
-    }
-
-    /**
-     * Calls acquireToken to prompt the user for credentials.
-     *
-     * @param authenticationCallback The callback to notify when the processing is finished.
-     */
-    private void authenticatePrompt(final AuthenticationCallback<AuthenticationResult> authenticationCallback) {
-        getAuthenticationContext().acquireToken(
-                mContextActivity,
-                Constants.MICROSOFT_GRAPH_API_ENDPOINT_RESOURCE_ID,
-                Constants.CLIENT_ID,
-                Constants.REDIRECT_URI,
-                PromptBehavior.Always,
-                new AuthenticationCallback<AuthenticationResult>() {
-                    @Override
-                    public void onSuccess(final AuthenticationResult authenticationResult) {
-                        if (authenticationResult != null) {
-                            if (authenticationResult.getStatus() == AuthenticationStatus.Succeeded) {
-                                setUserId(authenticationResult.getUserInfo().getUserId());
-                                mAccessToken = authenticationResult.getAccessToken();
-                                authenticationCallback.onSuccess(authenticationResult);
-                            } else {
-                                // We need to make sure that there is no data stored with the failed auth
-                                AuthenticationManager.getInstance().disconnect();
-                                // This condition can happen if user signs in with an MSA account
-                                // instead of an Office 365 account
-                                authenticationCallback.onError(
-                                        new AuthenticationException(
-                                                ADALError.AUTH_FAILED,
-                                                authenticationResult.getErrorDescription()));
-                            }
-                        } else {
-                            // I could not authenticate the user silently,
-                            // falling back to prompt the user for credentials.
-                            authenticatePrompt(authenticationCallback);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        // We need to make sure that there is no data stored with the failed auth
-                        AuthenticationManager.getInstance().disconnect();
-                        authenticationCallback.onError(e);
-                    }
-                }
-        );
     }
 
     /**
@@ -305,11 +197,11 @@ public class AuthenticationManager {
             SharedPreferences sharedPreferences = mContextActivity.getSharedPreferences("oidc_clientconf", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("oidc_loadfromprefs", true);
-            editor.putBoolean("oidc_oauth2only", true);
+            editor.putBoolean("oidc_oauth2only", false);
             editor.putString("oidc_clientId", Constants.CLIENT_ID);
             editor.putString("oidc_clientSecret", "");
             editor.putString("oidc_redirectUrl", Constants.REDIRECT_URI);
-            editor.putString("oidc_scopes", "openid profile User.Read Mail.Send offline_access");
+            editor.putString("oidc_scopes", "openid profile Mail.Send offline_access");
             editor.putString("oidc_flowType", OIDCRequestManager.Flows.Code.name());
             editor.putString("oidc_issuerId", "https://login.microsoftonline.com/" + Constants.CLIENT_ID + "/v2.0");
 
@@ -328,7 +220,7 @@ public class AuthenticationManager {
             getAuthenticationContext().getCache().removeAll();
         }
 
-        mAccessToken = null;
+        getAccountManager().removeAccount(getAccountManager().getAccounts()[0]);
         // Reset the AuthenticationManager object
         AuthenticationManager.resetInstance();
 
@@ -368,39 +260,17 @@ public class AuthenticationManager {
         editor.apply();
     }
 
-    private class LoginTask extends AsyncTask<Account, Void, Map> {
-        /**
-         * Makes the API request. We could use the OIDCRequestManager.getUserInfo() method, but we'll do it
-         * like this to illustrate making generic API requests after we've logged in.
-         */
-        @Override
-        protected Map doInBackground(Account... args) {
-            Account account = args[0];
-            // See https://github.com/kalemontes/OIDCAndroidLib/issues/4
-            try {
-                getAccountManager().getAccessToken(account, new AccountManagerCallback<Bundle>() {
-                    @Override
-                    public void run(AccountManagerFuture<Bundle> future) {
-                        try {
-                            Bundle bundle = future.getResult();
-                            Intent launch = (Intent) bundle.get(AccountManager.KEY_INTENT);
-                            if (launch != null) {
-                                launch.setFlags(0);
-                                mContextActivity.startActivityForResult(launch, RENEW_REFRESH_TOKEN);
-                            }
-                        } catch (OperationCanceledException | IOException | AuthenticatorException e) {
-                            Log.e(TAG, "Couldn't extract AuthenticationActivity launch intent", e);
-                        }
-                    }
-                });
-            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
-                Log.e(TAG, "Couldn't renew tokens", e);
-            } catch (UserNotAuthenticatedWrapperException e) {
-                //FIXME: we gotta handle this somehow
-            }
+    public JSONObject getClaims(String idToken) {
+        JSONObject retValue = null;
+        String payload = idToken.split("[.]")[1];
 
-
-            return null;
+        try {
+            // The token payload is in the 2nd element of the JWT
+            String jsonClaims = new String(Base64.decode(payload, Base64.DEFAULT), "UTF-8");
+            retValue = new JSONObject(jsonClaims);
+        } catch ( JSONException | IOException e) {
+            Log.e(TAG, "Couldn't decode id token: " + e.getMessage());
         }
+        return retValue;
     }
 }

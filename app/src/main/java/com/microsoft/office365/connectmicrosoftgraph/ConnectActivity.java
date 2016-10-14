@@ -4,7 +4,6 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
-import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +16,6 @@ import android.widget.Toast;
 
 import com.google.api.client.auth.openidconnect.IdToken;
 import com.google.api.client.json.gson.GsonFactory;
-import com.microsoft.aad.adal.AuthenticationCancelError;
-import com.microsoft.aad.adal.UserInfo;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
@@ -110,41 +104,13 @@ public class ConnectActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Exception exc) {
-                        if (userCancelledConnect(exc)) {
-                            resetUIForConnect();
-                        } else {
-                            showConnectErrorUI();
-                        }
+                        showConnectErrorUI();
                     }
                 };
 
         AuthenticationManager mgr = AuthenticationManager.getInstance();
         mgr.setContextActivity(this);
         mgr.connect(callback);
-    }
-
-    /**
-     * This activity gets notified about the completion of the ADAL activity through this method.
-     *
-     * @param requestCode The integer request code originally supplied to startActivityForResult(),
-     *                    allowing you to identify who this result came from.
-     * @param resultCode  The integer result code returned by the child activity through its
-     *                    setResult().
-     * @param data        An Intent, which can return result data to the caller (various data
-     *                    can be attached to Intent "extras").
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG, "onActivityResult - AuthenticationActivity has come back with results");
-        super.onActivityResult(requestCode, resultCode, data);
-        AuthenticationManager
-                .getInstance()
-                .getAuthenticationContext()
-                .onActivityResult(requestCode, resultCode, data);
-    }
-
-    private static boolean userCancelledConnect(Exception e) {
-        return e instanceof AuthenticationCancelError;
     }
 
     private static boolean hasAzureConfiguration() {

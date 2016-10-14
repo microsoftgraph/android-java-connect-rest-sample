@@ -142,12 +142,17 @@ public class AuthenticationManager {
                         // Unless the account creation was cancelled, try logging in again
                         // after the account has been created.
                         if (!futureManager.isCancelled()) {
-                            Account account = getAccountManager().getAccounts()[0];
-                            try {
-                                authenticationCallback.onSuccess(getAccountManager().getIdToken(account.name, null));
-                            } catch (AuthenticatorException | UserNotAuthenticatedWrapperException | OperationCanceledException | IOException e) {
-                                authenticationCallback.onError(e);
-                            }
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Account account = getAccountManager().getAccounts()[0];
+                                    try {
+                                        authenticationCallback.onSuccess(getAccountManager().getIdToken(account.name, null));
+                                    } catch (AuthenticatorException | UserNotAuthenticatedWrapperException | OperationCanceledException | IOException e) {
+                                        authenticationCallback.onError(e);
+                                    }
+                                }
+                            }).start();
                         } else {
                             authenticationCallback.onError(new AuthenticatorException("Flow was canceled"));
                         }
@@ -223,9 +228,6 @@ public class AuthenticationManager {
         getAccountManager().removeAccount(getAccountManager().getAccounts()[0]);
         // Reset the AuthenticationManager object
         AuthenticationManager.resetInstance();
-
-        // Forget the user
-        removeUserId();
     }
 
     private boolean verifyAuthenticationContext() {

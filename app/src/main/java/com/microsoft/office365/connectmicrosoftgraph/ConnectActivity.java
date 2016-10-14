@@ -108,9 +108,8 @@ public class ConnectActivity extends AppCompatActivity {
                     }
                 };
 
-        AuthenticationManager mgr = AuthenticationManager.getInstance();
-        mgr.setContextActivity(this);
-        mgr.connect(callback);
+        AuthenticationManager mgr = AuthenticationManager.getInstance(this);
+        mgr.connect(this, callback);
     }
 
     private static boolean hasAzureConfiguration() {

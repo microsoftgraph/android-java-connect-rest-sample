@@ -4,6 +4,8 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
+import android.content.Context;
+
 import com.microsoft.office365.connectmicrosoftgraph.vo.BodyVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.EmailAddressVO;
 import com.microsoft.office365.connectmicrosoftgraph.vo.MessageVO;
@@ -24,9 +26,9 @@ public class MSGraphAPIController {
 
     private MSGraphAPIService mMSGraphAPIService;
 
-    public MSGraphAPIController() {
+    public MSGraphAPIController(Context context) {
         mMSGraphAPIService = new RESTHelper()
-                .getRetrofit()
+                .getRetrofit(context)
                 .create(MSGraphAPIService.class);
     }
 

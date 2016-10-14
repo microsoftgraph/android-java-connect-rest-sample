@@ -29,16 +29,25 @@ public class AuthenticationManager {
     private static final String TAG = "AuthenticationManager";
     private static AuthenticationManager INSTANCE;
 
-    private OIDCAccountManager mAccountManager;
-
-    private Activity mContextActivity;
+    private OIDCAccountManager mOIDCAccountManager;
 
     private AuthenticationManager() {
     }
 
-    public static synchronized AuthenticationManager getInstance() {
+    public static synchronized AuthenticationManager getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = new AuthenticationManager();
+            INSTANCE.mOIDCAccountManager = new OIDCAccountManager(context);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("oidc_clientconf", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("oidc_loadfromprefs", true);
+            editor.putBoolean("oidc_oauth2only", false);
+            editor.putString("oidc_clientId", Constants.CLIENT_ID);
+            editor.putString("oidc_redirectUrl", Constants.REDIRECT_URI);
+            editor.putString("oidc_scopes", Constants.SCOPES);
+            editor.putString("oidc_flowType", OIDCRequestManager.Flows.Code.name());
+
+            editor.apply();
         }
         return INSTANCE;
     }
@@ -48,33 +57,23 @@ public class AuthenticationManager {
     }
 
     /**
-     * Set the context activity before connecting to the currently active activity.
-     *
-     * @param contextActivity Currently active activity which can be utilized for interactive
-     *                        prompt.
-     */
-    public void setContextActivity(final Activity contextActivity) {
-        mContextActivity = contextActivity;
-    }
-
-    /**
      * Returns the access token obtained in authentication
      *
      * @return mAccessToken
      */
     public String getAccessToken() throws AuthenticatorException, IOException, OperationCanceledException, UserNotAuthenticatedWrapperException {
-        return getAccountManager().getAccessToken(getAccountManager().getAccounts()[0], null);
+        return mOIDCAccountManager.getAccessToken(mOIDCAccountManager.getAccounts()[0], null);
     }
 
     /**
      *
      * @param authenticationCallback The callback to notify when the processing is finished.
      */
-    public void connect(final AuthenticationCallback<String> authenticationCallback) {
-        switch (getAccountManager().getAccounts().length) {
+    public void connect(Activity activity, final AuthenticationCallback<String> authenticationCallback) {
+        switch (mOIDCAccountManager.getAccounts().length) {
             // No account has been created, let's create one now
             case 0:
-                getAccountManager().createAccount(mContextActivity, new AccountManagerCallback<Bundle>() {
+                mOIDCAccountManager.createAccount(activity, new AccountManagerCallback<Bundle>() {
                     @Override
                     public void run(AccountManagerFuture<Bundle> futureManager) {
                         // Unless the account creation was cancelled, try logging in again
@@ -83,9 +82,9 @@ public class AuthenticationManager {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Account account = getAccountManager().getAccounts()[0];
+                                    Account account = mOIDCAccountManager.getAccounts()[0];
                                     try {
-                                        authenticationCallback.onSuccess(getAccountManager().getIdToken(account.name, null));
+                                        authenticationCallback.onSuccess(mOIDCAccountManager.getIdToken(account.name, null));
                                     } catch (AuthenticatorException | UserNotAuthenticatedWrapperException | OperationCanceledException | IOException e) {
                                         authenticationCallback.onError(e);
                                     }
@@ -102,9 +101,9 @@ public class AuthenticationManager {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Account account = getAccountManager().getAccounts()[0];
+                        Account account = mOIDCAccountManager.getAccounts()[0];
                         try {
-                            authenticationCallback.onSuccess(getAccountManager().getIdToken(account.name, null));
+                            authenticationCallback.onSuccess(mOIDCAccountManager.getIdToken(account.name, null));
                         } catch (AuthenticatorException | UserNotAuthenticatedWrapperException | OperationCanceledException | IOException e) {
                             authenticationCallback.onError(e);
                         }
@@ -115,33 +114,11 @@ public class AuthenticationManager {
     }
 
     /**
-     * Gets Android AccountManager.
-     *
-     * @return the AccountManager, if successful.
-     */
-    public OIDCAccountManager getAccountManager() {
-        if (mAccountManager == null) {
-            mAccountManager = new OIDCAccountManager(mContextActivity);
-            SharedPreferences sharedPreferences = mContextActivity.getSharedPreferences("oidc_clientconf", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("oidc_loadfromprefs", true);
-            editor.putBoolean("oidc_oauth2only", false);
-            editor.putString("oidc_clientId", Constants.CLIENT_ID);
-            editor.putString("oidc_redirectUrl", Constants.REDIRECT_URI);
-            editor.putString("oidc_scopes", Constants.SCOPES);
-            editor.putString("oidc_flowType", OIDCRequestManager.Flows.Code.name());
-
-            editor.apply();
-        }
-        return mAccountManager;
-    }
-
-    /**
      * Disconnects the app from Office 365 by clearing the token cache, setting the client objects
      * to null, and removing the user id from shred preferences.
      */
     public void disconnect() {
-        getAccountManager().removeAccount(getAccountManager().getAccounts()[0]);
+        mOIDCAccountManager.removeAccount(mOIDCAccountManager.getAccounts()[0]);
         // Reset the AuthenticationManager object
         AuthenticationManager.resetInstance();
     }

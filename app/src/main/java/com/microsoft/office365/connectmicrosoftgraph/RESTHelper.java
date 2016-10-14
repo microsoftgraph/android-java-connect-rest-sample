@@ -6,6 +6,7 @@ package com.microsoft.office365.connectmicrosoftgraph;
 
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
+import android.content.Context;
 import android.util.Log;
 
 import com.lnikkila.oidc.security.UserNotAuthenticatedWrapperException;
@@ -29,14 +30,14 @@ public class RESTHelper {
      *
      * @return A new RestAdapter instance.
      */
-    public Retrofit getRetrofit() {
+    public Retrofit getRetrofit(final Context context) {
         //This method catches outgoing REST calls and injects the Authorization and host headers before
         //sending to REST endpoint
         Interceptor interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 try {
-                    final String token = AuthenticationManager.getInstance().getAccessToken();
+                    final String token = AuthenticationManager.getInstance(context).getAccessToken();
                     Request request = chain.request();
                     request = request.newBuilder()
                             .addHeader("Authorization", "Bearer " + token)

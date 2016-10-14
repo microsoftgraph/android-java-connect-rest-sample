@@ -204,11 +204,9 @@ public class AuthenticationManager {
             editor.putBoolean("oidc_loadfromprefs", true);
             editor.putBoolean("oidc_oauth2only", false);
             editor.putString("oidc_clientId", Constants.CLIENT_ID);
-            editor.putString("oidc_clientSecret", "");
             editor.putString("oidc_redirectUrl", Constants.REDIRECT_URI);
-            editor.putString("oidc_scopes", "openid profile Mail.Send offline_access");
+            editor.putString("oidc_scopes", Constants.SCOPES);
             editor.putString("oidc_flowType", OIDCRequestManager.Flows.Code.name());
-            editor.putString("oidc_issuerId", "https://login.microsoftonline.com/" + Constants.CLIENT_ID + "/v2.0");
 
             editor.apply();
         }

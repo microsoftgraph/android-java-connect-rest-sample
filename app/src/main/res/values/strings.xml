@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Regular UI text -->
-    <string name="app_name">Office 365 Connect sample</string>
+    <string name="app_name">Connect sample</string>
     <string name="connect_button_text">Connect to Office 365</string>
     <string name="disconnect_menu_item_text">Disconnect</string>
     <string name="title_text">Hi\u00A0</string>
@@ -28,37 +28,37 @@
     <string name="warning_clientid_redirecturi_incorrect">The client ID or redirect URI is not valid. Enter a valid client ID and redirect URI in the Constants.java file and run again</string>
 
     <!-- Email text -->
-    <string name="mail_subject_text">Welcome to Office 365 development on Android with the Office 365 Connect sample</string>
+    <string name="mail_subject_text">Welcome to Microsoft Graph development on Android with the Connect sample</string>
     <string name="mail_body_text" formatted="false">&lt;html&gt;&lt;head&gt;
 &lt;meta http-equiv=\'Content-Type\' content=\'text/html; charset=us-ascii\'&gt;
 &lt;title&gt;&lt;/title&gt;
 &lt;/head&gt;
 &lt;body style=\'font-family:calibri\'&gt;
 &lt;h2&gt;Congratulations, {0}!&lt;/h2&gt;
-&lt;p&gt;This is a message from the Office 365 Connect sample. You are well on your way to incorporating Office 365 services
-in your apps.
+&lt;p&gt;This is a message from the Microsoft Graph Connect sample. You are well on your way to incorporating Microsoft services in your apps.
 &lt;/p&gt;
-&lt;p&gt;What&amp;#8217;s next?&lt;/p&gt;
-&lt;p&gt;You can use the classes in the Android Studio project to integrate Office 365 services and data into your own apps.&lt;/p&gt;
-&lt;h2&gt;Give us feedback&lt;/h2&gt;
-&lt;p&gt;We hope you found this sample useful. We&amp;#8217;d love to hear from you, so drop us an email at
-&lt;a href=\'mailto:docthis@microsoft.com?subject=Feedback%20on%20the%20Office%20365%20Microsoft%20Graph%20API%20Connect%20sample\'&gt;
-docthis@microsoft.com&lt;/a&gt; with your comments or &lt;a href=\'https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect/issues\'&gt;
-log an issue&lt;/a&gt; on our repository. &lt;/p&gt;
-&lt;p&gt;For more details on what else you can do with the Office 365 services in your Android app, start with the
-&lt;a href=\'http://dev.office.com/getting-started\'&gt;Getting started&lt;/a&gt; page on dev.office.com.
-&lt;/p&gt;
+&lt;h3&gt;What&amp;#8217;s next?&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Check out &lt;a href=\'https://graph.microsoft.io\'&gt;graph.microsoft.io&lt;/a&gt; to start building Microsoft Graph apps today with all the latest tools, templates, and guidance to get started quickly.&lt;/li&gt;
+&lt;li&gt;Use the &lt;a href=\'https://graph.microsoft.io/graph-explorer\'&gt;Graph Explorer&lt;/a&gt; to start your testing.&lt;/li&gt;
+&lt;li&gt;Browse other &lt;a href=\'https://github.com/microsoftgraph\'&gt;samples on GitHub&lt;/a&gt; to see more of the APIs in action.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Give us feedback&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;If you have any trouble running this sample, please &lt;a href=\'https://github.com/microsoftgraph/android-java-connect-rest-sample/issues\'&gt;log an issue&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;For general questions about the Microsoft Graph APIs, post to &lt;a href=\'https://stackoverflow.com/questions/tagged/microsoftgraph?sort=newest\'&gt;Stack Overflow&lt;/a&gt;. Make sure that your questions or comments are tagged with [MicrosoftGraph].&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Thanks, and happy coding!&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Your Office 365 Development team &lt;/p&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Your Microsoft Graph Development team &lt;/p&gt;
 &lt;div style=\'text-align:center; font-family:calibri\'&gt;
 &lt;table style=\'width:100%; font-family:calibri\'&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=\'https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect\'&gt;See on GitHub&lt;/a&gt;
+&lt;td&gt;&lt;a href=\'https://github.com/microsoftgraph/android-java-connect-rest-sample\'&gt;See on GitHub&lt;/a&gt;
 &lt;/td&gt;
-&lt;td&gt;&lt;a href=\'http://aka.ms/o365-android-connect-uservoice\'&gt;Suggest on UserVoice&lt;/a&gt;
+&lt;td&gt;&lt;a href=\'https://officespdev.uservoice.com\'&gt;Suggest on UserVoice&lt;/a&gt;
 &lt;/td&gt;
-&lt;td&gt;&lt;a href=\'http://twitter.com/share?text=I%20just%20started%20developing%20apps%20for%20%23Android%20using%20the%20%23Office365%20Connect%20app%20%40OfficeDev&amp;amp;url=https://github.com/OfficeDev/O365-Android-Microsoft-Graph-Connect\'&gt;Share on Twitter&lt;/a&gt;
+&lt;td&gt;&lt;a href=\'https://twitter.com/intent/tweet?text=I%20just%20started%20developing%20apps%20for%20Android%20using%20the%20Microsoft%20Graph%20Connect%20sample&amp;amp;url=https://github.com/microsoftgraph/android-java-rest-connect-sample&amp;amp;hashtags=Android,MicrosoftGraph\'&gt;Share on Twitter&lt;/a&gt;
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;

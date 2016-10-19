@@ -4,6 +4,13 @@
  */
 package com.microsoft.office365.connectmicrosoftgraph;
 
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
+import android.content.Context;
+import android.util.Log;
+
+import com.lnikkila.oidc.security.UserNotAuthenticatedWrapperException;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -16,29 +23,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class RESTHelper {
+    private static final String TAG = "RESTHelper";
 
     /**
      * Returns a retrofit rest adaptor class. The adaptor is created in calling code.
      *
      * @return A new RestAdapter instance.
      */
-    public Retrofit getRetrofit() {
+    public Retrofit getRetrofit(final Context context) {
         //This method catches outgoing REST calls and injects the Authorization and host headers before
         //sending to REST endpoint
         Interceptor interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                final String token = AuthenticationManager.getInstance().getAccessToken();
-                Request request = chain.request();
-                request = request.newBuilder()
-                        .addHeader("Authorization", "Bearer " + token)
-                        // This header has been added to identify this sample in the Microsoft Graph service.
-                        // If you're using this code for your project please remove the following line.
-                        .addHeader("SampleID", "android-java-connect-rest-sample")
-                        .build();
+                try {
+                    final String token = AuthenticationManager.getInstance(context).getAccessToken();
+                    Request request = chain.request();
+                    request = request.newBuilder()
+                            .addHeader("Authorization", "Bearer " + token)
+                            // This header has been added to identify this sample in the Microsoft Graph service.
+                            // If you're using this code for your project please remove the following line.
+                            .addHeader("SampleID", "android-java-connect-rest-sample")
+                            .build();
 
-                Response response = chain.proceed(request);
-                return response;
+                    Response response = chain.proceed(request);
+                    return response;
+                } catch (AuthenticatorException | IOException | UserNotAuthenticatedWrapperException | OperationCanceledException e) {
+                    Log.e(TAG, e.getMessage());
+                    return null;
+                }
             }
         };
 

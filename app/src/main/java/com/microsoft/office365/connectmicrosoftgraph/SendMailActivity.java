@@ -72,7 +72,7 @@ public class SendMailActivity extends AppCompatActivity {
         String body = getString(R.string.mail_body_text);
         body = body.replace("{0}", mGivenName);
 
-        Call<Void> result = new MSGraphAPIController().sendMail(
+        Call<Void> result = new MSGraphAPIController(this).sendMail(
                 mEmailEditText.getText().toString(),
                 getString(R.string.mail_subject_text),
                 body);
@@ -105,7 +105,7 @@ public class SendMailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.disconnectMenuitem:
-                AuthenticationManager.getInstance().disconnect();
+                AuthenticationManager.getInstance(this).disconnect();
                 Intent connectIntent = new Intent(this, ConnectActivity.class);
                 startActivity(connectIntent);
                 finish();

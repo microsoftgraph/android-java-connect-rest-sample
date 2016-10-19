@@ -14,12 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.microsoft.aad.adal.AuthenticationCallback;
-import com.microsoft.aad.adal.AuthenticationCancelError;
-import com.microsoft.aad.adal.AuthenticationException;
-import com.microsoft.aad.adal.AuthenticationResult;
-import com.microsoft.aad.adal.UserInfo;
+import com.google.api.client.auth.openidconnect.IdToken;
+import com.google.api.client.json.gson.GsonFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 
@@ -74,29 +72,31 @@ public class ConnectActivity extends AppCompatActivity {
 
     private void connect() {
         // define the post-auth callback
-        AuthenticationCallback<AuthenticationResult> callback =
-                new AuthenticationCallback<AuthenticationResult>() {
+        AuthenticationCallback<String> callback =
+                new AuthenticationCallback<String>() {
 
                     @Override
-                    public void onSuccess(AuthenticationResult result) {
-                        // get the UserInfo from the auth response
-                        UserInfo user = result.getUserInfo();
+                    public void onSuccess(String idToken) {
+                        String name = "";
+                        String preferredUsername = "";
+                        try {
+                            // get the user info from the id token
+                            IdToken claims = IdToken.parse(new GsonFactory(), idToken);
+                            name = claims.getPayload().get("name").toString();
+                            preferredUsername = claims.getPayload().get("preferred_username").toString();
+                        } catch (IOException ioe) {
+                            Log.e(TAG, ioe.getMessage());
+                        }
 
-                        // get the user's given name
-                        String givenName = user.getGivenName();
-
-                        // get the user's displayable Id
-                        String displayableId = user.getDisplayableId();
-
-                        // start the SendMailActivity
+                        // Prepare the SendMailActivity intent
                         Intent sendMailActivity =
                                 new Intent(ConnectActivity.this, SendMailActivity.class);
 
                         // take the user's info along
-                        sendMailActivity.putExtra(SendMailActivity.ARG_GIVEN_NAME, givenName);
-                        sendMailActivity.putExtra(SendMailActivity.ARG_DISPLAY_ID, displayableId);
+                        sendMailActivity.putExtra(SendMailActivity.ARG_GIVEN_NAME, name);
+                        sendMailActivity.putExtra(SendMailActivity.ARG_DISPLAY_ID, preferredUsername);
 
-                        // actually start the Activity
+                        // actually start the activity
                         startActivity(sendMailActivity);
 
                         resetUIForConnect();
@@ -104,41 +104,12 @@ public class ConnectActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Exception exc) {
-                        if (userCancelledConnect(exc)) {
-                            resetUIForConnect();
-                        } else {
-                            showConnectErrorUI();
-                        }
+                        showConnectErrorUI();
                     }
                 };
 
-        AuthenticationManager mgr = AuthenticationManager.getInstance();
-        mgr.setContextActivity(this);
-        mgr.connect(callback);
-    }
-
-    /**
-     * This activity gets notified about the completion of the ADAL activity through this method.
-     *
-     * @param requestCode The integer request code originally supplied to startActivityForResult(),
-     *                    allowing you to identify who this result came from.
-     * @param resultCode  The integer result code returned by the child activity through its
-     *                    setResult().
-     * @param data        An Intent, which can return result data to the caller (various data
-     *                    can be attached to Intent "extras").
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG, "onActivityResult - AuthenticationActivity has come back with results");
-        super.onActivityResult(requestCode, resultCode, data);
-        AuthenticationManager
-                .getInstance()
-                .getAuthenticationContext()
-                .onActivityResult(requestCode, resultCode, data);
-    }
-
-    private static boolean userCancelledConnect(Exception e) {
-        return e instanceof AuthenticationCancelError;
+        AuthenticationManager mgr = AuthenticationManager.getInstance(this);
+        mgr.connect(this, callback);
     }
 
     private static boolean hasAzureConfiguration() {
@@ -152,10 +123,15 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     private void resetUIForConnect() {
-        mConnectButton.setVisibility(View.VISIBLE);
-        mTitleTextView.setVisibility(View.GONE);
-        mDescriptionTextView.setVisibility(View.GONE);
-        mConnectProgressBar.setVisibility(View.GONE);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mConnectButton.setVisibility(View.VISIBLE);
+                mTitleTextView.setVisibility(View.GONE);
+                mDescriptionTextView.setVisibility(View.GONE);
+                mConnectProgressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void showConnectingInProgressUI() {

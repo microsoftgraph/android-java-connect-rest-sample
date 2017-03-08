@@ -2,7 +2,7 @@
 
 ![Build Status](https://office.visualstudio.com/_apis/public/build/definitions/0323e522-dd35-4fbf-8d8a-a3370491558c/444/badge)
 
->**Note:** We're in the process of updating this sample to use the [recommended auth library](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-libraries#compatible-client-libraries) for Android apps.
+>**Note:** We've updated this sample to use the [recommended auth library](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-libraries#compatible-client-libraries) for Android apps.
 
 
 > **Building apps for enterprise customers?** Your app may not work if your enterprise customer turns on enterprise mobility security features like <a href="https://azure.microsoft.com/en-us/documentation/articles/active-directory-conditional-access-device-policies/" target="_newtab">conditional device access</a>. In this case, you may not know and your customers may experience errors. 
@@ -28,7 +28,7 @@ To use the Connect sample for Android, you need the following:
 * [Java Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html).
 
 <a name="register"></a>
-##Register and configure the app
+## Register and configure the app
 
 1. Sign into the [App Registration Portal](https://apps.dev.microsoft.com/) using either your personal or work or school account.
 2. Select **Add an app**.
@@ -50,6 +50,7 @@ To use the Connect sample for Android, you need the following:
 	2. Browse to your local repository and choose the Android-Connect project. Click **OK**.
 	
 	> Note: Android Studio shows a **Frameworks detected** notification if you don't have the **Android Support Repository** installed. Open the SDK manager and add the Android Support Repository to avoid the Frameworks detected notification.
+
 4. Open the Constants.java file.
 	* Replace *ENTER_YOUR_CLIENT_ID* with the application id from the previous section.
 
@@ -78,7 +79,9 @@ This sample just shows the essentials that your apps need to work with Microsoft
 
 * [Get started with Office 365 APIs powered by Microsoft Graph](http://dev.office.com/getting-started/office365apis)
 * [Microsoft Graph overview](http://graph.microsoft.io)
+* [Microsoft Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer)
 * [Snippets sample for Android](../../../android-java-snippets-rest-sample)
+* [Add sign-in to an Android app using a third-party library with Graph API using the v2.0 endpoint](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-devquickstarts-android)
 
 ## Copyright
 Copyright (c) 2016 Microsoft. All rights reserved.

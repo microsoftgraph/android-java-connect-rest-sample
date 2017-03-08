@@ -41,6 +41,8 @@ public class AuthenticationManager {
             SharedPreferences sharedPreferences = context.getSharedPreferences("oidc_clientconf", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("oidc_loadfromprefs", true);
+
+            //Was false. When false, exception is thrown in OIDCRequestManager, line 378. id is null
             editor.putBoolean("oidc_oauth2only", false);
             editor.putString("oidc_clientId", Constants.CLIENT_ID);
             editor.putString("oidc_redirectUrl", Constants.REDIRECT_URI);

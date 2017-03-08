@@ -86,6 +86,9 @@ public class ConnectActivity extends AppCompatActivity {
                             preferredUsername = claims.getPayload().get("preferred_username").toString();
                         } catch (IOException ioe) {
                             Log.e(TAG, ioe.getMessage());
+                        } catch (NullPointerException npe) {
+                            Log.e(TAG, npe.getMessage());
+
                         }
 
                         // Prepare the SendMailActivity intent

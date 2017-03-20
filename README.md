@@ -1,6 +1,4 @@
-# Connect Sample for Android Using the Microsoft Graph REST endpoint
-
-![Build Status](https://office.visualstudio.com/_apis/public/build/definitions/0323e522-dd35-4fbf-8d8a-a3370491558c/444/badge)
+# Connect Sample for Android Using the Microsoft Graph REST endpoin
 
 >**Note:** We've updated this sample to use the [recommended auth library](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-libraries#compatible-client-libraries) for Android apps.
 

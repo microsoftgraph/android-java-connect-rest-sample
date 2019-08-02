@@ -1,3 +1,25 @@
+---
+page_type: sample
+products:
+- office-365
+- ms-graph
+languages:
+- java
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Microsoft identity platform
+  services:
+  - Office 365
+  - Microsoft identity platform
+  - Users
+  platforms:
+  - Android
+  createdDate: 9/1/2015 11:09:41 AM
+  scenarios:
+  - Mobile
+---
 # Connect Sample for Android Using the Microsoft Graph REST endpoin
 
 >**Note:** We've updated this sample to use the [recommended auth library](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-libraries#compatible-client-libraries) for Android apps.
